@@ -167,6 +167,97 @@ export default {
     topHeader
   },
 
+  mounted() {
+    this.$nextTick(() => {
+      $('.select1').niceSelect();
+      $('#slick1').slick({
+        rows: 2,
+        dots: false,
+        arrows: true,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        speed: 2000,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        responsive: [{
+          breakpoint: 1200,
+          settings: {
+            arrows: false,
+            slidesToShow: 2
+          }
+        }, {
+          breakpoint: 991,
+          settings: {
+            arrows: false,
+            slidesToShow: 2
+          }
+        }, {
+          breakpoint: 768,
+          settings: {
+            arrows: false,
+            slidesToShow: 1
+          }
+        }, {
+          breakpoint: 576,
+          settings: {
+            arrows: false,
+            slidesToShow: 1
+          }
+        }, {
+          breakpoint: 480,
+          settings: {
+            arrows: false,
+            slidesToShow: 1
+          }
+        }, {
+          breakpoint: 350,
+          settings: {
+            arrows: false,
+            slidesToShow: 1
+          }
+        }]
+      });
+      new Swiper(".home2-feedback-slider", {
+        spaceBetween: 20,
+        loop: true,
+        slidesPerView: 1,
+        speed: 2000,
+        // effect: 'fade',
+        autoplay: {
+          delay: 1500,
+        },
+        navigation: {
+          nextEl: ".next-6",
+          prevEl: ".prev-6",
+        },
+      });
+
+      $('.odometer').counterUp({
+        delay: 10,
+        time: 1000
+      });
+
+      $('.sidebar-button').on("click", function(){
+        $('.main-menu').addClass('show-menu');
+      });
+
+      $('.menu-close-btn').on("click", function(){
+        $('.main-menu').removeClass('show-menu');
+      });
+// mobile-search-area
+
+      $('.search-btn').on("click", function(){
+        $('.mobile-search').addClass('slide');
+      });
+
+      $('.search-cross-btn').on("click", function(){
+        $('.mobile-search').removeClass('slide');
+      });
+    });
+  },
+
+
   watch: {
     verificationStage: function (data) {
       if (!data) {

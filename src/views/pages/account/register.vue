@@ -266,7 +266,24 @@ export default {
     HomeFooter,
     topHeader
   },
+
   mounted() {
+    $('.sidebar-button').on("click", function(){
+      $('.main-menu').addClass('show-menu');
+    });
+
+    $('.menu-close-btn').on("click", function(){
+      $('.main-menu').removeClass('show-menu');
+    });
+// mobile-search-area
+
+    $('.search-btn').on("click", function(){
+      $('.mobile-search').addClass('slide');
+    });
+
+    $('.search-cross-btn').on("click", function(){
+      $('.mobile-search').removeClass('slide');
+    });
     this.$nextTick(() => {
       $('.select1').select2({
         width: '100%',
