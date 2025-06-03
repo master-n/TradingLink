@@ -78,7 +78,7 @@
                 </div>
               </div>
 
-              <div class="row mt-5">
+              <div class="row my-5">
                 <div class="col-12">
                   <button class="btn btn-outline-dark me-3 big-button" @click="step--">Back</button>
                   <button class="btn btn-outline-primary-1 big-button" @click="$router.push('/travel-to-work')">Continue</button>
@@ -118,7 +118,7 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer mb-5">
             <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
           </div>
