@@ -9,10 +9,10 @@
             <div class="d-flex align-items-center justify-content-between mb-4">
               <h1 class="fw-bold mb-0">Work Details</h1>
 
-              <div class="ms-auto">
+              <router-link to="/professions" class="ms-auto">
                 <a href="#" class="text-decoration-underline me-2">Cancel</a>
                 <a href="#" aria-label="Close"><i class="fa fa-times"></i></a>
-              </div>
+              </router-link>
             </div>
 
             <div class="progress">
@@ -40,7 +40,7 @@
                 <gmap-circle :center="center" :radius="radius * 1609.34" :options="circleOptions"></gmap-circle>
               </gmap-map>
 
-              <div class="form-group form-check mt-4">
+              <div class="form-group form-check my-4">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label font-weight-lighter" for="exampleCheck1">I work throughout
                   Jamaica</label>
