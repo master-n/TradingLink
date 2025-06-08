@@ -27,9 +27,9 @@ export default [
         component: () => import('../views/pages/account/register'),
         meta: {
             beforeResolve(routeTo, routeFrom, next) {
-
                 // If the user is already logged in
-                if (store.getters.GET_USER_INFO) {
+                const user = store.getters.GET_USER_INFO;
+                if (user) {
                     next({name: 'Home'});
                 } else {
                     // Continue to the login page
@@ -45,13 +45,13 @@ export default [
         component: () => import('../views/pages/account/create-account'),
         meta: {
             beforeResolve(routeTo, routeFrom, next) {
-
-                // If the user is already logged in
-                if (store.getters.GET_USER_INFO && store.getters.GET_USER_INFO.status === 'complete') {
-                    next({name: 'Home'});
-                } else {
-                    // Continue to the login page
+                // If logged in but not completed account creation
+                const user = store.getters.GET_USER_INFO;
+                if (user && !user.access_token) {
                     next()
+                } else {
+                    next({name: 'Home'});
+
                 }
 
             },
@@ -63,13 +63,12 @@ export default [
         component: () => import('../views/pages/account/about-you'),
         meta: {
             beforeResolve(routeTo, routeFrom, next) {
-
-                // If the user is already logged in
-                if (store.getters.GET_USER_INFO && store.getters.GET_USER_INFO.status === 'complete') {
-                    next({name: 'Home'});
-                } else {
-                    // Continue to the login page
+                const user = store.getters.GET_USER_INFO;
+                // If the user is logged in and has generated a token
+                if (user && user.access_token) {
                     next()
+                } else {
+                    next({name: 'Home'});
                 }
 
             },
@@ -204,6 +203,7 @@ export default [
     ///////////////////////// DASHBOARD ROUTES /////////////////////////////////
     {
         path: '/',
+        name: 'Home',
         component: () => import('../views/pages/home'),
     },
 

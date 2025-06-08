@@ -88,7 +88,7 @@
                     </ul>
 
           <div class="for-mobile-menu d-lg-none d-block mt-5">
-            <ul>
+            <ul v-if="!loggedIn">
               <li class="">
                 <router-link class="" to="/">Post a job </router-link>
               </li>
@@ -102,11 +102,47 @@
               </li>
               <hr>
             </ul>
+            <ul v-else>
+              <li class="">
+                <router-link class="" to="/">New leads </router-link>
+              </li>
+              <hr>
+              <li class="">
+                <router-link class="" to="/login">Activity </router-link>
+              </li>
+              <hr>
+              <li class="">
+                <router-link to="/register" class="">Contacts</router-link>
+              </li>
+              <hr>
+              <li class="">
+                <router-link to="/register" class="">My Account <i class="bi bi-list ms-2"></i> </router-link>
+              </li>
+              <hr>
+            </ul>
           </div>
         </div>
 
         <div class="nav-right d-flex jsutify-content-end align-items-center">
-          <ul>
+          <ul v-if="loggedIn">
+            <li class="d-md-flex d-none active">
+              <router-link to="/">New leads</router-link>
+            </li>
+            <li class="d-md-flex d-none">
+              <router-link to="/login" class="">Activity</router-link>
+            </li>
+            <li class="d-md-flex d-none">
+              <router-link to="/login" class="">Contacts</router-link>
+            </li>
+            <li class="d-md-flex d-none">
+              <div class="sign-in-btn">
+                <router-link to="/register" class="primry-btn-1 lg-btn">
+                  My Account <i class="bi bi-list ms-2"></i> </router-link>
+              </div>
+            </li>
+          </ul>
+
+          <ul v-else>
             <li class="d-md-flex d-none active">
               <router-link to="/">Post a job </router-link>
             </li>
@@ -132,8 +168,25 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "Header2",
+  data() {
+    return {};
+  },
+  computed: {
+    loader() {
+      return this.$store.getters.LOADER;
+    },
+    loggedIn() {
+      return this.$store.getters.GET_USER_INFO;
+    },
+  }
+};
+</script>
+
 <style scoped>
-.top-bar2{
+.top-bar2 {
   background: white !important;
 }
 </style>
