@@ -12,6 +12,7 @@ export const userService = {
     saveTravelToWork,
     businessType,
     businessDetails,
+    idVerification,
     verifyEmail,
     resendVerifyEmail,
     getAdmins,
@@ -101,6 +102,16 @@ function businessDetails(payload) {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
     })
+}
+
+function idVerification(formData) {
+    return new Promise((resolve, reject) => {
+        axios.post('/api/verify-identity', formData, useBearerTokenHeaders(true))
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+
 }
 
 

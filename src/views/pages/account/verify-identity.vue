@@ -101,22 +101,12 @@ import store from "@/store/store";
  */
 export default {
   page: {
-    title: "Login",
+    title: "Verify Your Identity",
     meta: [{name: "description", content: appConfig.description}],
   },
   data() {
     return {
       showModal:false,
-      step:1,
-      email: "",
-      password: "",
-      submitted: false,
-      tryingToLogIn: false,
-      obscurePassword: true,
-      verificationStage: false,
-      success: false,
-      error: false,
-      errorMessage: ''
     };
   },
   components: {
@@ -124,58 +114,7 @@ export default {
     topHeader
   },
 
-  watch: {
-    verificationStage: function (data) {
-      if (!data) {
-        this.password = '';
-        this.error = false;
-        this.errorMessage = '';
-      }
-
-    }
-  },
-  computed: {
-    notification() {
-      return this.$store ? this.$store.getters.notification : null;
-    },
-    notificationAutoCloseDuration() {
-      return this.$store && this.$store.getters.notification ? 10 : 0;
-    },
-  },
   created() {
-  },
-  validations: {
-    email: {
-      required,
-      email,
-    },
-    password: {
-      required,
-    },
-  },
-  methods: {
-    tryToLogIn() {
-      this.$store.dispatch("login", {
-        email: this.email,
-        password: this.password,
-      }).then(() => {
-        const loggedUser = store.getters.GET_USER_INFO;
-        const userRole = loggedUser.roles?.[0] || '';
-        if (userRole === 'admin') {
-          this.$router.push('/admin');
-        } else if (userRole === 'branch') {
-          this.$router.push('/branch/home');
-        } else if (userRole === 'customer' || userRole === 'vendor_manager') {
-          this.$router.push('/');
-        } else if (userRole === 'customer_service') {
-          this.$router.push('/customer-service');
-        } else {
-          this.$router.push('/');
-        }
-      }).catch(() => {
-      });
-      this.$store.dispatch("clear");
-    },
   },
 };
 </script>

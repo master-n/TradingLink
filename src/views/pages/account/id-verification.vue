@@ -27,83 +27,102 @@
               </div>
 
             </div>
-            <div class="form-wrapper mt-5">
-              <h3 class="font-weight-bold mb-4">Which ID do you have?</h3>
+            <form @submit.prevent="dropzoneModal">
+              <div class="form-wrapper mt-5">
+                <h3 class="font-weight-bold mb-4">Which ID do you have?</h3>
 
-              <div class="profession-list">
-                <div class="profession-item">
-                  <label for="design" class="form-check-label">
-                    <img src="../../../../public/frontend/assets/images/icon/envlop-5.svg" alt="" style="height: 10px">
-                    Passport
-                  </label>
-                  <input type="radio" id="design" name="profession" class="form-check-input">
+                <div class="profession-list">
+                  <div class="profession-item">
+                    <label for="passport" class="form-check-label">
+                      <img src="../../../../public/frontend/assets/images/icon/envlop-5.svg" alt=""
+                           style="height: 10px">
+                      Passport
+                    </label>
+                    <input type="radio" id="passport" value="Passport" v-model="identity_type" class="form-check-input">
+                  </div>
+                  <div class="profession-item">
+                    <label for="identitiy-card" class="form-check-label">
+                      <img src="../../../../public/frontend/assets/images/icon/user-2.svg" alt="" style="height: 20px">
+                      Identity Card
+                    </label>
+                    <input type="radio" id="identitiy-card" value="Identity Card" v-model="identity_type"
+                           class="form-check-input">
+                  </div>
+                  <div class="profession-item">
+                    <label for="drivers-licence" class="form-check-label">
+                      <img src="../../../../public/frontend/assets/images/icon/car-driving.svg" alt=""
+                           style="height: 20px">
+                      Drivers Licence
+                    </label>
+                    <input type="radio" id="drivers-licence" value="Drivers Licence" v-model="identity_type"
+                           class="form-check-input">
+                  </div>
                 </div>
-                <div class="profession-item">
-                  <label for="technician" class="form-check-label">
-                    <img src="../../../../public/frontend/assets/images/icon/user-2.svg" alt="" style="height: 20px">
-                    Identity Card
-                  </label>
-                  <input type="radio" id="technician" name="profession" class="form-check-input">
-                </div>
-                <div class="profession-item">
-                  <label for="fitter" class="form-check-label">
-                    <img src="../../../../public/frontend/assets/images/icon/car-driving.svg" alt="" style="height: 20px">
-                    Drivers Licence
-                  </label>
-                  <input type="radio" id="fitter" name="profession" class="form-check-input">
+
+                <div class="button-container mt-5">
+                  <div class="col-12">
+                    <button class="btn btn-outline-primary-1 me-3 big-button" @click="$router.push('/verify-skills')">
+                      Upload later
+                    </button>
+                    <button class="btn primry-btn-2 d-inline-block text-light big-button" type="submit">
+                      <b-spinner small v-if="isLoading"></b-spinner>
+                      {{ isLoading ? 'Saving' : 'Continue' }}
+                    </button>
+                  </div>
                 </div>
               </div>
+            </form>
 
-              <div class="button-container mt-5">
-                <div class="col-12">
-                  <button class="btn btn-outline-primary-1 me-3 big-button" @click="$router.push('/verify-skills')">Upload later</button>
-                  <button class="btn primry-btn-2 d-inline-block text-light big-button" @click="$router.push('/verify-skills')">
-                    Continue
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
-    <!--    steps modal-->
-    <div v-if="showModal" class="modal fade show" data-backdrop="true">
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Complete your registration</h5>
-            <button type="button" class="btn-close" @click="showModal = false" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="registration-steps">
-              <div class="step completed">
-                <span class="step-icon">✓</span>
-                <span class="step-text">Work details</span>
-              </div>
-              <div class="step completed">
-                <span class="step-icon">✓</span>
-                <span class="step-text">ID Check</span>
-              </div>
-              <div class="step completed">
-                <span class="step-icon">✓</span>
-                <span class="step-text">Safety & Quality</span>
-              </div>
-              <div class="step">
-                <span class="step-icon">4</span>
-                <span class="step-text">Profile Setup</span>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+
+    <!-- BootstrapVue Dropzone Modal -->
+    <b-modal v-model="showDropzoneModal" title="Upload Your ID" @ok="submitIdVerification">
+      <vue-dropzone
+          id="identityFile"
+          ref="identityFile"
+          :use-custom-slot="true"
+          :options="identityFileDropzoneOptions"
+          @vdropzone-max-files-exceeded="identityFileMaxFileExceeded"
+      >
+        <div class="dz-message needsclick">
+          <i class="bi bi-upload h1 text-muted"></i>
+          <h3>Upload {{this.identity_type}} file</h3>
+        </div>
+      </vue-dropzone>
+      <template #modal-footer>
+        <b-button variant="secondary" @click="showDropzoneModal = false">Close</b-button>
+        <b-button class="btn bg-primary-1 text-light" @click="submitIdVerification">Submit</b-button>
+      </template>
+    </b-modal>
+
+    <!-- Steps Modal -->
+    <b-modal v-model="showModal" title="Complete your registration">
+      <div class="registration-steps">
+        <div class="step completed">
+          <span class="step-icon">✓</span>
+          <span class="step-text">Work details</span>
+        </div>
+        <div class="step completed">
+          <span class="step-icon">✓</span>
+          <span class="step-text">ID Check</span>
+        </div>
+        <div class="step completed">
+          <span class="step-icon">✓</span>
+          <span class="step-text">Safety & Quality</span>
+        </div>
+        <div class="step">
+          <span class="step-icon">4</span>
+          <span class="step-text">Profile Setup</span>
         </div>
       </div>
-    </div>
-    <!-- Backdrop -->
-    <div v-if="showModal" class="modal-backdrop fade show" @click="showModal=false"></div>
+      <template #modal-footer>
+        <b-button variant="secondary" @click="showModal = false">Close</b-button>
+        <b-button class="btn bg-primary-1 text-light ">Save changes</b-button>
+      </template>
+    </b-modal>
 
   </div>
 </template>
@@ -112,47 +131,83 @@
 import Auth from "../../layouts/auth";
 import appConfig from "../../../../app.config";
 import topHeader from '../../base-layout/header-1'
+import vue2Dropzone from "vue2-dropzone";
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 
-import {required, email} from "vuelidate/lib/validators";
-import store from "@/store/store";
+import {userService} from "@/apis/user.service";
 
 /**
- * Login component
+ * Id Verification component
  */
 export default {
   page: {
-    title: "Login",
+    title: "Id Verification",
     meta: [{name: "description", content: appConfig.description}],
   },
   data() {
     return {
       showModal: false,
-      step: 2,
-      center: { lat: 18.1096, lng: -77.2975 }, // Default center (London)
-      radius: 10,
-      circleOptions: {
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35,
-      },
+      isLoading: false,
+      identity_type: 'Passport',
+      showDropzoneModal: false,
+      identityFileDropzoneOptions: {
+        url: '#',
+        maxFilesize: 20.0,
+        addRemoveLinks: true,
+        autoProcessQueue: false,
+        maxFiles: 1
+      }
     };
   },
   components: {
     Auth,
-    topHeader
+    topHeader,
+    vueDropzone: vue2Dropzone,
   },
 
-  watch: {
-
-  },
-  computed: {
-
-  },
   created() {
   },
   methods: {
+    dropzoneModal(event) {
+      event.preventDefault(); // Prevent form submission
+      this.showDropzoneModal = true;
+    },
+    identityFileMaxFileExceeded(file) {
+      this.$refs.identityFile.removeFile(file);
+      alert('You can only upload one file at a time.');
+    },
+
+    async submitIdVerification() {
+      this.isLoading = true
+      await this.$store.dispatch('showLoader')
+      this.identityFile = this.$refs.identityFile.getAcceptedFiles();
+
+      if (this.identityFile.length === 0) {
+        this.$store.dispatch('error', {
+          message: `Please upload the ${this.identity_type}'s image`,
+          showSwal: true
+        })
+        return;
+      }
+
+      let identityFile = this.identityFile[0];
+
+      const formData = new FormData();
+      formData.append("identity_file", identityFile);
+      formData.append("identity_type", this.identity_type);
+
+      userService.idVerification(formData).then((res) => {
+        this.$store.dispatch('hideLoader')
+        this.isLoading = false
+        const {status, message} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true})
+          return;
+        }
+        this.$router.push('/verify-skills')
+      });
+    },
+
   },
   mounted() {
   },
@@ -161,14 +216,14 @@ export default {
 
 <style scoped>
 /* Ensure the modal is displayed */
-.modal.show {
-  display: block;
-}
+/*.modal.show {*/
+/*  display: block;*/
+/*}*/
 
-.modal-dialog {
-  position: relative;
-  max-width: 500px !important;
-}
+/*.modal-dialog {*/
+/*  position: relative;*/
+/*  max-width: 500px !important;*/
+/*}*/
 
 .registration-steps {
   display: flex;
