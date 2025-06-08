@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-// import BootstrapVue from 'bootstrap-vue'
+import BootstrapVue from 'bootstrap-vue'
 import i18n from './i18n'
 // import VueSlideBar from 'vue-slide-bar'
 import './utils/filters'
@@ -43,7 +43,7 @@ Vue.use(VueGoogleMaps, {
 
 
 // Vue.component('apexchart', VueApexCharts)
-// Vue.use(BootstrapVue)
+Vue.use(BootstrapVue)
 // // Vue.use(Vuelidate)
 // Vue.use(require('vue-chartist'))
 // Vue.component('simplebar', simplebar)

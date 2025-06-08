@@ -50,7 +50,8 @@
                 <div class="col-12">
                   <button class="btn btn-outline-primary-1 me-3 big-button" @click="$router.go(-1)">Back</button>
                   <button class="btn primry-btn-2 d-inline-block text-light big-button" @click="save">
-                    Continue
+                    <b-spinner small v-if="isLoading"></b-spinner>
+                    {{ isLoading ? 'Saving' : 'Continue' }}
                   </button>
                 </div>
               </div>
@@ -132,6 +133,7 @@ export default {
         fillColor: '#FF0000',
         fillOpacity: 0.35,
       },
+      isLoading: false
     };
   },
   components: {
@@ -147,6 +149,11 @@ export default {
         this.radius = 10;
       }
     },
+    radius(newValue) {
+      if (newValue !== 100) {
+        this.workThroughoutJamaica = false;
+      }
+    }
   },
   computed: {},
   created() {
@@ -155,7 +162,10 @@ export default {
     async save() {
       this.isLoading = true
       await this.$store.dispatch('showLoader')
-      userService.saveTravelToWork({radius: this.selectedTrades}).then((res) => {
+      userService.saveTravelToWork({
+        travel_radius: this.radius,
+        work_all_jamaica: this.workThroughoutJamaica
+      }).then((res) => {
         this.$store.dispatch('hideLoader')
         this.isLoading = false
         const {status, message} = res;
