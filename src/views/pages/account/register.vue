@@ -13,76 +13,58 @@
           <h1 class="font-weight-bold custom-title mb-4 mt-5">The trusted way to find the work you want</h1>
           <div class="card">
             <div class="card-body px-4">
-              <h5 class="font-weight-bold mt-3 mb-3">Discover local trade tasks</h5>
-              <div class="input-area mb-3">
-                <select class="select1">
-                  <option value="">Your main trade</option>
-                  <option>Architectural Designer</option>
-                  <option>Architectural Technician</option>
-                  <option>Bathroom Fitter</option>
-                  <option>Bricklayer</option>
-                  <option>Carpenter</option>
-                  <option>Carpet & Lino Fitter</option>
-                  <option>Cleaning company</option>
-                  <option>Conservatory Installer</option>
-                  <option>Conversions Specialist</option>
-                  <option>Damp Proofing Specialist</option>
-                  <option>Decking Specialist</option>
-                  <option>Demolition Contractor</option>
-                  <option>Driveways Installer</option>
-                  <option>Electrician</option>
-                  <option>Extension Builder</option>
-                  <option>Fascias & Soffits Specialist</option>
-                  <option>Fencer</option>
-                  <option>Fireplace & Flue Specialist</option>
-                  <option>Flat Roofer</option>
-                  <option>Flooring Fitter</option>
-                  <option>Gardener</option>
-                  <option>Gas Engineer</option>
-                  <option>Groundworker</option>
-                  <option>Guttering Installer</option>
-                  <option>Handyman</option>
-                  <option>Heating Engineer</option>
-                  <option>Insulation Installer</option>
-                  <option>Joiner</option>
-                  <option>Kitchen Fitter</option>
-                  <option>Landscaper</option>
-                  <option>Locksmith</option>
-                  <option>Loft Conversion Specialist</option>
-                  <option>New Home Builder</option>
-                  <option>Painter & Decorator</option>
-                  <option>Pitched Roofer</option>
-                  <option>Plasterer</option>
-                  <option>Plumber</option>
-                  <option>Repointing Specialist</option>
-                  <option>Restoration & Refurbishment Specialist</option>
-                  <option>Security System Installer</option>
-                  <option>Stonemason</option>
-                  <option>Tarmac Specialist</option>
-                  <option>Tiler</option>
-                  <option>Tree Surgeon</option>
-                  <option>Waste Clearance Specialist</option>
-                  <option>Windows & Doors Fitter (uPVC & Metal)</option>
-                  <option>Windows & Doors Fitter (Wooden)</option>
-                </select>
+              <div v-if="generalError" class="alert alert-danger">
+                <ul>
+                  <li>{{ generalError }}</li>
+                </ul>
               </div>
-              <div class="mb-3">
-                <input type="email" class="form-control form-input" name="email" placeholder="Parish">
-              </div>
+              <form @submit.prevent="signUp">
+                <h5 class="font-weight-bold mt-3 mb-3">Discover local trade tasks</h5>
+                <div class="mb-3">
+                  <select class="form-control" required v-model="selectedTradeId" :disabled="tradeLoader">
+                    <option value="">--Select your trade--</option>
+                    <option v-for="(trade,i) in trades" :key="i" :value="trade.id">{{ trade.name }}</option>
+                  </select>
+                </div>
 
-              <div class="mb-4">
-                <input type="email" class="form-control form-input" name="email"
-                       placeholder="Your email to receive leads">
-              </div>
+                <div class="mb-3">
+                  <select class="form-control" v-model="selectedParishId" required :disabled="parishLoader">
+                    <option value="">--Select parish--</option>
+                    <option v-for="parish in parishes" :key="parish.id" :value="parish.id">
+                      {{ parish.name }}
+                    </option>
+                  </select>
+                </div>
 
-              <p class="p-small mb-0">By clicking Sign up for free, you agree to MyBuilder <a
-                  class="text-decoration-underline" href="#">Terms and Conditions</a>.</p>
-              <p class="p-small">For information on how we process your data, see our <a
-                  class="text-decoration-underline" href="#">Privacy policy</a>.</p>
+                <div class="mb-3" v-if="selectedParishId">
+                  <select class="form-control" v-model="selectedCityId" required>
+                    <option value="">--Select city--</option>
+                    <option
+                        v-for="city in parishes.find(p => p.id === selectedParishId)?.cities || []"
+                        :key="city.id"
+                        :value="city.id"
+                    >
+                      {{ city.name }}
+                    </option>
+                  </select>
+                </div>
 
-              <div class="text-center mt-5 mb-4">
-                <button @click="$router.push('/create-account')" class="primry-btn-2 d-block w-100 btn btn-block big-button">Sign up for free</button>
-              </div>
+                <div class="mb-4">
+                  <input type="email" class="form-control form-input" :class="{ 'border-danger': emailError }"
+                         v-model="email" placeholder="Your email to receive leads" required>
+                </div>
+
+                <p class="p-small mb-0">By clicking Sign up for free, you agree to MyBuilder <a
+                    class="text-decoration-underline" href="#">Terms and Conditions</a>.</p>
+                <p class="p-small">For information on how we process your data, see our <a
+                    class="text-decoration-underline" href="#">Privacy policy</a>.</p>
+
+                <div class="text-center mt-5 mb-4">
+                  <button type="submit"
+                          class="primry-btn-2 d-block w-100 btn btn-block big-button">Sign up for free
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
 
@@ -169,7 +151,7 @@
           <div class="col-xl-2 col-6">
             <div class="recruters-card trades-card">
               <div class="trades font-weight-bold">
-                <h5 class="trades"><a href="company-listing1.html" class="font-weight-bold">Architectural Designer</a>
+                <h5 class="trades"><a href="#" class="font-weight-bold">Architectural Designer</a>
                 </h5>
               </div>
 
@@ -178,7 +160,7 @@
           <div class="col-xl-2 col-6">
             <div class="recruters-card trades-card">
               <div class="trades font-weight-bold">
-                <h5 class="trades"><a href="company-listing1.html" class="font-weight-bold">Architectural Technician</a>
+                <h5 class="trades"><a href="#" class="font-weight-bold">Architectural Technician</a>
                 </h5>
               </div>
 
@@ -187,7 +169,7 @@
           <div class="col-xl-2 col-6">
             <div class="recruters-card trades-card">
               <div class="trades font-weight-bold">
-                <h5 class="trades"><a href="company-listing1.html" class="font-weight-bold">Bathroom Fitter</a></h5>
+                <h5 class="trades"><a href="#" class="font-weight-bold">Bathroom Fitter</a></h5>
               </div>
 
             </div>
@@ -195,7 +177,7 @@
           <div class="col-xl-2 col-6">
             <div class="recruters-card trades-card">
               <div class="trades font-weight-bold">
-                <h5 class="trades"><a href="company-listing1.html" class="font-weight-bold">Bricklayer</a></h5>
+                <h5 class="trades"><a href="#" class="font-weight-bold">Bricklayer</a></h5>
               </div>
 
             </div>
@@ -203,7 +185,7 @@
           <div class="col-xl-2 col-6">
             <div class="recruters-card trades-card">
               <div class="font-weight-bold">
-                <h5 class="trades"><a href="company-listing1.html" class="font-weight-bold">Carpenter</a></h5>
+                <h5 class="trades"><a href="#" class="font-weight-bold">Carpenter</a></h5>
               </div>
 
             </div>
@@ -260,19 +242,92 @@
 <script>
 import HomeFooter from '../../base-layout/footer'
 import topHeader from '../../base-layout/header-2'
+import {userService} from "@/apis/user.service";
+import appConfig from "../../../../app.config.json";
 
 export default {
+  page: {
+    title: "Register",
+    meta: [{name: "description", content: appConfig.description}],
+  },
+  data() {
+    return {
+      email: '',
+      selectedTradeId: '',
+      selectedParishId: '',
+      selectedCityId: '',
+      selectedParish: '',
+      selectedCity: '',
+      trades: [],
+      parishes: {},
+      emailError: false,
+      generalError: '',
+      isLoading: false,
+      tradeLoader: false,
+      parishLoader: false,
+    };
+  },
   components: {
     HomeFooter,
     topHeader
   },
+  methods: {
+    submit() {
+      this.$router.push('/create-account')
+    },
+    async getTrades() {
+      this.tradeLoader = true
+      await this.$store.dispatch('showLoader')
+      userService.getTrades().then((res) => {
+        this.trades = res.extra;
+        this.tradeLoader = false
+      });
+    },
 
+    async getParisCities() {
+      this.parishLoader = true
+      await this.$store.dispatch('showLoader')
+      userService.getParisCities().then((res) => {
+        this.parishes = res.extra;
+        this.parishLoader = false
+
+      });
+    },
+
+    async signUp() {
+      this.emailError = false;
+      this.generalError = '';
+      this.isLoading = true;
+      this.$store.dispatch("signUp", {
+        email: this.email,
+        parish_id: this.selectedParishId,
+        city_id: this.selectedCityId,
+        main_trade: this.selectedTradeId
+      }).then((response) => {
+        const {status, message} = response;
+        this.isLoading = false;
+        if (!status) {
+          if (message.toLowerCase().includes('email')) {
+            this.emailError = true;
+          }
+          this.generalError = message;
+          return;
+        }
+        this.$router.push(`/create-account`);
+      });
+    }
+
+  },
+  created() {
+    this.getTrades();
+    this.getParisCities();
+  },
   mounted() {
-    $('.sidebar-button').on("click", function(){
+    $('.sidebar-button').on("click", function () {
       $('.main-menu').addClass('show-menu');
     });
 
-    $('.menu-close-btn').on("click", function(){
+    $('.menu-close-btn').on("click", function () {
       $('.main-menu').removeClass('show-menu');
     });
 // mobile-search-area
@@ -302,13 +357,24 @@ export default {
 .form-input {
   border: 1px solid #787878 !important;
 }
->>> .select1{
+
+>>> .select1 {
   /*border: 1px solid #787878 !important;*/
 }
->>> .select2-selection{
+
+>>> .select2-selection {
   border: 0 !important;
 }
-.recruters-card{
+
+.recruters-card {
   background: white !important;
+}
+
+.form-control {
+  appearance: auto !important;
+}
+
+.border-danger {
+  border: 1px solid red !important;
 }
 </style>

@@ -41,15 +41,15 @@
               </gmap-map>
 
               <div class="form-group form-check mb-5 mt-4">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="workThroughoutJamaica">
                 <label class="form-check-label font-weight-lighter" for="exampleCheck1">I work throughout
-                  Jamaica</label>
+                  Jamaica </label>
               </div>
 
               <div class="button-container mt-5">
                 <div class="col-12">
                   <button class="btn btn-outline-primary-1 me-3 big-button" @click="$router.go(-1)">Back</button>
-                  <button class="btn primry-btn-2 d-inline-block text-light big-button" @click="$router.push('/business-type')">
+                  <button class="btn primry-btn-2 d-inline-block text-light big-button" @click="save">
                     Continue
                   </button>
                 </div>
@@ -108,13 +108,14 @@ import topHeader from '../../base-layout/header-1'
 
 import {required, email} from "vuelidate/lib/validators";
 import store from "@/store/store";
+import {userService} from "@/apis/user.service";
 
 /**
  * Login component
  */
 export default {
   page: {
-    title: "Login",
+    title: "Travel To Work",
     meta: [{name: "description", content: appConfig.description}],
   },
   data() {
@@ -123,6 +124,7 @@ export default {
       step: 2,
       center: {lat: 18.1096, lng: -77.2975}, // Default center (London)
       radius: 10,
+      workThroughoutJamaica: false,
       circleOptions: {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
@@ -137,11 +139,35 @@ export default {
     topHeader
   },
 
-  watch: {},
+  watch: {
+    workThroughoutJamaica(newValue) {
+      if (newValue) {
+        this.radius = 100;
+      } else {
+        this.radius = 10;
+      }
+    },
+  },
   computed: {},
   created() {
   },
-  methods: {},
+  methods: {
+    async save() {
+      this.isLoading = true
+      await this.$store.dispatch('showLoader')
+      userService.saveTravelToWork({radius: this.selectedTrades}).then((res) => {
+        this.$store.dispatch('hideLoader')
+        this.isLoading = false
+        const {status, message} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true})
+          return;
+        }
+        this.$router.push('/business-type')
+      });
+    },
+
+  },
   mounted() {
   },
 };

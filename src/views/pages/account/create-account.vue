@@ -10,27 +10,31 @@
                 <h3>Create your account</h3>
                 <span></span>
               </div>
-              <form @submit.prevent="goTo">
+              <form @submit.prevent="createAccount">
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-inner mb-20">
                       <label class="large-font" for="name">Name *</label>
-                        <input type="text" id="name" name="name">
+                      <input type="text" id="name" v-model="name">
                     </div>
 
                     <div class="form-inner mb-20">
                       <label class="large-font" for="phone">Phone number *</label>
-                      <input type="text" name="phone" id="phone" placeholder=""/>
+                      <input type="text" v-model="phone" id="phone" placeholder=""/>
                     </div>
 
                     <div class="form-inner mb-20">
                       <label class="large-font" for="email">Password (6 characters minimum) *</label>
-                      <input type="password" name="password" id="password"/>
-                      <i class="bi bi-eye-slash" id="togglePassword"></i>
+                      <input v-model="password"
+                             :type="obscurePassword ? 'password': 'text'"
+                             id="password"/>
+                      <i class="bi bi-eye-slash" id="togglePassword" @click="obscurePassword = !obscurePassword"
+                         v-if="!obscurePassword"></i>
+                      <i class="bi bi-eye" id="togglePassword" @click="obscurePassword = !obscurePassword" v-else></i>
                     </div>
 
                     <div class="form-group form-check mb-20">
-                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="marketing_consent">
                       <label class="form-check-label" for="exampleCheck1">I would like to receive marketing communications about MyBuilder services and offers by email, SMS and/or phone and understand that I can unsubscribe at any time.</label>
                     </div>
 
@@ -59,9 +63,6 @@ import Auth from "../../layouts/auth";
 import appConfig from "../../../../app.config";
 import topHeader from '../../base-layout/header-1'
 
-import {required, email} from "vuelidate/lib/validators";
-import store from "@/store/store";
-
 /**
  * Create Account component
  */
@@ -72,12 +73,12 @@ export default {
   },
   data() {
     return {
-      email: "",
       password: "",
-      submitted: false,
+      marketing_consent: false,
+      name: '',
+      phone: '',
       tryingToLogIn: false,
       obscurePassword: true,
-      verificationStage: false,
       success: false,
       error: false,
       errorMessage: ''
@@ -88,60 +89,38 @@ export default {
     topHeader
   },
 
-  watch: {
-    verificationStage: function (data) {
-      if (!data) {
-        this.password = '';
-        this.error = false;
-        this.errorMessage = '';
-      }
-
-    }
-  },
-  computed: {
-    notification() {
-      return this.$store ? this.$store.getters.notification : null;
-    },
-    notificationAutoCloseDuration() {
-      return this.$store && this.$store.getters.notification ? 10 : 0;
-    },
-  },
   created() {
+    const user = this.$store.getters.GET_USER_INFO;
+    this.name = user.name || '';
+    this.phone = user.phone || '';
   },
-  validations: {
-    email: {
-      required,
-      email,
-    },
-    password: {
-      required,
-    },
-  },
+
   methods: {
-    tryToLogIn() {
-      this.$store.dispatch("login", {
-        email: this.email,
+    async createAccount() {
+      const user = this.$store.getters.GET_USER_INFO
+      if (!user.email) {
+        alert('Please login to create an account');
+        this.$router.push('/login');
+        return;
+      }
+      this.emailError = false;
+      this.generalError = '';
+      this.isLoading = true;
+      this.$store.dispatch("createAccount", {
+        name: this.name,
+        email: user.email,
+        phone: this.phone,
         password: this.password,
-      }).then(() => {
-        const loggedUser = store.getters.GET_USER_INFO;
-        const userRole = loggedUser.roles?.[0] || '';
-        if (userRole === 'admin') {
-          this.$router.push('/admin');
-        } else if (userRole === 'branch') {
-          this.$router.push('/branch/home');
-        } else if (userRole === 'customer' || userRole === 'vendor_manager') {
-          this.$router.push('/');
-        } else if (userRole === 'customer_service') {
-          this.$router.push('/customer-service');
-        } else {
-          this.$router.push('/');
+        marketing_consent: this.marketing_consent
+      }).then((response) => {
+        const {status, message} = response;
+        this.isLoading = false;
+        if (!status) {
+          this.generalError = message;
+          return;
         }
-      }).catch(() => {
+        this.$router.push('/about-you')
       });
-      this.$store.dispatch("clear");
-    },
-    goTo(){
-      this.$router.push('/about-you')
     }
   },
   mounted() {

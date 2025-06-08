@@ -19,7 +19,7 @@ const router = new VueRouter({
 
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom, next) => {
-    const publicPages = ['/login', '/register', '/forgot-password', '/admin/login'];
+    const publicPages = ['/login','register', '/forgot-password', '/admin/login'];
     const authRequired = routeTo.matched.some(route => route.meta.authRequired);
     const loggedUser = store.getters.GET_USER_INFO;
 
@@ -37,7 +37,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
     if (loggedUser) {
         const userRole = loggedUser.roles?.[0] || '';
         const userPermissions = loggedUser.permissions || [];
-
+        console.log('permmisiosnf')
         if (publicPages.includes(routeTo.path)) {
             if (userRole === 'admin') return next('/admin');
             if (userRole === 'branch') return next('/branch/home');

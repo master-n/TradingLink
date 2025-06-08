@@ -31,7 +31,7 @@
               <div class="form-title mb-25">
                 <h3 class="text-start">Tell us about yourself</h3>
               </div>
-              <p class="mb-4 font-weight-lighter"> Welcome, Samuel! Let's get started.</p>
+              <p class="mb-4 font-weight-lighter"> Welcome, <span class="text-capitalize">{{ name }}</span>! Let's get started.</p>
               <p class="mb-4 font-weight-lighter">We want to know our tradespeople better so we can send you the right local leads, matched to your skills.</p>
               <p class="font-weight-lighter">In this step, we'll ask you about the work you undertake, your professional status, and location.</p>
               <div class="button-container">
@@ -98,23 +98,19 @@ import {required, email} from "vuelidate/lib/validators";
 import store from "@/store/store";
 
 /**
- * Login component
+ * About You component
  */
 export default {
   page: {
-    title: "Login",
+    title: "About You",
     meta: [{name: "description", content: appConfig.description}],
   },
   data() {
     return {
       showModal:false,
+      name: '',
       step:1,
-      email: "",
-      password: "",
       submitted: false,
-      tryingToLogIn: false,
-      obscurePassword: true,
-      verificationStage: false,
       success: false,
       error: false,
       errorMessage: ''
@@ -124,150 +120,12 @@ export default {
     Auth,
     topHeader
   },
-
-  mounted() {
-    this.$nextTick(() => {
-      $('.select1').niceSelect();
-      $('#slick1').slick({
-        rows: 2,
-        dots: false,
-        arrows: true,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        speed: 2000,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [{
-          breakpoint: 1200,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 991,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 768,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 576,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 480,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 350,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }]
-      });
-      new Swiper(".home2-feedback-slider", {
-        spaceBetween: 20,
-        loop: true,
-        slidesPerView: 1,
-        speed: 2000,
-        // effect: 'fade',
-        autoplay: {
-          delay: 1500,
-        },
-        navigation: {
-          nextEl: ".next-6",
-          prevEl: ".prev-6",
-        },
-      });
-
-      $('.odometer').counterUp({
-        delay: 10,
-        time: 1000
-      });
-
-      $('.sidebar-button').on("click", function(){
-        $('.main-menu').addClass('show-menu');
-      });
-
-      $('.menu-close-btn').on("click", function(){
-        $('.main-menu').removeClass('show-menu');
-      });
-// mobile-search-area
-
-      $('.search-btn').on("click", function(){
-        $('.mobile-search').addClass('slide');
-      });
-
-      $('.search-cross-btn').on("click", function(){
-        $('.mobile-search').removeClass('slide');
-      });
-    });
-  },
-
-
-  watch: {
-    verificationStage: function (data) {
-      if (!data) {
-        this.password = '';
-        this.error = false;
-        this.errorMessage = '';
-      }
-
-    }
-  },
-  computed: {
-    notification() {
-      return this.$store ? this.$store.getters.notification : null;
-    },
-    notificationAutoCloseDuration() {
-      return this.$store && this.$store.getters.notification ? 10 : 0;
-    },
-  },
   created() {
-  },
-  validations: {
-    email: {
-      required,
-      email,
-    },
-    password: {
-      required,
-    },
+    const user = this.$store.getters.GET_USER_INFO;
+    this.name = user.name || '';
+    this.phone = user.phone || '';
   },
   methods: {
-    tryToLogIn() {
-      this.$store.dispatch("login", {
-        email: this.email,
-        password: this.password,
-      }).then(() => {
-        const loggedUser = store.getters.GET_USER_INFO;
-        const userRole = loggedUser.roles?.[0] || '';
-        if (userRole === 'admin') {
-          this.$router.push('/admin');
-        } else if (userRole === 'branch') {
-          this.$router.push('/branch/home');
-        } else if (userRole === 'customer' || userRole === 'vendor_manager') {
-          this.$router.push('/');
-        } else if (userRole === 'customer_service') {
-          this.$router.push('/customer-service');
-        } else {
-          this.$router.push('/');
-        }
-      }).catch(() => {
-      });
-      this.$store.dispatch("clear");
-    },
   },
 };
 </script>

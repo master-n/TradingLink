@@ -63,20 +63,31 @@ const actions = {
             });
         })
     },
+
+    signUp({commit, dispatch}, payload) {
+        return new Promise((resolve) => {
+            dispatch('showLoader');
+            userService.signUp(payload).then(data => {
+                    dispatch('hideLoader')
+                    const {status, extra} = data;
+                    if (status) {
+                        commit('SET_USER_INFO', extra)
+                    }
+                    resolve(data)
+                },
+            );
+        })
+
+    },
+
     createAccount({commit, dispatch}, payload) {
         return new Promise((resolve) => {
             dispatch('showLoader');
             userService.createAccount(payload).then(data => {
-                dispatch('hideLoader')
-                const {status, extra, message} = data;
-                if (status) {
-                    if (extra.access_token) {
+                    dispatch('hideLoader')
+                    const {status, extra} = data;
+                    if (status) {
                         commit('SET_USER_INFO', extra)
-                        window.location.href = "/"
-                    }
-                    dispatch('success', {message, showSwal: false}, {root: true});
-                } else {
-                    dispatch('error', {message}, {root: true});
                     }
                     resolve(data)
                 },

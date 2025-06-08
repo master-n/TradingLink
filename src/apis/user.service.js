@@ -4,7 +4,12 @@ import axios from "../axios/axios-kaqadmin";
 export const userService = {
     login,
     logout,
+    getTrades,
+    getParisCities,
     createAccount,
+    signUp,
+    saveProfession,
+    saveTravelToWork,
     verifyEmail,
     resendVerifyEmail,
     getAdmins,
@@ -40,22 +45,44 @@ function login(email, password) {
 
 }
 
-function createAccount(payload) {
-
-    //// fetch from the server
-    const data = {
-        "name": payload.name,
-        "email": payload.email,
-        "password": payload.password,
-    }
+function signUp(payload) {
     return new Promise((resolve) => {
-        axios.post('/customer/api/register', data, useBasicAuthHeaders())
+        axios.post('/api/sign-up', payload, useBasicAuthHeaders())
             .then(response => {
                  resolve(response.data)
         }).catch(err => resolve({status: false, message: err}));
     })
 
 }
+
+function createAccount(payload) {
+    return new Promise((resolve) => {
+        axios.post('/api/create-account', payload, useBasicAuthHeaders())
+            .then(response => {
+                 resolve(response.data)
+        }).catch(err => resolve({status: false, message: err}));
+    })
+
+}
+
+function saveProfession(payload) {
+    return new Promise((resolve) => {
+        axios.post('/api/profession', payload, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function saveTravelToWork(payload) {
+    return new Promise((resolve) => {
+        axios.post('/api/travel-to-work', payload, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
 
 function logout() {
     // remove user from local storage to log user out
@@ -189,9 +216,29 @@ function getPermissions() {
     });
 }
 
+function getTrades() {
+    return new Promise((resolve) => {
+        axios.get("/api/trades", useBasicAuthHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function getParisCities() {
+    return new Promise((resolve) => {
+        axios.get("/api/parishes-cities", useBasicAuthHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
 function forgotPassword(payload) {
     return new Promise((resolve) => {
-        axios.post("/customer/api/forgot-password",payload, useBasicAuthHeaders())
+        axios.post("/customer/api/forgot-password", payload, useBasicAuthHeaders())
             .then((response) => {
                 resolve(response.data);
             })
@@ -201,7 +248,7 @@ function forgotPassword(payload) {
 
 function resetPassword(payload) {
     return new Promise((resolve) => {
-        axios.post("/customer/api/reset-password",payload, useBasicAuthHeaders())
+        axios.post("/customer/api/reset-password", payload, useBasicAuthHeaders())
             .then((response) => {
                 resolve(response.data);
             })

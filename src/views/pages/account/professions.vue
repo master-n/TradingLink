@@ -34,39 +34,35 @@
               <div class="mb-3">
                 <label for="searchTrades" class="form-label font-weight-bold">Search trades</label>
                 <div class="input-group">
-                  <input type="text" class="form-control py-2" id="searchTrades" placeholder="i.e Gardener">
-                  <button class="btn btn-outline-secondary" type="button">×</button>
+                  <input type="text" class="form-control py-2" id="searchTrades" placeholder="i.e Gardener"
+                         v-model="searchQuery">
+                  <button class="btn btn-outline-secondary" type="button" @click="searchQuery = ''">×</button>
                 </div>
               </div>
 
               <div class="d-flex justify-content-between align-items-center my-4">
                 <h6 class="mb-0 font-weight-bold">Selected</h6>
-                <div class="selected-count">1</div>
+                <div class="selected-count">{{ selectedTrades.length }}</div>
               </div>
 
               <div class="profession-list">
-                <div class="profession-item">
-                  <label for="design">Architectural Designer</label>
-                  <input id="design" type="checkbox" class="form-check-input">
+                <div class="profession-item" v-for="trade in filteredTrades" :key="trade.id">
+                  <label :for="trade.id">{{ trade.name }}</label>
+                  <input :id="trade.id" type="checkbox" class="form-check-input" @change="toggleTradeSelection(trade)">
                 </div>
-                <div class="profession-item">
-                  <label for="technician">Architectural Technician</label>
-                  <input id="technician" type="checkbox" class="form-check-input">
-                </div>
-                <div class="profession-item">
-                  <label for="fitter">Bathroom Fitter</label>
-                  <input id="fitter" type="checkbox" class="form-check-input">
-                </div>
-                <div class="profession-item">
-                  <label for="bricklayer">Bricklayer</label>
-                  <input id="bricklayer" type="checkbox" class="form-check-input">
+                <div v-if="tradeLoader">
+                  <div v-for="(item,i) in 10" :key="i">
+                    <div class="profession-item">
+                      <div class="lines shine"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div class="button-container">
                   <div class="col-12">
                     <button class="btn btn-outline-primary-1 me-3 big-button" @click="$router.go(-1)">Back</button>
-                    <button class="btn primry-btn-2 d-inline-block text-light big-button" @click="$router.push('/travel-to-work')">
+                    <button class="btn primry-btn-2 d-inline-block text-light big-button" @click="saveProfession">
                       Continue
                     </button>
                   </div>
@@ -125,179 +121,85 @@ import topHeader from '../../base-layout/header-1'
 
 import {required, email} from "vuelidate/lib/validators";
 import store from "@/store/store";
+import {userService} from "@/apis/user.service";
 
 /**
- * Login component
+ * Profession component
  */
 export default {
   page: {
-    title: "Login",
+    title: "Profession",
     meta: [{name: "description", content: appConfig.description}],
   },
   data() {
     return {
-      showModal:false,
-      step:1,
+      showModal: false,
       email: "",
       password: "",
-      submitted: false,
-      tryingToLogIn: false,
-      obscurePassword: true,
-      verificationStage: false,
       success: false,
       error: false,
-      errorMessage: ''
+      errorMessage: '',
+      trades: [],
+      searchQuery: '',
+      selectedTrades: [],
+      tradeLoader: false
     };
   },
   components: {
     Auth,
     topHeader
   },
-
-  mounted() {
-    this.$nextTick(() => {
-      $('.select1').niceSelect();
-      $('#slick1').slick({
-        rows: 2,
-        dots: false,
-        arrows: true,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        speed: 2000,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [{
-          breakpoint: 1200,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 991,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 768,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 576,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 480,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 350,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }]
-      });
-      new Swiper(".home2-feedback-slider", {
-        spaceBetween: 20,
-        loop: true,
-        slidesPerView: 1,
-        speed: 2000,
-        // effect: 'fade',
-        autoplay: {
-          delay: 1500,
-        },
-        navigation: {
-          nextEl: ".next-6",
-          prevEl: ".prev-6",
-        },
-      });
-
-      $('.odometer').counterUp({
-        delay: 10,
-        time: 1000
-      });
-
-      $('.sidebar-button').on("click", function(){
-        $('.main-menu').addClass('show-menu');
-      });
-
-      $('.menu-close-btn').on("click", function(){
-        $('.main-menu').removeClass('show-menu');
-      });
-// mobile-search-area
-
-      $('.search-btn').on("click", function(){
-        $('.mobile-search').addClass('slide');
-      });
-
-      $('.search-cross-btn').on("click", function(){
-        $('.mobile-search').removeClass('slide');
-      });
-    });
-  },
-
-
-  watch: {
-    verificationStage: function (data) {
-      if (!data) {
-        this.password = '';
-        this.error = false;
-        this.errorMessage = '';
-      }
-
-    }
+  created() {
+    this.getTrades();
   },
   computed: {
-    notification() {
-      return this.$store ? this.$store.getters.notification : null;
-    },
-    notificationAutoCloseDuration() {
-      return this.$store && this.$store.getters.notification ? 10 : 0;
-    },
-  },
-  created() {
-  },
-  validations: {
-    email: {
-      required,
-      email,
-    },
-    password: {
-      required,
-    },
+    filteredTrades() {
+      return this.trades.filter(trade =>
+          trade.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
   },
   methods: {
-    tryToLogIn() {
-      this.$store.dispatch("login", {
-        email: this.email,
-        password: this.password,
-      }).then(() => {
-        const loggedUser = store.getters.GET_USER_INFO;
-        const userRole = loggedUser.roles?.[0] || '';
-        if (userRole === 'admin') {
-          this.$router.push('/admin');
-        } else if (userRole === 'branch') {
-          this.$router.push('/branch/home');
-        } else if (userRole === 'customer' || userRole === 'vendor_manager') {
-          this.$router.push('/');
-        } else if (userRole === 'customer_service') {
-          this.$router.push('/customer-service');
-        } else {
-          this.$router.push('/');
-        }
-      }).catch(() => {
+    async getTrades() {
+      this.tradeLoader = true
+      await this.$store.dispatch('showLoader')
+      userService.getTrades().then((res) => {
+        this.trades = res.extra;
+        this.tradeLoader = false
       });
-      this.$store.dispatch("clear");
     },
-  },
+    toggleTradeSelection(trade) {
+      const index = this.selectedTrades.indexOf(trade.id);
+      if (index === -1) {
+        if (this.selectedTrades.length < 5) {
+          this.selectedTrades.push(trade.id);
+        } else {
+          alert('You can select up to 5 professions.');
+        }
+      } else {
+        this.selectedTrades.splice(index, 1);
+      }
+    },
+
+    async saveProfession() {
+      if (this.selectedTrades.length === 0) {
+        alert('Please select at least one profession.');
+        return;
+      }
+      this.isLoading = true
+      await this.$store.dispatch('showLoader')
+      userService.saveProfession({trades: this.selectedTrades}).then((res) => {
+        this.$store.dispatch('hideLoader')
+        this.isLoading = false
+        const {status, message} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true})
+          return;
+        }
+        this.$router.push('/travel-to-work')
+      });
+    },
+  }
 };
 </script>
 
@@ -370,4 +272,5 @@ export default {
   font-weight: lighter;
   cursor: pointer;
 }
+
 </style>
