@@ -83,6 +83,7 @@ body {
     background: #F8F8F8;
     font-size: 16px;
     margin: 0;
+    overflow-x: hidden;
 }
 
 .bg-wight {

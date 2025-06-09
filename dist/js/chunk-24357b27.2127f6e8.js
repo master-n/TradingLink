@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-24357b27"],{6945:function(t,e,n){"use strict";n.r(e);var o=function(){var t=this,e=t._self._c;return e("div")},i=[],r=n("8c90"),c={page:{title:"Logout",meta:[{name:"description",content:r.description}]},data(){return{}},components:{},created(){this.$store.dispatch("logout")}},s=c,a=n("2877"),p=Object(a["a"])(s,o,i,!1,null,null,null);e["default"]=p.exports},"8c90":function(t){t.exports=JSON.parse('{"title":"Mortiply","description":"Mortiply Dashboard"}')}}]);
+//# sourceMappingURL=chunk-24357b27.2127f6e8.js.map

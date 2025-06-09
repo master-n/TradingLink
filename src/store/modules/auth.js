@@ -99,7 +99,7 @@ const actions = {
     logout({commit}) {
         userService.logout();
         commit('CLEAR_USER_INFO');
-        window.location.href = "login"
+        window.location.href = "/"
     },
 
     updatePersonalInfo({commit, dispatch}, payload) {

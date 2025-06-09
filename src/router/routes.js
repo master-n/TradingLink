@@ -216,6 +216,11 @@ export default [
 
     ///////// EXTRA ROUTES //////////////////////////
     {
+        name: 'Logout',
+        path: '/logout',
+        component: () => import('../views/pages/error/logout'),
+    },
+    {
         path: '/extras/maintenance',
         name: 'extras-maintenance',
         meta: {
