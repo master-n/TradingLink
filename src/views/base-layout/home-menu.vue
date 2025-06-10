@@ -37,7 +37,8 @@
       <div class="menu-area">
         <div class="header-logo">
           <router-link to="/">
-            <img alt="image" class="img-fluid" src="../../../public/frontend/assets/images/header1-logo.svg" style="height: 80px;">
+            <img alt="image" class="img-fluid" src="../../../public/frontend/assets/images/header1-logo.svg"
+                 style="height: 80px;">
           </router-link>
         </div>
         <div class="main-menu">
@@ -59,22 +60,41 @@
           <div class="for-mobile-menu d-lg-none d-block mt-5">
             <!-- Mobile menu items -->
             <ul v-if="!loggedIn">
-              <li><router-link to="/">Post a job</router-link></li>
+              <li>
+                <router-link to="/">Post a job</router-link>
+              </li>
               <hr>
-              <li><router-link to="/login">Log in</router-link></li>
+              <li>
+                <router-link to="/login">Log in</router-link>
+              </li>
               <hr>
-              <li><router-link to="/register">Sign up as a tradesperson</router-link></li>
+              <li>
+                <router-link to="/register">Sign up as a tradesperson</router-link>
+              </li>
               <hr>
             </ul>
             <ul v-else>
-              <li><router-link to="/">New leads</router-link></li>
-              <hr>
-              <li><router-link to="/login">Activity</router-link></li>
-              <hr>
-              <li><router-link to="/register">Contacts</router-link></li>
+              <li>
+                <router-link to="/profile">
+                  <div>Complete my registration</div>
+                  <div class="badge bg-secondary rounded-pill">8 steps left</div>
+                </router-link>
+              </li>
               <hr>
               <li>
-                <router-link to="/profile">My Account <i class="bi bi-list ms-2"></i></router-link>
+                <router-link to="/">Saved leads</router-link>
+              </li>
+              <hr>
+              <li>
+                <router-link to="/profile">Profile</router-link>
+              </li>
+              <hr>
+              <li>
+                <router-link to="/register">Ask a tradesperson</router-link>
+              </li>
+              <hr>
+              <li>
+                <router-link to="/logout">Log Out</router-link>
               </li>
               <hr>
             </ul>
@@ -84,12 +104,19 @@
         <div class="nav-right d-flex justify-content-end align-items-center">
           <!-- Navigation right content -->
           <ul v-if="loggedIn">
-            <li class="d-md-flex d-none active"><router-link to="/profile">New leads</router-link></li>
-            <li class="d-md-flex d-none"><router-link to="/profile">Activity</router-link></li>
-            <li class="d-md-flex d-none"><router-link to="/profile">Contacts</router-link></li>
+            <li class="d-md-flex d-none active">
+              <router-link to="/">New leads</router-link>
+            </li>
+            <li class="d-md-flex d-none">
+              <router-link to="/login">Activity</router-link>
+            </li>
+            <li class="d-md-flex d-none">
+              <router-link to="/login">Contacts</router-link>
+            </li>
             <li class="d-md-flex d-none">
               <div class="btn-group dropdown">
-                <div class="notifications-area dropdown-toggle" role="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="notifications-area dropdown-toggle" role="button" id="dropdownMenuButton3"
+                     data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="sign-in-btn">
                     <a class="primry-btn-1 lg-btn">My Account <i class="bi bi-list ms-2"></i></a>
                   </div>
@@ -97,20 +124,20 @@
                 <div class="user-card dropdown-menu" aria-labelledby="dropdownMenuButton3">
                   <ul style="box-shadow: rgba(0, 0, 0, 0.15) 0 0.0625rem 0.375rem; border-radius: 0.25rem;">
                     <li>
-                    <router-link to="/profile">
-                      <div>Complete my registration</div>
-                      <div class="badge bg-secondary rounded-pill">8 steps left</div>
-                    </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/saved-leads">
-                        <i class="bi bi-bookmark text-primary-1"></i> Saved leads
-                      </router-link>
-                    </li>
-                    <li>
                       <router-link to="/profile">
-                        <i class="bi bi-person-circle text-primary-1"></i> Profile
+                        <div>Complete my registration</div>
+                        <div class="badge bg-secondary rounded-pill">8 steps left</div>
                       </router-link>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="bi bi-bookmark text-primary-1"></i> Saved leads
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="bi bi-person-circle text-primary-1"></i> Profile
+                      </a>
                     </li>
                     <li>
                       <a href="#">
@@ -122,6 +149,7 @@
                         <i class="bi bi-box-arrow-right text-primary-1"></i> Log Out
                       </router-link>
                     </li>
+
                   </ul>
                 </div>
               </div>
@@ -129,15 +157,19 @@
           </ul>
 
           <ul v-else>
-            <li class="d-md-flex d-none active"><router-link to="/">Post a job</router-link></li>
-            <li class="d-md-flex d-none"><router-link to="/login">Log in</router-link></li>
+            <li class="d-md-flex d-none active">
+              <router-link to="/">Post a job</router-link>
+            </li>
+            <li class="d-md-flex d-none">
+              <router-link to="/login">Log in</router-link>
+            </li>
             <li class="d-md-flex d-none">
               <div class="sign-in-btn">
                 <router-link to="/register" class="primry-btn-1 lg-btn">Sign up as a tradesperson</router-link>
               </div>
             </li>
           </ul>
-          <div class="sidebar-button mobile-menu-btn" v-if="!loggedIn">
+          <div class="sidebar-button mobile-menu-btn">
             <button class="primry-btn-1 lg-btn d-flex align-items-center">
               <span>Menu</span>
               <i class="bi bi-list ms-2"></i>
@@ -147,25 +179,6 @@
       </div>
     </header>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav navbar navbar-expand navbar-light bg-light justify-content-around d-md-none" v-if="isMobile && loggedIn">
-      <router-link class="nav-link" to="/#">
-        <i class="bi bi-house-door-fill d-block"></i>
-        <small>New Leads</small>
-      </router-link>
-      <router-link class="nav-link" to="/#">
-        <i class="bi bi-briefcase d-block"></i>
-        <small>Activity</small>
-      </router-link>
-      <router-link class="nav-link" to="/#">
-        <i class="bi bi-people d-block"></i>
-        <small>Contacts</small>
-      </router-link>
-      <router-link class="nav-link active" to="/profile">
-        <i class="bi bi-person-circle d-block"></i>
-        <small>Profile</small>
-      </router-link>
-    </nav>
   </div>
 </template>
 
@@ -221,7 +234,7 @@ export default {
 }
 
 .nav-link.active {
-  color: var(--primary-color1);
+  color: #007bff;
 }
 
 .nav-link i {

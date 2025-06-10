@@ -7,30 +7,52 @@
           <div class="col-lg-12">
             <div class="form-wrapper">
               <div class="form-title mb-25">
-                <h3>Log In Here!</h3>
+                <h3>Log to TradeLink</h3>
                 <span></span>
               </div>
-              <form>
+
+              <div v-if="errorMessage" class="alert alert-danger">
+                <ul class="mb-0">
+                  <li>{{ errorMessage }}</li>
+                </ul>
+              </div>
+
+              <form @submit.prevent="login">
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-inner mb-20">
                       <label for="email">Email*</label>
                       <div class="input-area">
                         <img src="../../../../public/frontend/assets/images/icon/email-2.svg" alt="">
-                        <input type="email" id="email" name="email" placeholder="Email">
+                        <input type="email" id="email" v-model="email" placeholder="Email" required>
                       </div>
                     </div>
+                    <div class="form-inner mb-20">
+                      <label class="large-font" for="email">Password</label>
+                      <input v-model="password"
+                             :type="obscurePassword ? 'password': 'text'"
+                             id="password"/>
+                      <i class="bi bi-eye-slash" id="togglePassword" @click="obscurePassword = !obscurePassword"
+                         v-if="!obscurePassword"></i>
+                      <i class="bi bi-eye" id="togglePassword" @click="obscurePassword = !obscurePassword" v-else></i>
+                    </div>
+
                   </div>
                   <div class="col-lg-12 mb-4">
                     <div class="form-inner">
-                      <button class="primry-btn-2" type="submit">LogIn</button>
+                      <button class="btn bg-primary-1 text-light" type="submit" :disabled="isLoading">
+                        <b-spinner small v-if="isLoading"></b-spinner>
+                        {{ isLoading ? 'Submitting..' : 'LogIn' }}
+                      </button>
                     </div>
                   </div>
                   <hr/>
-                  <h4 class="mb-3 mt-2">New to TradeLink?</h4>
-                  <p class="mb-1"><a class="text-decoration-underline" href="/post-a-job">Post your job</a> to find a
+                  <h6 class="mb-3 mt-2">New to TradeLink?</h6>
+                  <p style="font-size: 14px" class="mb-1"><a class="text-decoration-underline" href="/post-a-job">Post
+                    your job</a> to find a
                     tradesperson</p>
-                  <p><a class="text-decoration-underline" href="/post-a-job">Sign up</a> to join a tradesperson</p>
+                  <p style="font-size: 14px" class=""><a class="text-decoration-underline" href="/post-a-job">Sign
+                    up</a> to join a tradesperson</p>
                 </div>
               </form>
             </div>
@@ -61,11 +83,8 @@ export default {
     return {
       email: "",
       password: "",
-      submitted: false,
-      tryingToLogIn: false,
       obscurePassword: true,
-      verificationStage: false,
-      success: false,
+      isLoading: false,
       error: false,
       errorMessage: ''
     };
@@ -75,58 +94,25 @@ export default {
     topHeader
   },
 
-  watch: {
-    verificationStage: function (data) {
-      if (!data) {
-        this.password = '';
-        this.error = false;
-        this.errorMessage = '';
-      }
-
-    }
-  },
-  computed: {
-    notification() {
-      return this.$store ? this.$store.getters.notification : null;
-    },
-    notificationAutoCloseDuration() {
-      return this.$store && this.$store.getters.notification ? 10 : 0;
-    },
-  },
   created() {
   },
-  validations: {
-    email: {
-      required,
-      email,
-    },
-    password: {
-      required,
-    },
-  },
+
   methods: {
-    tryToLogIn() {
+    login() {
+      this.isLoading = true
+      this.errorMessage = ''
       this.$store.dispatch("login", {
         email: this.email,
         password: this.password,
       }).then(() => {
-        const loggedUser = store.getters.GET_USER_INFO;
-        const userRole = loggedUser.roles?.[0] || '';
-        if (userRole === 'admin') {
-          this.$router.push('/admin');
-        } else if (userRole === 'branch') {
-          this.$router.push('/branch/home');
-        } else if (userRole === 'customer' || userRole === 'vendor_manager') {
-          this.$router.push('/');
-        } else if (userRole === 'customer_service') {
-          this.$router.push('/customer-service');
-        } else {
-          this.$router.push('/');
-        }
-      }).catch(() => {
+        this.$router.push('/profile');
+      }).catch((message) => {
+        this.errorMessage = message;
+      }).finally(() => {
+        this.isLoading = false;
       });
       this.$store.dispatch("clear");
-    },
+    }
   },
 };
 </script>

@@ -1,15 +1,15 @@
 <template>
-  <body class="bg-wight">
-<!--  <div class="eg-preloder">-->
-<!--  </div>-->
+  <div>
+    <!--  <div class="eg-preloder">-->
+    <!--  </div>-->
 
-  <topHeader></topHeader>
-  <!-- ========== header end============= -->
-  <!-- ========== Home Two Banner Start============= -->
-  <div class="hero2">
-    <div class="hero-wapper">
-      <div class="container-fluid px-0">
-        <div class="row">
+    <topHeader></topHeader>
+    <!-- ========== header end============= -->
+    <!-- ========== Home Two Banner Start============= -->
+    <div class="hero2">
+      <div class="hero-wapper">
+        <div class="container-fluid px-0">
+          <div class="row">
           <div class="col-lg-7 d-flex align-items-center">
             <div class="hero-content">
               <h1>To Choose Your Level Best <span>Dream Career.</span></h1>
@@ -1439,7 +1439,6 @@
   </div>
 </div>
 <!-- ========== Home Two Job Category End============= -->
-
 
 <!-- ========== Home Two Job Category Start============= -->
 <div class="home2-counter-area mb-120">
@@ -4925,16 +4924,16 @@
       </div>
     </div>
   </div>
-  <!-- ========== Home Two User Feedback Area End============= -->
-  <HomeFooter></HomeFooter>
+    <!-- ========== Home Two User Feedback Area End============= -->
+    <HomeFooter></HomeFooter>
 
-  </body>
+  </div>
 
 </template>
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import topHeader from '../../base-layout/header-2'
+import topHeader from '../../base-layout/home-menu'
 export default {
   components:{
     HomeFooter,
@@ -4942,6 +4941,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      $('body').addClass('bg-wight')
       $('.select1').niceSelect();
       $('#slick1').slick({
         rows: 2,
@@ -5023,6 +5023,7 @@ export default {
       $('.search-btn').on("click", function(){
         $('.mobile-search').addClass('slide');
       });
+
 
       $('.search-cross-btn').on("click", function(){
         $('.mobile-search').removeClass('slide');

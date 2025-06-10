@@ -206,12 +206,61 @@ export default [
         name: 'Home',
         component: () => import('../views/pages/home'),
     },
-
     {
-        path: '/profile/bio',
+        path: '/profile',
         name: 'profile-bio',
-        authRequired: true,
-        component: () => import('../views/pages/profile/bio'),
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/profile'),
+    },
+    {
+        path: '/company-description',
+        name: 'company-desc',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/company-description'),
+    },
+    {
+        path: '/reviews',
+        name: 'reviews',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/reviews'),
+    },
+    {
+        path: '/portfolio',
+        name: 'portfolio',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/portfolio'),
+    },
+    {
+        path: '/contact-details',
+        name: 'contact-details',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/contact-details'),
+    },
+    {
+        path: '/manage-account',
+        name: 'manage-account',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/manage-account'),
+    },
+    {
+        path: '/saved-leads',
+        name: 'saved-leads',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/saved-leads'),
     },
 
     ///////// EXTRA ROUTES //////////////////////////

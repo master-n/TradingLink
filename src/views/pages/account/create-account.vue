@@ -77,7 +77,6 @@ export default {
       marketing_consent: false,
       name: '',
       phone: '',
-      tryingToLogIn: false,
       obscurePassword: true,
       success: false,
       error: false,

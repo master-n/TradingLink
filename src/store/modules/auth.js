@@ -46,19 +46,12 @@ const actions = {
                 dispatch('hideLoader')
                 const {status, extra, message} = data;
                 if (status) {
-                    const userRole = extra.roles && extra.roles.length > 0 ? extra.roles[0] : '';
-                    if (userRole === 'customer' && !extra['email_verified_at']) {
-                        window.location.href = `/email-verify?email=${extra.email}&verify=true`
-                    } else if (extra.access_token) {
-                        commit('SET_USER_INFO', extra)
-                        dispatch('success', {message, showSwal: false}, {root: true});
-                        resolve(data)
-                    } else {
-                        window.location.href = '/';
-                    }
+                    commit('SET_USER_INFO', extra)
+                    dispatch('success', {message, showSwal: false}, {root: true});
+                    resolve(data)
                 } else {
                     dispatch('error', {message}, {root: true});
-                    reject(data)
+                    reject(message)
                 }
             });
         })

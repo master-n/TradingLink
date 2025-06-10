@@ -41,7 +41,7 @@ function login(email, password) {
     }
 
     return new Promise((resolve) => {
-        axios.post('/customer/api/oauth/token', data, useBasicAuthHeaders())
+        axios.post('/api/oauth/token', data, useBasicAuthHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
