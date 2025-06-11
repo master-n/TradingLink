@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.GET_USER_INFO,
-      showSidebar: false,
+      showSidebar: true,
       isMobile: false,
     };
   },
@@ -88,7 +88,7 @@ export default {
     },
     checkScreenSize() {
       this.isMobile = window.innerWidth < 992;
-      this.showSidebar = !this.isMobile;
+      // this.showSidebar = !this.isMobile;
     },
   },
   mounted() {
