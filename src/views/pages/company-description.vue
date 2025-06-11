@@ -87,8 +87,8 @@ export default {
       }
     },
     checkScreenSize() {
-      this.isMobile = window.innerWidth < 992;
-      // this.showSidebar = !this.isMobile;
+      this.isMobile = window.innerWidth < 767;
+      this.showSidebar = !this.isMobile;
     },
   },
   mounted() {
