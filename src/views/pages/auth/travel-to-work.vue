@@ -144,14 +144,12 @@ export default {
     },
     async save() {
       this.isLoading = true;
-      await this.$store.dispatch('showLoader');
       userService.saveTravelToWork({
         travel_radius: this.radius,
         work_all_jamaica: this.workThroughoutJamaica,
         latitude: this.center.lat,
         longitude: this.center.lng,
       }).then((res) => {
-        this.$store.dispatch('hideLoader');
         this.isLoading = false;
         const { status, message, extra } = res;
         if (!status) {

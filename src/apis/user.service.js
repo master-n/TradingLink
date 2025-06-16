@@ -16,6 +16,8 @@ export const userService = {
     proofOfSkills,
     verifyEmail,
     getUserInfo,
+    getGuarantee,
+    updateGuarantee,
     resendVerifyEmail,
     getPermissions,
     addAdmins,
@@ -123,6 +125,24 @@ function proofOfSkills(formData) {
 function getUserInfo() {
     return new Promise((resolve) => {
         axios.get(`/api/user`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getGuarantee() {
+    return new Promise((resolve) => {
+        axios.get(`/api/user/guarantee`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function updateGuarantee(payload) {
+    return new Promise((resolve) => {
+        axios.post('/api/update-guarantee', payload, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
