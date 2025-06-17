@@ -259,9 +259,9 @@ function getPermissions() {
     });
 }
 
-function getTrades() {
+function getTrades(limit) {
     return new Promise((resolve) => {
-        axios.get("/api/trades", useBasicAuthHeaders())
+        axios.get(`/api/trades${limit ? '?limit=' + limit : ''}`, useBasicAuthHeaders())
             .then((response) => {
                 resolve(response.data);
             })

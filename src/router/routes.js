@@ -322,6 +322,39 @@ export default [
         component: () => import('../views/pages/new-leads'),
     },
 
+    {
+        path: '/work-area',
+        name: 'work-area',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/lead-settings/work-area'),
+    },
+    {
+        path: '/services',
+        name: 'services',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/lead-settings/services'),
+    },
+    {
+        path: '/notifications',
+        name: 'notifications',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/lead-settings/notifications'),
+    },
+    {
+        path: '/support',
+        name: 'support',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/support/support'),
+    },
+
     ///////// EXTRA ROUTES //////////////////////////
     {
         name: 'Logout',

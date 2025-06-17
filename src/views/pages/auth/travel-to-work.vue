@@ -30,7 +30,7 @@
               <p class="font-weight-lighter">Set the maximum distance you are willing to travel from Kingston.</p>
 
               <div class="slider-container mb-4">
-                <label for="radiusSlider">Radius: {{ radius }} miles</label>
+                <label for="radiusSlider">Distance area: {{ radius }} miles</label>
                 <input type="range" class="custom-slider w-100" id="radiusSlider" v-model="radius" min="1" max="100"/>
               </div>
 
@@ -170,8 +170,8 @@ export default {
         this.user = extra;
         if (this.user.city && this.user.city.latitude && this.user.city.longitude) {
           this.center = {
-            lat: this.user.city.latitude,
-            lng: this.user.city.longitude,
+            lat: parseFloat(this.user.city.latitude),
+            lng: parseFloat(this.user.city.longitude),
           };
         }
       });

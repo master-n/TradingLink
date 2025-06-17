@@ -87,34 +87,38 @@
 
     <div class="list-group mt-4">
       <h6 class="font-weight-bold">Lead settings</h6>
-      <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      <router-link to="/work-area" id="work-area"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-briefcase mr-2"></i> Work area
         </div>
         <i class="bi bi-chevron-right d-lg-none"></i>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      </router-link>
+      <router-link to="/services" id="services"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-tools mr-2"></i> Services
         </div>
         <i class="bi bi-chevron-right d-lg-none"></i>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      </router-link>
+      <router-link to="/notifications" id="notifications"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-bell mr-2"></i> Notifications
         </div>
         <i class="bi bi-chevron-right d-lg-none"></i>
-      </a>
+      </router-link>
     </div>
 
     <div class="list-group mt-4">
       <h6 class="font-weight-bold">Support</h6>
-      <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      <router-link to="/support" id="support"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-info-circle mr-2"></i> Support centre
         </div>
         <i class="bi bi-chevron-right d-lg-none"></i>
-      </a>
+      </router-link>
     </div>
 
     <div>
@@ -147,7 +151,6 @@ export default {
     }
   },
   watch: {
-    // Watch the Vuex store getter directly and update local user data
     '$store.getters.GET_USER_INFO': {
       handler(newUser) {
         this.user = newUser || {};

@@ -937,6 +937,12 @@ i.bx {
     border-color: #007a7f; /* A slightly darker shade for hover state */
 }
 
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #008d92;
+    border-color: #007a7f;
+}
+
 .btn-check:focus + .btn-primary, .btn-primary:focus {
     color: #fff;
     background-color: #008d92; /* A slightly darker shade for focus state */
@@ -25787,7 +25793,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
 =======================================*/
 .hover-btn {
     position: relative;
-    border: 0.5px solid rgba(0, 0, 0, 0.3);
+    border: 0.5px solid rgba(255, 255, 255, 0.3);
 }
 
 .hover-btn .for-border {
@@ -25801,7 +25807,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     top: 0;
     height: 0%;
     width: 0.5px;
-    background: rgba(0, 0, 0, 0.6);
+    background: #fff;
     transition: 0.3s;
     transition-delay: 0.6s;
 }
@@ -25813,7 +25819,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     bottom: 0;
     height: 0%;
     width: 0.5px;
-    background: #000;
+    background: #fff;
     transition: 0.3s;
     transition-delay: 0.6s;
 }
@@ -25825,7 +25831,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     top: -0.5px;
     width: 0%;
     height: 0.5px;
-    background: #000;
+    background: #fff;
     transition: 0.3s;
     transition-delay: 0.9s;
 }
@@ -25837,7 +25843,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     bottom: -0.5px;
     width: 0%;
     height: 0.5px;
-    background: #000;
+    background: #fff;
     transition: 0.3s;
     transition-delay: 0.9s;
 }
@@ -26534,7 +26540,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
  Home Five Clients Feedback Area
 =======================================*/
 .home5-clients-feedback-area {
-    background-image: url(../images/bg/home5-clients-feedback-bg.png);
+    background-image: url(../images/home/review-img.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -27280,5 +27286,30 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     appearance: auto;
 }
 
+.form-check {
+    display: flex;
+    align-items: center;
+    min-height: unset;
+    min-width: 40px;
+    padding-left: 2.5em;
+    margin-bottom: 0;
+    cursor: pointer;
+    font-family: var(--font-work-sans);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 21px;
+    color: var(--title-color1);
+    gap: 12px;
+}
+.form-check-input:checked {
+    background-color: var(--primary-color1);
+    border-color: var(--primary-color1);
+}
+
+.form-check-input:focus {
+    border-color: var(--primary-color1);
+    outline: 0;
+    box-shadow: none;
+}
 
 /*# sourceMappingURL=style.css.map */
