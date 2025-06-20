@@ -48,7 +48,7 @@
               <div class="profession-list">
                 <div class="profession-item" v-for="trade in filteredTrades" :key="trade.id">
                   <label :for="trade.id">{{ trade.name }}</label>
-                  <input :id="trade.id" type="checkbox" class="form-check-input" @change="toggleTradeSelection(trade)">
+                  <input :id="trade.id" :value="trade.id" :checked="selectedTrades.includes(trade.id)" type="checkbox" class="form-check-input" @change="toggleTradeSelection(trade)">
                 </div>
                 <div v-if="tradeLoader">
                   <div v-for="(item,i) in 10" :key="i">
@@ -138,6 +138,7 @@ export default {
   },
   created() {
     this.getTrades();
+    this.getProfessions();
   },
   computed: {
     filteredTrades() {
@@ -147,9 +148,8 @@ export default {
     }
   },
   methods: {
-    async getTrades() {
+    getTrades() {
       this.tradeLoader = true
-      await this.$store.dispatch('showLoader')
       userService.getTrades().then((res) => {
         this.trades = res.extra;
         this.tradeLoader = false
@@ -167,16 +167,13 @@ export default {
         this.selectedTrades.splice(index, 1);
       }
     },
-
-    async saveProfession() {
+    saveProfession() {
       if (this.selectedTrades.length === 0) {
         alert('Please select at least one profession.');
         return;
       }
       this.isLoading = true
-      await this.$store.dispatch('showLoader')
       userService.saveProfession({trades: this.selectedTrades}).then((res) => {
-        this.$store.dispatch('hideLoader')
         this.isLoading = false
         const {status, message, extra} = res;
         if (!status) {
@@ -187,6 +184,16 @@ export default {
         this.$router.push('/travel-to-work')
       });
     },
+    getProfessions() {
+      userService.getProfessions().then((res) => {
+        const {status, message, extra} = res;
+        if (status) {
+          // professions are assumed to be IDs
+          this.selectedTrades = extra['professions'].map((profession)=>profession.id);
+        }
+      });
+    }
+
   }
 };
 </script>

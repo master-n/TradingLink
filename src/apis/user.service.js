@@ -10,6 +10,7 @@ export const userService = {
     signUp,
     saveProfession,
     saveTravelToWork,
+    workArea,
     businessType,
     businessDetails,
     idVerification,
@@ -19,6 +20,10 @@ export const userService = {
     getGuarantee,
     updateGuarantee,
     getPortfolio,
+    getBusinessType,
+    getProfessions,
+    getBusinessDetails,
+    getIdStatus,
     checkIdVerified,
     updatePortfolio,
     resendVerifyEmail,
@@ -83,6 +88,15 @@ function saveProfession(payload) {
 function saveTravelToWork(payload) {
     return new Promise((resolve) => {
         axios.post('/api/travel-to-work', payload, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function workArea(payload) {
+    return new Promise((resolve) => {
+        axios.post('/api/work-area', payload, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -156,6 +170,42 @@ function updateGuarantee(payload) {
 function getPortfolio() {
     return new Promise((resolve) => {
         axios.get(`/api/get-portfolio`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getBusinessType() {
+    return new Promise((resolve) => {
+        axios.get(`/api/business-type`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getProfessions() {
+    return new Promise((resolve) => {
+        axios.get(`/api/professions`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getBusinessDetails() {
+    return new Promise((resolve) => {
+        axios.get(`/api/business-details`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getIdStatus() {
+    return new Promise((resolve) => {
+        axios.get(`/api/id-status`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));

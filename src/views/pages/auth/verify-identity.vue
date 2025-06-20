@@ -106,15 +106,6 @@ export default {
 </script>
 
 <style scoped>
-/* Ensure the modal is displayed */
-.modal.show {
-  display: block;
-}
-
-.modal-dialog {
-  position: relative;
-  max-width: 500px !important;
-}
 
 .registration-steps {
   display: flex;

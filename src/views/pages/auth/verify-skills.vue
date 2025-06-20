@@ -32,7 +32,8 @@
                 <h3 class="text-start">Verify your skills</h3>
               </div>
               <p class="mb-4 font-weight-lighter">Trade Link supports quality tradespeople.</p>
-              <p class="mb-4 font-weight-lighter">In this step, we check the skills of all tradespeople joining so customers use MyBuilder with confidence.</p>
+              <p class="mb-4 font-weight-lighter">In this step, we check the skills of all tradespeople joining so
+                customers use Trade Link with confidence.</p>
               <p class="mb-4 font-weight-lighter">Our application process is thorough, and only those who meet our high standards are accepted.</p>
               <div class="button-container mt-5">
                 <div class="col-12">
@@ -99,6 +100,22 @@
       </template>
     </b-modal>
 
+    <b-modal v-model="successModal" hide-footer
+             hide-header
+             centered
+             no-close-on-backdrop
+             no-close-on-esc>
+      <div class="text-center p-4">
+        <i class="fa fa-check-circle text-success mb-3" style="font-size: 5rem;"></i>
+        <h3 class="mb-3">Profile Setup Complete!</h3>
+        <p>Your profile has been successfully set up. You're ready to go!</p>
+        <b-button class="btn btn-primary mt-2" @click="$router.push('/profile')">
+          Proceed to Profile
+        </b-button>
+      </div>
+    </b-modal>
+
+
   </div>
 </template>
 
@@ -114,6 +131,7 @@ import {userService} from "@/apis/user.service";
  * Verify skills component
  */
 export default {
+  name: 'Verify Skills',
   page: {
     title: "Verify Skills",
     meta: [{name: "description", content: appConfig.description}],
@@ -121,6 +139,7 @@ export default {
   data() {
     return {
       showModal: false,
+      successModal: false,
       showDropzoneModal: false,
       isLoading: false,
       certificateDropzoneDropzoneOptions: {
@@ -168,7 +187,8 @@ export default {
           return;
         }
         this.$store.dispatch('updateUserInfo', extra)
-        this.$router.push('/profile')
+        this.successModal = true
+
       });
     },
 
@@ -207,4 +227,20 @@ export default {
   background-color: var(--primary-color1);
   width: 20%; /* Adjust based on step */
 }
+
+.fa-check-circle {
+  animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 </style>

@@ -4,19 +4,19 @@
       <!-- Top bar content -->
       <div class="top-bar-right">
         <div class="language-select">
-          <img src="../../../public/frontend/assets/images/icon/flag-eng.svg" alt="image">
+          <img src="../../../../public/frontend/assets/images/icon/flag-eng.svg" alt="image">
           <span>Language</span>
           <ul class="topbar-sublist">
             <li>
-              <img src="../../../public/frontend/assets/images/icon/flag-germeny.svg" alt="image">
+              <img src="../../../../public/frontend/assets/images/icon/flag-germeny.svg" alt="image">
               <span>Germany</span>
             </li>
             <li>
-              <img src="../../../public/frontend/assets/images/icon/flag-french.svg" alt="image">
+              <img src="../../../../public/frontend/assets/images/icon/flag-french.svg" alt="image">
               <span>French</span>
             </li>
             <li>
-              <img src="../../../public/frontend/assets/images/icon/flag-bangla.svg" alt="image">
+              <img src="../../../../public/frontend/assets/images/icon/flag-bangla.svg" alt="image">
               <span>Bengali</span>
             </li>
           </ul>
@@ -37,7 +37,7 @@
       <div class="menu-area">
         <div class="header-logo">
           <router-link to="/">
-            <img alt="image" class="img-fluid" src="../../../public/frontend/assets/images/header1-logo.svg"
+            <img alt="image" class="img-fluid" src="../../../../public/frontend/assets/images/header1-logo.svg"
                  style="height: 80px;">
           </router-link>
         </div>
@@ -46,7 +46,7 @@
           <div class="mobile-logo-area d-lg-none d-flex justify-content-between align-items-center">
             <div class="mobile-logo-wrap">
               <router-link to="/">
-                <img alt="image" src="../../../public/frontend/assets/images/header1-logo.svg" style="height: 70px">
+                <img alt="image" src="../../../../public/frontend/assets/images/header1-logo.svg" style="height: 70px">
               </router-link>
             </div>
             <div class="menu-close-btn">
@@ -82,7 +82,7 @@
                 <hr>
               </li>
               <li>
-                <router-link to="/">Saved leads</router-link>
+                <router-link to="/saved-leads">Saved leads</router-link>
               </li>
               <hr>
               <li>
@@ -108,10 +108,7 @@
               <router-link to="/new-leads">New leads</router-link>
             </li>
             <li class="d-md-flex d-none">
-              <router-link to="/login">Activity</router-link>
-            </li>
-            <li class="d-md-flex d-none">
-              <router-link to="/login">Contacts</router-link>
+              <router-link to="/contact-details">Contacts</router-link>
             </li>
             <li class="d-md-flex d-none">
               <div class="btn-group dropdown">
@@ -212,7 +209,7 @@ export default {
       // Check the registration step and route accordingly
       switch (this.user.registration_step) {
         case 1:
-          this.$router.push('/create-auth');
+          this.$router.push('/create-account');
           break;
         case 2:
           this.$router.push('/professions');

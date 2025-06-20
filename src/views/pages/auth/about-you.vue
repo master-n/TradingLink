@@ -9,10 +9,10 @@
             <div class="d-flex align-items-center justify-content-between mb-4">
               <h1 class="fw-bold mb-0">Work Details</h1>
 
-              <router-link to="/create-account" class="ms-auto">
-                <a href="#" class="text-decoration-underline me-2">Cancel</a>
-                <a href="#" aria-label="Close"><i class="fa fa-times"></i></a>
-              </router-link>
+<!--              <router-link to="/create-account" class="ms-auto">-->
+<!--                <a href="#" class="text-decoration-underline me-2">Cancel</a>-->
+<!--                <a href="#" aria-label="Close"><i class="fa fa-times"></i></a>-->
+<!--              </router-link>-->
             </div>
 
             <div class="progress">

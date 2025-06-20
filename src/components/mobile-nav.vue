@@ -5,11 +5,11 @@
       <i class="bi bi-house-door-fill d-block"></i>
       <small>New Leads</small>
     </router-link>
-    <router-link class="nav-link" to="/#">
+    <router-link class="nav-link" to="/new-leads">
       <i class="bi bi-briefcase d-block"></i>
-      <small>Activity</small>
+      <small>Leads</small>
     </router-link>
-    <router-link class="nav-link" to="/#">
+    <router-link class="nav-link" to="/contact-details">
       <i class="bi bi-people d-block"></i>
       <small>Contacts</small>
     </router-link>

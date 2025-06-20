@@ -93,7 +93,7 @@
         <div class="row border-top align-items-center">
           <div class="col-lg-6 d-flex  justify-content-lg-start justify-content-center">
             <div class="copyright-area">
-              <p>©Copyright 2023 <a href="#">Trade Link</a> | Design By <a href="#">Samuel ~ Codoxo technologies</a></p>
+              <p>©Copyright 2025 Trade Link</p>
             </div>
           </div>
           <div class="col-lg-6 d-flex justify-content-lg-end justify-content-center">

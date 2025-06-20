@@ -40,7 +40,7 @@ export default [
         },
     },
     {
-        path: '/create-auth',
+        path: '/create-account',
         name: 'createAccount',
         component: () => import('../views/pages/auth/create-account'),
         meta: {
@@ -51,7 +51,6 @@ export default [
                     next()
                 } else {
                     next({name: 'Home'});
-
                 }
 
             },
@@ -244,7 +243,7 @@ export default [
         meta:{
             authRequired: true,
         },
-        component: () => import('../views/pages/navigation/small-screen-profile-menu'),
+        component: () => import('../views/base-layout/navigation/small-screen-profile-menu'),
     },
     {
         path: '/profile',

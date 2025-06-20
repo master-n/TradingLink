@@ -273,7 +273,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$router.push('/create-auth')
+      this.$router.push('/create-account')
     },
     async getTrades() {
       this.tradeLoader = true

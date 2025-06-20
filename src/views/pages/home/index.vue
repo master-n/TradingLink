@@ -1097,21 +1097,18 @@
         <div class="row mb-60">
           <div class="col-12 d-flex justify-content-center">
             <div class="section-title1 text-center">
-              <h2>How to hire the right <span>tradesperson</span></h2>
+              <h2>How tradelink <span>works</span></h2>
             </div>
           </div>
         </div>
-        <div class="row gy-5 justify-content-center">
-          <div class="col-lg-4 col-md-6">
-            <div class="recent-article-wrrap card card-body">
-              <div class="recent-article-img">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-1.png" alt="">
-                <div class="tag">
-                  <a class="primry-btn-2" href="blog-grid.html">01</a>
-                </div>
+        <div class="row gy-5 justify-content-center align-items-stretch">
+          <div class="col-lg-4 col-md-6 d-flex">
+            <div class="recent-article-wrrap card flex-fill d-flex flex-column">
+              <div class="recent-article-img card-img-top" style="height: 200px;">
+                <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-1.png" alt="Post your job">
               </div>
-              <div class="recent-article-content">
-                <h5 class="fw-bold"><a href="#">(1) Post your job</a></h5>
+              <div class="recent-article-content text-center card-body">
+                <h5 class="fw-bold">Post your job</h5>
                 <p class="fw-lighter">Tell us what you need done. Whether it's plumbing, painting, or gardening — give
                   as
                   much detail as you
@@ -1120,16 +1117,13 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="recent-article-wrrap card card-body">
-              <div class="recent-article-img">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-2.png" alt="">
-                <div class="tag">
-                  <a class="primry-btn-2" href="blog-grid.html">02</a>
-                </div>
+          <div class="col-lg-4 col-md-6 d-flex">
+            <div class="recent-article-wrrap card flex-fill d-flex flex-column">
+              <div class="recent-article-img card-img-top" style="height: 200px;">
+                <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-2.png" alt="Trades respond">
               </div>
-              <div class="recent-article-content">
-                <h5 class="fw-bold"><a href="#">(2) Trades respond</a></h5>
+              <div class="recent-article-content card-body text-center">
+                <h5 class="fw-bold">Trades respond</h5>
                 <p class="fw-lighter">Skilled tradespeople will reply with quotes, questions, and links to their
                   profiles.
                   You can compare
@@ -1137,16 +1131,13 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="recent-article-wrrap card card-body">
-              <div class="recent-article-img" style="height: 200px;">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-3.png" alt="">
-                <div class="tag">
-                  <a class="primry-btn-2">03</a>
-                </div>
+          <div class="col-lg-4 col-md-6 d-flex">
+            <div class="recent-article-wrrap card">
+              <div class="recent-article-img card-img-top" style="height: 200px;">
+                <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-3.png" alt="Choose and connect">
               </div>
-              <div class="recent-article-content">
-                <h5 class="fw-bold"><a href="#">(3) Choose and connect</a></h5>
+              <div class="recent-article-content card-body text-center">
+                <h5 class="fw-bold">Choose and connect</h5>
                 <p class="fw-lighter">When you're ready, select the tradesperson who best fits your job. Once you
                   confirm,
                   you’ll be
@@ -1527,7 +1518,7 @@
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import topHeader from '../../base-layout/home-menu'
+import topHeader from '../../base-layout/navigation/home-menu'
 import appConfig from "../../../../app.config.json";
 import {userService} from "@/apis/user.service";
 

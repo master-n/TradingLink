@@ -8,7 +8,7 @@
         </div>
         <div class="flex-grow-1 ms-3">
           <h5 class="profile-name mb-0">{{ user.name }}</h5>
-          <small class="text-muted">{{ user.parish }} ~ {{ user.city }}</small>
+          <small class="text-muted">{{ user.parish_name }} ~ {{ user.city_name }}</small>
         </div>
       </div>
 
@@ -155,7 +155,7 @@ export default {
     completeRegistration() {
       switch (this.user.registration_step) {
         case 1:
-          this.$router.push('/create-auth');
+          this.$router.push('/create-account');
           break;
         case 2:
           this.$router.push('/professions');

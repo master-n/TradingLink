@@ -34,8 +34,8 @@
                     </div>
 
                     <div class="form-group form-check mb-20">
-                      <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="marketing_consent">
-                      <label class="form-check-label" for="exampleCheck1">I would like to receive marketing communications about MyBuilder services and offers by email, SMS and/or phone and understand that I can unsubscribe at any time.</label>
+                      <input type="checkbox" class="form-check-input p-2" id="exampleCheck1" v-model="marketing_consent">
+                      <label class="form-check-label fw-lighter" for="exampleCheck1">I would like to receive marketing communications about Trade Link services and offers by email, SMS and/or phone and understand that I can unsubscribe at any time.</label>
                     </div>
 
                   </div>

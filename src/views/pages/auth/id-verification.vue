@@ -27,7 +27,46 @@
               </div>
 
             </div>
-            <form @submit.prevent="dropzoneModal">
+
+            <div class="row" v-if="id_verification_status">
+              <div class="col-md-8">
+                <div class="my-5">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <strong>ID Status</strong>
+                    <span
+                        :class="[
+          'badge',
+          {
+            'bg-secondary': id_verification_status === 'pending',
+            'bg-success': id_verification_status === 'verified',
+            'bg-danger': id_verification_status === 'rejected',
+          }
+        ]"
+                    >
+        {{ id_verification_status }}
+      </span>
+                  </div>
+
+                  <!-- Verified message and icon -->
+                  <div v-if="id_verification_status === 'verified'"
+                       class="alert alert-success d-flex align-items-center gap-2">
+                    <i class="bi bi-patch-check-fill fs-4"></i>
+                    <div>Your identity has been successfully verified.</div>
+                  </div>
+
+                  <!-- Pending message -->
+                  <div v-else-if="id_verification_status === 'pending'" class="alert alert-secondary">
+                    Your ID has been submitted and is currently under review. We’ll notify you once verification is complete.
+                  </div>
+
+                  <router-link to="/verify-skills" class="btn btn-primary">Next</router-link>
+                </div>
+
+              </div>
+            </div>
+
+
+            <form @submit.prevent="dropzoneModal" v-else>
               <div class="form-wrapper mt-5">
                 <h3 class="font-weight-bold mb-4">Which ID do you have?</h3>
 
@@ -155,6 +194,7 @@ export default {
       isLoading: false,
       identity_type: 'Passport',
       showDropzoneModal: false,
+      id_verification_status: '',
       identityFile: [],
       identityFileDropzoneOptions: {
         url: '#',
@@ -169,9 +209,6 @@ export default {
     Auth,
     topHeader,
     vueDropzone: vue2Dropzone,
-  },
-
-  created() {
   },
   methods: {
     dropzoneModal(event) {
@@ -218,7 +255,22 @@ export default {
         this.$router.push('/verify-skills')
       });
     },
+    getIdStatus() {
+      userService.getIdStatus().then((res) => {
+        const {status, message, extra} = res;
+        if (!status) {
+          this.generalError = message
+          return;
+        }
+        this.id_verification_status = extra.identity_verified
 
+      });
+    },
+
+
+  },
+  created() {
+    this.getIdStatus()
   },
   mounted() {
   },
@@ -257,6 +309,9 @@ export default {
   width: 20%; /* Adjust based on step */
 }
 
+.profession-list {
+  height: auto !important;
+}
 
 .profession-item {
   background-color: #fff;

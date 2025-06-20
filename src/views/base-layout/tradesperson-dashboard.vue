@@ -31,7 +31,7 @@
 
 <script>
 import topHeader from '../base-layout/header-2';
-import SideBar from '../base-layout/tradesperson-sidebar';
+import SideBar from './navigation/tradesperson-sidebar';
 import MobileFooter from '../../components/mobile-nav';
 
 export default {

@@ -9,9 +9,9 @@
             <div class="d-flex align-items-center justify-content-between mb-4">
               <h1 class="fw-bold mb-0">Work Details</h1>
 
-              <router-link to="/professions" class="ms-auto">
-                <a href="#" class="text-decoration-underline me-2">Cancel</a>
-                <a href="#" aria-label="Close"><i class="fa fa-times"></i></a>
+              <router-link to="/travel-to-work" class="ms-auto">
+                <a class="text-decoration-underline me-2">Cancel</a>
+                <a aria-label="Close"><i class="fa fa-times"></i></a>
               </router-link>
             </div>
 
@@ -122,8 +122,6 @@ export default {
     Auth,
     topHeader
   },
-  created() {
-  },
   methods: {
     async save() {
       this.isLoading = true
@@ -142,22 +140,24 @@ export default {
         this.$router.push('/business-details')
       });
     },
+    getBusinessType() {
+      userService.getBusinessType().then((res) => {
+        const {status, message, extra} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true});
+          return;
+        }
+        this.business_type = extra.business_type
+      });
+    },
   },
-  mounted() {
+  created() {
+    this.getBusinessType();
   },
 };
 </script>
 
 <style scoped>
-/* Ensure the modal is displayed */
-.modal.show {
-  display: block;
-}
-
-.modal-dialog {
-  position: relative;
-  max-width: 500px !important;
-}
 
 .registration-steps {
   display: flex;
@@ -188,6 +188,10 @@ export default {
   height: 100%;
   background-color: var(--primary-color1);
   width: 20%; /* Adjust based on step */
+}
+
+.profession-list {
+  height: auto;
 }
 
 

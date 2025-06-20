@@ -57,7 +57,7 @@ export default {
       portfolioFile: [],
       fileDropOptions: {
         url: '#',
-        maxFilesize: 2, // MB
+        maxFilesize: 10, // MB
         acceptedFiles: 'image/*',
         addRemoveLinks: true,
         autoProcessQueue: false,
@@ -75,7 +75,7 @@ export default {
       alert('File type must be an image and size must not exceed 2MB. Please try again.');
     },
     async handleFileUpload(file) {
-      if (!file.type.startsWith('image/') || file.size > 2 * 1024 * 1024) {
+      if (!file.type.startsWith('image/') || file.size > 10 * 1024 * 1024) {
         this.maxFileExceeded(file);
         return;
       }

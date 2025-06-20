@@ -11,7 +11,7 @@
         </div>
         <div class="flex-grow-1">
           <h4 class="profile-name">{{ user.name }}</h4>
-          <h5 class="card-title mb-1">{{ user.parish }} ~ <small>{{ user.city }}</small></h5>
+          <h5 class="card-title mb-1">{{ user.parish_name }} ~ <small>{{ user.city_name }}</small></h5>
         </div>
       </div>
       <a href="#" class="btn btn-outline-dark btn-block" style="border-color: #bebebe;">
@@ -164,7 +164,7 @@ export default {
       // Check the registration step and route accordingly
       switch (this.user.registration_step) {
         case 1:
-          this.$router.push('/create-auth');
+          this.$router.push('/create-account');
           break;
         case 2:
           this.$router.push('/professions');

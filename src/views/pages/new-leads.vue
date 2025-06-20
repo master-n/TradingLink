@@ -232,7 +232,7 @@
 <script>
 import HomeFooter from '../base-layout/footer';
 import topHeader from '../base-layout/header-2';
-import SideBar from '../base-layout/tradesperson-sidebar';
+import SideBar from '../base-layout/navigation/tradesperson-sidebar';
 import MobileFooter from '../../components/mobile-nav';
 import appConfig from "../../../app.config.json";
 

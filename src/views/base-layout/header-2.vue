@@ -69,9 +69,7 @@
             <ul v-else>
               <li><router-link to="/new-leads">New leads</router-link></li>
               <hr>
-              <li><router-link to="/login">Activity</router-link></li>
-              <hr>
-              <li><router-link to="/register">Contacts</router-link></li>
+              <li><router-link to="/contact-details">Contacts</router-link></li>
               <hr>
               <li>
                 <router-link to="/profile">My Account <i class="bi bi-list ms-2"></i></router-link>
@@ -85,8 +83,7 @@
           <!-- Navigation right content -->
           <ul v-if="loggedIn">
             <li class="d-md-flex d-none active"><router-link to="/new-leads">New leads</router-link></li>
-            <li class="d-md-flex d-none"><router-link to="/profile">Activity</router-link></li>
-            <li class="d-md-flex d-none"><router-link to="/profile">Contacts</router-link></li>
+            <li class="d-md-flex d-none"><router-link to="/contact-details">Contacts</router-link></li>
             <li class="d-md-flex d-none">
               <div class="btn-group dropdown">
                 <div class="notifications-area dropdown-toggle" role="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
@@ -179,7 +176,7 @@ export default {
       // Check the registration step and route accordingly
       switch (this.user.registration_step) {
         case 1:
-          this.$router.push('/create-auth');
+          this.$router.push('/create-account');
           break;
         case 2:
           this.$router.push('/professions');

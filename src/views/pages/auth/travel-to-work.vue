@@ -113,6 +113,8 @@ export default {
       },
       isLoading: false,
       user: {},
+      cityName: '',
+      parishName: ''
     };
   },
   components: {
@@ -141,7 +143,34 @@ export default {
         lat: location.latLng.lat(),
         lng: location.latLng.lng(),
       };
+      this.reverseGeocode(this.center.lat, this.center.lng);
     },
+
+    reverseGeocode(lat, lng) {
+      if (!this.google) return;
+      const geocoder = new this.google.maps.Geocoder();
+      const latlng = {lat, lng};
+
+      geocoder.geocode({location: latlng}, (results, status) => {
+        if (status === 'OK' && results[0]) {
+          const addressComponents = results[0].address_components;
+
+          const cityComponent = addressComponents.find(comp =>
+              comp.types.includes('locality')
+          );
+          const parishComponent = addressComponents.find(comp =>
+              comp.types.includes('administrative_area_level_1')
+          );
+
+          this.cityName = cityComponent ? cityComponent.long_name : '';
+          this.parishName = parishComponent ? parishComponent.long_name : '';
+
+        } else {
+          console.log('Reverse geocoding failed:', status);
+        }
+      });
+    },
+
     async save() {
       this.isLoading = true;
       userService.saveTravelToWork({
@@ -149,6 +178,8 @@ export default {
         work_all_jamaica: this.workThroughoutJamaica,
         latitude: this.center.lat,
         longitude: this.center.lng,
+        city_name: this.cityName,
+        parish_name: this.parishName
       }).then((res) => {
         this.isLoading = false;
         const { status, message, extra } = res;

@@ -5,6 +5,11 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
+            <div v-if="generalError" class="alert alert-danger">
+              <ul>
+                <li>{{ generalError }}</li>
+              </ul>
+            </div>
 
             <div class="d-flex align-items-center justify-content-between mb-4">
               <h1 class="fw-bold mb-0">Work Details</h1>
@@ -113,6 +118,7 @@ export default {
       isLoading: false,
       business_name: '',
       work_address: '',
+      generalError: '',
     };
   },
   components: {
@@ -121,16 +127,15 @@ export default {
   },
 
   created() {
+    this.getBusinessDetails();
   },
   methods: {
-    async submitBusinessDetails() {
+    submitBusinessDetails() {
       this.isLoading = true
-      await this.$store.dispatch('showLoader')
       userService.businessDetails({
         business_name: this.business_name,
         work_address: this.work_address,
       }).then((res) => {
-        this.$store.dispatch('hideLoader')
         this.isLoading = false
         const {status, message, extra} = res;
         if (!status) {
@@ -141,6 +146,18 @@ export default {
         this.$router.push('/verify-identity')
       });
     },
+    getBusinessDetails() {
+      userService.getBusinessDetails().then((res) => {
+        const {status, message, extra} = res;
+        if (!status) {
+          this.generalError = message
+          return;
+        }
+        this.business_name = extra.business_name
+        this.work_address = extra.work_address
+      });
+    },
+
 
   },
   mounted() {
