@@ -25439,3 +25439,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     outline: 0;
     box-shadow: none
 }
+
+.btn-rounded {
+    border-radius: 50px !important;
+}
