@@ -1,7 +1,7 @@
 <template>
   <div class="single-widget mb-60" style="overflow-y: auto;">
     <!-- Profile Section -->
-    <div class="">
+    <div class="mb-4">
       <div class="d-flex align-items-center mb-4">
         <div class="profile-image">
           <i class="bi bi-person-fill"></i>
@@ -14,14 +14,14 @@
           <h5 class="card-title mb-1">{{ user.parish_name }} ~ <small>{{ user.city_name }}</small></h5>
         </div>
       </div>
-      <a href="#" class="btn btn-outline-dark btn-block" style="border-color: #bebebe;">
+      <router-link to="/user-profile" class="btn btn-outline-dark btn-block" style="border-color: #bebebe;">
         <i class="bi bi-eye me-2"></i> View profile
-      </a>
+      </router-link>
     </div>
 
     <!-- Complete Registration -->
     <a @click="completeRegistration" v-if="!isRegistrationComplete"
-       class="d-flex justify-content-between align-items-center mb-4 mt-5 cursor-pointer">
+       class="d-flex justify-content-between align-items-center mt-5 cursor-pointer">
       <div>
         <i class="bi bi-person-lines-fill mr-2"></i> Complete registration
       </div>
@@ -30,7 +30,7 @@
     </a>
 
     <!-- List Groups -->
-    <div class="list-group">
+    <div class="list-group mt-4">
       <router-link to="/company-description"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    id="company-description">
@@ -54,6 +54,17 @@
         </div>
         <i class="bi bi-chevron-right d-lg-none"></i>
       </router-link>
+      <router-link to="/inbox" id="inbox"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          <i class="bi bi-envelope mr-2"></i> Inbox
+        </div>
+        <span class="badge action-required rounded-pill" v-if="!user.identity_verified || user.identity_verified ==='rejected'">Action required</span>
+
+        <span class="badge bg-danger text-white rounded-pill">2</span>
+        <i class="bi bi-chevron-right d-lg-none"></i>
+      </router-link>
+
     </div>
 
     <!-- Account Section -->

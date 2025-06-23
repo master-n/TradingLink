@@ -25,7 +25,10 @@ export const userService = {
     getBusinessDetails,
     getIdStatus,
     checkIdVerified,
-    updatePortfolio,
+    editPortfolio,
+    addPortfolio,
+    savePortfolioOrder,
+    deletePortfolio,
     resendVerifyEmail,
     getPermissions,
     addAdmins,
@@ -221,14 +224,40 @@ function checkIdVerified() {
     })
 }
 
-function updatePortfolio(formData) {
+function editPortfolio(formData, id) {
     return new Promise((resolve) => {
-        axios.post('/api/update-portfolio', formData, useBearerTokenHeaders(true))
+        axios.post('/api/edit-portfolio/' + id, formData, useBearerTokenHeaders(true))
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
     })
 
+}
+
+function addPortfolio(formData) {
+    return new Promise((resolve) => {
+        axios.post('/api/add-portfolio', formData, useBearerTokenHeaders(true))
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function savePortfolioOrder(formData) {
+    return new Promise((resolve) => {
+        axios.post('/api/portfolio/reorder', formData, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+function deletePortfolio(id) {
+    return new Promise((resolve) => {
+        axios.delete('/api/portfolio/delete/'+ id, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
 }
 
 

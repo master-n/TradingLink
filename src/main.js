@@ -22,6 +22,7 @@ import "@/assets/scss/app-css.scss";
 
 
 import ImageMagnifier from 'vue-image-magnifier'
+// import VueDraggable from "vue-draggable";
 
 Vue.use(ImageMagnifier)
 

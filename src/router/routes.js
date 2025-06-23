@@ -254,6 +254,14 @@ export default [
         component: () => import('../views/pages/company-description'),
     },
     {
+        path: '/user-profile',
+        name: 'user-profile',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/user-profile'),
+    },
+    {
         path: '/company-description',
         name: 'company-desc',
         meta:{
@@ -276,6 +284,14 @@ export default [
             authRequired: true,
         },
         component: () => import('../views/pages/portfolio'),
+    },
+    {
+        path: '/inbox',
+        name: 'inbox',
+        meta:{
+            authRequired: true,
+        },
+        component: () => import('../views/pages/inbox'),
     },
     {
         path: '/contact-details',
