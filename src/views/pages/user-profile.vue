@@ -27,7 +27,7 @@
 
           <!-- Portfolio -->
           <div>
-            <h5 class="mb-3">Portfolio</h5>
+            <h5 class="mb-3 mt-4 fw-bold">Portfolio</h5>
             <div class="row justify-content-start align-items-stretch">
               <div v-for="(item, index) in portfolio" :key="index" class="col-md-3 mb-3 d-flex">
                 <div

@@ -59,8 +59,6 @@
         <div>
           <i class="bi bi-envelope mr-2"></i> Inbox
         </div>
-        <span class="badge action-required rounded-pill" v-if="!user.identity_verified || user.identity_verified ==='rejected'">Action required</span>
-
         <span class="badge bg-danger text-white rounded-pill">2</span>
         <i class="bi bi-chevron-right d-lg-none"></i>
       </router-link>
