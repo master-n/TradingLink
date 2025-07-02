@@ -32,7 +32,7 @@
                 </div>
                 <div class="row mt-3">
                   <div class="col-md-4">Location:</div>
-                  <div class="col-md-8 text-left">{{ project.city_name}} {{ project.parish_name ? '~ ' + project.parish_name : '' }}</div>
+                  <div class="col-md-8 text-left"><i class="bi bi-pin-map"></i> {{ project.city_name}} {{ project.parish_name ? '~ ' + project.parish_name : '' }}</div>
                 </div>
 
               </div>

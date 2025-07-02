@@ -34,7 +34,7 @@
                 <div class="card-body text-center">
                   <i class="bi bi-person-circle mb-3" style="font-size: 2rem;"></i>
                   <h5 class="card-title">{{ tradesperson.name }}</h5>
-                  <p class="card-text fw-bold text-primary-1">New on MyBuilder</p>
+                  <p class="card-text fw-bold text-primary-1">New on Trade Link</p>
                   <p class="card-text fw-lighter">Active within <span class="fw-bold">{{ tradesperson.distance }} miles of {{
                       city_name
                     }}</span>
