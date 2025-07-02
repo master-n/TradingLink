@@ -366,6 +366,9 @@ export default {
     },
     isHomeOwner() {
       const loggedUser = store.getters.GET_USER_INFO;
+      if(!loggedUser){
+        return false
+      }
       const userRole = loggedUser.roles?.[0] || '';
       return userRole === 'homeowner';
     }

@@ -19,7 +19,7 @@ const router = new VueRouter({
 
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom, next) => {
-    const publicPages = ['/login','register', '/forgot-password', '/admin/login'];
+    const publicPages = ['/login','register', '/forgot-password'];
     const authRequired = routeTo.matched.some(route => route.meta.authRequired);
     const loggedUser = store.getters.GET_USER_INFO;
 
@@ -28,8 +28,6 @@ router.beforeEach((routeTo, routeFrom, next) => {
 
         if (routeTo.path.startsWith('/admin')) {
             return next('/admin/login');
-        } else if (routeTo.path.startsWith('/branch')) {
-            return next('/branch/login');
         }
         return next('/login');
     }
@@ -38,25 +36,21 @@ router.beforeEach((routeTo, routeFrom, next) => {
         const userRole = loggedUser.roles?.[0] || '';
         const userPermissions = loggedUser.permissions || [];
         if (publicPages.includes(routeTo.path)) {
-            if (userRole === 'admin') return next('/admin');
-            if (userRole === 'branch') return next('/branch/home');
-            if (userRole === 'customer' || userRole === 'vendor_manager') return next('/');
-            if (userRole === 'customer_service') return next('/customer-service');
+            if (userRole === 'homeowner') return next('/homeowner/my-projects');
+            if (userRole === 'tradesperson') return next('/profile');
             return next('/error/403');
         }
 
         // Check role-based access
         const routeRoles = routeTo.matched.flatMap(route => route.meta.roles || []);
         if (routeRoles.length > 0 && !routeRoles.includes(userRole)) {
-            if (userRole === 'admin') return next('/admin');
-            if (userRole === 'branch') return next('/branch/home');
-            if (userRole === 'customer_service') return next('/customer-service');
-            if (userRole === 'customer' || userRole === 'vendor_manager') return next('/');
+            if (userRole === 'homeowner') return next('/homeowner/my-projects');
+            if (userRole === 'tradesperson') return next('/profile');
             return next('/error/403');
         }
 
         // Check permission-based access (exclude admin, branch, customer, and customer_service)
-        if (!['admin', 'branch', 'customer'].includes(userRole)) {
+        if (!['homeowner', 'tradesperson'].includes(userRole)) {
             const requiredPermissions = routeTo.matched.flatMap(route => route.meta.permissions || []);
             const hasPermission = requiredPermissions.every(permission => userPermissions.includes(permission));
 

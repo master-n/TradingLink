@@ -122,7 +122,7 @@
                       </router-link>
                     </li>
                     <li>
-                      <router-link to="/profile">
+                      <router-link to="/ask-a-trade">
                         <i class="bi bi-person-circle text-primary-1"></i> Ask a tradesperson
                       </router-link>
                     </li>

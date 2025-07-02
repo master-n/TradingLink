@@ -20,7 +20,7 @@
           <div class="for-mobile-menu d-lg-none d-block mt-5">
             <ul>
               <li class="">
-                <router-link class="" to="/">Post a job </router-link>
+                <router-link class="" to="/post-a-job">Post a job </router-link>
               </li>
               <hr>
               <li class="">

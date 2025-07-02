@@ -103,7 +103,15 @@ export default {
         email: this.email,
         password: this.password,
       }).then(() => {
-        this.$router.push('/profile');
+        const loggedUser = store.getters.GET_USER_INFO;
+        const userRole = loggedUser.roles?.[0] || '';
+        if (userRole === 'tradesperson') {
+          this.$router.push('/profile');
+        } else if (userRole === 'homeowner') {
+          this.$router.push('/homeowner/my-projects');
+        } else {
+          this.$router.push('/');
+        }
       }).catch((message) => {
         this.errorMessage = message;
       }).finally(() => {

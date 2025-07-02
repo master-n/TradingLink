@@ -61,6 +61,8 @@ export default [
         name: 'about-you',
         component: () => import('../views/pages/auth/about-you'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 const user = store.getters.GET_USER_INFO;
                 // If the user is logged in and has generated a token
@@ -78,6 +80,8 @@ export default [
         name: 'professions',
         component: () => import('../views/pages/auth/professions'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 if (store.getters.GET_USER_INFO) {
                     if (store.getters.GET_USER_INFO.status === 'complete') {
@@ -92,9 +96,7 @@ export default [
                 } else {
                     next({name: 'Home'});
                 }
-
             },
-
         },
     },
     {
@@ -102,6 +104,8 @@ export default [
         name: 'travel',
         component: () => import('../views/pages/auth/travel-to-work'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 if (store.getters.GET_USER_INFO) {
                     if (store.getters.GET_USER_INFO.status === 'complete') {
@@ -125,6 +129,8 @@ export default [
         name: 'businessType',
         component: () => import('../views/pages/auth/business-type'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 if (store.getters.GET_USER_INFO) {
                     if (store.getters.GET_USER_INFO.status === 'complete') {
@@ -149,6 +155,8 @@ export default [
         name: 'businessDetails',
         component: () => import('../views/pages/auth/business-details'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 if (store.getters.GET_USER_INFO) {
                     if (store.getters.GET_USER_INFO.status === 'complete') {
@@ -173,6 +181,8 @@ export default [
         name: 'verifyIdentity',
         component: () => import('../views/pages/auth/verify-identity'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 if (store.getters.GET_USER_INFO) {
                     if (store.getters.GET_USER_INFO.status === 'complete') {
@@ -196,6 +206,8 @@ export default [
         name: 'idVerification',
         component: () => import('../views/pages/auth/id-verification'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 // If the user is already logged in
                 if (store.getters.GET_USER_INFO && store.getters.GET_USER_INFO.status === 'complete') {
@@ -213,6 +225,8 @@ export default [
         name: 'skillVerification',
         component: () => import('../views/pages/auth/verify-skills'),
         meta: {
+            authRequired: true,
+            roles: ['tradesperson'],
             beforeResolve(routeTo, routeFrom, next) {
                 if (store.getters.GET_USER_INFO) {
                     if (store.getters.GET_USER_INFO.status === 'complete') {
@@ -310,6 +324,7 @@ export default [
         name: 'projectMenu',
         meta: {
             authRequired: true,
+            roles: ['homeowner']
         },
         component: () => import('../views/base-layout/navigation/home-owner-sm-menu'),
     },
@@ -318,6 +333,7 @@ export default [
         name: 'tradesperson-recommendation',
         meta: {
             authRequired: true,
+            roles: ['homeowner']
         },
         component: () => import('../views/pages/homeowner/tradesperson-recommendation'),
     },
@@ -326,6 +342,7 @@ export default [
         name: 'project-details',
         meta: {
             authRequired: true,
+            roles: ['homeowner']
         },
         component: () => import('../views/pages/homeowner/project-details'),
     },
@@ -334,6 +351,7 @@ export default [
         name: 'profile',
         meta: {
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/company-description'),
     },
@@ -342,6 +360,7 @@ export default [
         name: 'user-profile',
         meta:{
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/user-profile'),
     },
@@ -350,6 +369,7 @@ export default [
         name: 'company-desc',
         meta:{
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/company-description'),
     },
@@ -358,6 +378,7 @@ export default [
         name: 'reviews',
         meta:{
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/reviews'),
     },
@@ -366,30 +387,37 @@ export default [
         name: 'portfolio',
         meta:{
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/portfolio'),
     },
     {
         path: '/inbox',
         name: 'inbox',
-        meta:{
+        meta: {
             authRequired: true,
+            roles: ['tradesperson']
+
         },
         component: () => import('../views/pages/inbox'),
     },
     {
         path: '/contact-details',
         name: 'contact-details',
-        meta:{
+        meta: {
             authRequired: true,
+            roles: ['tradesperson']
+
         },
         component: () => import('../views/pages/account/contact-details'),
     },
     {
         path: '/manage-account',
         name: 'manage-account',
-        meta:{
+        meta: {
             authRequired: true,
+            roles: ['tradesperson']
+
         },
         component: () => import('../views/pages/account/manage-account'),
     },
@@ -426,6 +454,8 @@ export default [
         name: 'homeowner-my-projects',
         meta:{
             authRequired: true,
+            roles: ['homeowner']
+
         },
         component: () => import('../views/pages/homeowner/my-projects'),
     },
@@ -435,6 +465,8 @@ export default [
         name: 'work-area',
         meta:{
             authRequired: true,
+            roles: ['tradesperson']
+
         },
         component: () => import('../views/pages/lead-settings/work-area'),
     },
@@ -443,6 +475,7 @@ export default [
         name: 'services',
         meta:{
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/lead-settings/services'),
     },
@@ -451,22 +484,41 @@ export default [
         name: 'notifications',
         meta:{
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/lead-settings/notifications'),
     },
     {
         path: '/support',
         name: 'support',
-        meta:{
+        meta: {
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/support/support'),
+    },
+    {
+        path: '/ask-a-trade',
+        name: 'AskATrade',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/pages/ask-a-trade'),
+    },
+
+    {
+        path: '/my-proposals/contacts',
+        name: 'MyProposalsContacts',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/pages/my-contacts'),
     },
 
     ///////// EXTRA ROUTES //////////////////////////
     {
-        name: 'Logout',
         path: '/logout',
+        name: 'Logout',
         component: () => import('../views/pages/error/logout'),
     },
     {

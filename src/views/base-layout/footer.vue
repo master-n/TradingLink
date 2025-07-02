@@ -9,7 +9,7 @@
             </div>
             <div class="menu-container">
               <ul>
-                <li><a href="#">Post a job <i class='bx bx-up-arrow-alt'></i></a></li>
+                <li><router-link to="/post-a-job">Post a job <i class='bx bx-up-arrow-alt'></i></router-link></li>
                 <li><a href="#">How it works<i class='bx bx-up-arrow-alt'></i></a></li>
                 <li><a href="#">Find trades <i class='bx bx-up-arrow-alt'></i></a></li>
                 <li><a href="#">Candidate Listing <i class='bx bx-up-arrow-alt'></i></a></li>

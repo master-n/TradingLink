@@ -59,7 +59,7 @@
           <div class="for-mobile-menu d-lg-none d-block mt-5">
             <!-- Mobile menu items -->
             <ul v-if="!loggedIn">
-              <li><router-link to="/">Post a job</router-link></li>
+              <li><router-link to="/post-a-job">Post a job</router-link></li>
               <hr>
               <li><router-link to="/login">Log in</router-link></li>
               <hr>
@@ -110,9 +110,9 @@
                       </router-link>
                     </li>
                     <li>
-                      <a href="#">
+                      <router-link to="/ask-a-trade">
                         <i class="bi bi-people text-primary-1"></i> Ask a tradesperson
-                      </a>
+                      </router-link>
                     </li>
                     <li>
                       <router-link to="/logout">
@@ -126,7 +126,7 @@
           </ul>
 
           <ul v-else>
-            <li class="d-md-flex d-none active"><router-link to="/">Post a job</router-link></li>
+            <li class="d-md-flex d-none active"><router-link to="/post-a-job">Post a job</router-link></li>
             <li class="d-md-flex d-none"><router-link to="/login">Log in</router-link></li>
             <li class="d-md-flex d-none">
               <div class="sign-in-btn">

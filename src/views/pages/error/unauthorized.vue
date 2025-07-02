@@ -44,9 +44,9 @@ import store from "@/store/store";
 import homeOwnerHeader from "@/views/base-layout/navigation/homeowner-menu";
 
 export default {
-  name: "Home",
+  name: "Unauthorized",
   page: {
-    title: "Home",
+    title: "Unauthorized | " + appConfig.name,
     meta: [{name: "description", content: appConfig.description}]
   },
   data() {
@@ -58,6 +58,9 @@ export default {
   computed: {
     isHomeOwner() {
       const loggedUser = store.getters.GET_USER_INFO;
+      if(!loggedUser){
+        return false
+      }
       const userRole = loggedUser.roles?.[0] || '';
       return userRole === 'homeowner';
     }
@@ -68,113 +71,11 @@ export default {
     homeOwnerHeader
   },
   methods: {
-    async getTrades() {
-      this.tradeLoader = true
-      userService.getTrades(6).then((res) => {
-        this.trades = res.extra;
-        this.tradeLoader = false
-      });
-    },
   },
   created() {
-    this.getTrades();
   },
   mounted() {
     this.$nextTick(() => {
-      $('body').addClass('bg-wight')
-      $('.select1').niceSelect();
-      $('#slick1').slick({
-        rows: 2,
-        dots: false,
-        arrows: true,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        speed: 2000,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [{
-          breakpoint: 1200,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 991,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 768,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 576,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 480,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 350,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }]
-      });
-      new Swiper(".home5-feedback-slider", {
-        slidesPerView: 2,
-        spaceBetween: 20,
-        loop: true,
-        infinite: true,
-        autoplay: false,
-        speed: 1700,
-        // autoplay: {
-        //   delay: 2200,
-        // },
-        navigation: {
-          nextEl: ".next-13",
-          prevEl: ".prev-13",
-        },
-        breakpoints: {
-          280: {
-            slidesPerView: 1,
-          },
-          480: {
-            slidesPerView: 1
-          },
-          768: {
-            slidesPerView: 1
-          },
-          992: {
-            slidesPerView: 1
-          },
-          1200: {
-            slidesPerView: 2
-          },
-          1400: {
-            slidesPerView: 2
-          },
-          1600: {
-            slidesPerView: 2
-          },
-        }
-      });
-
-      $('.odometer').counterUp({
-        delay: 10,
-        time: 1000
-      });
-
       $('.sidebar-button').on("click", function () {
         $('.main-menu').addClass('show-menu');
       });
