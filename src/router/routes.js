@@ -307,7 +307,7 @@ export default [
         path: '/question-builder',
         name: 'questionBuilder',
         meta: {
-            authRequired: true,
+            // authRequired: true,
         },
         component: () => import('../views/pages/admin/question-builder'),
     },
