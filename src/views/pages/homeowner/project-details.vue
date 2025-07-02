@@ -56,8 +56,8 @@
                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                       <div v-for="(question,i) in project.questions" :key="i">
-                      <h6 class="fw-light">{{question.formLabel}}</h6>
-                      <p>{{question.answers}}</p>
+                      <h6>{{question.formLabel}}</h6>
+                      <p class="fw-light">{{question.answers}}</p>
                       </div>
                     </div>
                   </div>
