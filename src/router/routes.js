@@ -40,6 +40,11 @@ export default [
         },
     },
     {
+        path: '/find-tradesperson',
+        name: 'findTradesperson',
+        component: () => import('../views/pages/find-tradesperson'),
+    },
+    {
         path: '/create-account',
         name: 'createAccount',
         component: () => import('../views/pages/auth/create-account'),

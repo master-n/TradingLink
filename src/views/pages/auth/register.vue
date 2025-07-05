@@ -1,15 +1,15 @@
 <template>
-  <body class="bg-wight">
-  <!--  <div class="eg-preloder">-->
-  <!--  </div>-->
+  <div>
+    <!--  <div class="eg-preloder">-->
+    <!--  </div>-->
 
-  <topHeader></topHeader>
+    <topHeader/>
 
-  <!-- ========== Home Two Counter Start============= -->
-  <div class="counter-area home2-counter-area mb-120">
-    <div class="container eDSmX">
-      <div class="row g-lg-4 gy-5 justify-content-center">
-        <div class="col-md-6">
+    <!-- ========== Home Two Counter Start============= -->
+    <div class="counter-area home2-counter-area mb-120">
+      <div class="container eDSmX">
+        <div class="row g-lg-4 gy-5 justify-content-center">
+          <div class="col-md-6">
           <h1 class="font-weight-bold custom-title mb-4 mt-5">The trusted way to find the work you want</h1>
           <div class="card">
             <div class="card-body px-4">
@@ -90,7 +90,7 @@
       <div class="row mb-60">
         <div class="col-12 d-flex justify-content-center">
           <div class="section-title1 text-center">
-            <h2>Steps to land the work you <span>want</span></h2>
+            <h2>How to find the work you <span>want</span></h2>
           </div>
         </div>
       </div>
@@ -101,8 +101,8 @@
               <h4>01</h4>
               <span></span>
             </div>
-            <h4 class="font-weight-bold mb-4">Get matched with the right jobs</h4>
-            <p>Set up your free profile — we’ll match you with work that fits your skills and area.</p>
+            <h4 class="font-weight-bold mb-4">Received leads</h4>
+            <p>Set up your free profile. We’ll match you with work that fits your skills and area.</p>
           </div>
         </div>
         <div class="col-lg-4 col-sm-12">
@@ -111,7 +111,7 @@
               <h4>02</h4>
               <span></span>
             </div>
-            <h4 class="font-weight-bold mb-4">Let us know you're interested</h4>
+            <h4 class="font-weight-bold mb-4">Express Interest</h4>
             <p>Respond to as many leads as you like. Customers choose who to share their detils with based on your
               profile, work history, and reviews..</p>
           </div>
@@ -122,7 +122,7 @@
               <h4>03</h4>
               <span></span>
             </div>
-            <h4 class="font-weight-bold mb-4">Start the conversation</h4>
+            <h4 class="font-weight-bold mb-4">Connect and arrange</h4>
             <p>If you're shortlisted, we charge a fee to access the customer's contact details, so you can connect and
               discuss the job further.</p>
           </div>
@@ -231,11 +231,11 @@
       </div>
     </div>
   </div>
-  <!-- ========== Home Two Talented Area End============= -->
+    <!-- ========== Home Two Talented Area End============= -->
 
-  <HomeFooter></HomeFooter>
+    <HomeFooter></HomeFooter>
 
-  </body>
+  </div>
 
 </template>
 

@@ -1163,14 +1163,16 @@
             <div class="top-company-card">
               <div class="company-details">
                 <div class="name-location">
-                  <h5><a href="#">{{ trade.name }}</a></h5>
+                  <h5>
+                    <router-link :to="'/find-tradesperson?category='+trade.name">{{ trade.name }}</router-link>
+                  </h5>
                 </div>
-
               </div>
               <div class="job-details-vacancies">
                 <div class="apply-btn">
-                  <a href="#"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>View
-                    Details</a>
+                  <router-link :to="'/find-tradesperson?category='+trade.name"><span/>View
+                    Details
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -1272,10 +1274,10 @@
                       <div class="client-feedback-top">
                         <div class="author-area">
                           <div class="author-img">
-                            <img src="assets/images/bg/home5-testimonial-01.png" alt="">
+                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">
                             <div class="author-quat">
-                              <img class="quate1" src="assets/images/icon/home5-testimonial-quat.svg" alt="">
-                              <img class="quate2" src="assets/images/icon/home5-testimonial-quat2.svg" alt="">
+                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">
+                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">
                             </div>
                           </div>
                           <div class="author-content">
@@ -1308,10 +1310,10 @@
                       <div class="client-feedback-top">
                         <div class="author-area">
                           <div class="author-img">
-                            <img src="assets/images/bg/home5-testimonial-02.png" alt="">
+                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">
                             <div class="author-quat">
-                              <img class="quate1" src="assets/images/icon/home5-testimonial-quat.svg" alt="">
-                              <img class="quate2" src="assets/images/icon/home5-testimonial-quat2.svg" alt="">
+                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">
+                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">
                             </div>
                           </div>
                           <div class="author-content">
@@ -1344,10 +1346,10 @@
                       <div class="client-feedback-top">
                         <div class="author-area">
                           <div class="author-img">
-                            <img src="assets/images/bg/home5-testimonial-01.png" alt="">
+                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">
                             <div class="author-quat">
-                              <img class="quate1" src="assets/images/icon/home5-testimonial-quat.svg" alt="">
-                              <img class="quate2" src="assets/images/icon/home5-testimonial-quat2.svg" alt="">
+                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">
+                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">
                             </div>
                           </div>
                           <div class="author-content">
@@ -1380,10 +1382,10 @@
                       <div class="client-feedback-top">
                         <div class="author-area">
                           <div class="author-img">
-                            <img src="assets/images/bg/home5-testimonial-02.png" alt="">
+                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">
                             <div class="author-quat">
-                              <img class="quate1" src="assets/images/icon/home5-testimonial-quat.svg" alt="">
-                              <img class="quate2" src="assets/images/icon/home5-testimonial-quat2.svg" alt="">
+                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">
+                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">
                             </div>
                           </div>
                           <div class="author-content">
@@ -1416,10 +1418,10 @@
                       <div class="client-feedback-top">
                         <div class="author-area">
                           <div class="author-img">
-                            <img src="assets/images/bg/home5-testimonial-01.png" alt="">
+                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">
                             <div class="author-quat">
-                              <img class="quate1" src="assets/images/icon/home5-testimonial-quat.svg" alt="">
-                              <img class="quate2" src="assets/images/icon/home5-testimonial-quat2.svg" alt="">
+                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">
+                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">
                             </div>
                           </div>
                           <div class="author-content">
@@ -1453,10 +1455,10 @@
                       <div class="client-feedback-top">
                         <div class="author-area">
                           <div class="author-img">
-                            <img src="assets/images/bg/home5-testimonial-02.png" alt="">
+                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">
                             <div class="author-quat">
-                              <img class="quate1" src="assets/images/icon/home5-testimonial-quat.svg" alt="">
-                              <img class="quate2" src="assets/images/icon/home5-testimonial-quat2.svg" alt="">
+                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">
+                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">
                             </div>
                           </div>
                           <div class="author-content">
