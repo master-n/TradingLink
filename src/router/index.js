@@ -44,6 +44,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
         // Check role-based access
         const routeRoles = routeTo.matched.flatMap(route => route.meta.roles || []);
         if (routeRoles.length > 0 && !routeRoles.includes(userRole)) {
+            if (userRole === '') return next('/logout');
             if (userRole === 'homeowner') return next('/homeowner/my-projects');
             if (userRole === 'tradesperson') return next('/profile');
             return next('/error/403');

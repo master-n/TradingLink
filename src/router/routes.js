@@ -320,6 +320,15 @@ export default [
         component: () => import('../views/base-layout/navigation/small-screen-profile-menu'),
     },
     {
+        path: '/homeowner/profile-menu',
+        name: 'homeownerProfileMenu',
+        meta: {
+            authRequired: true,
+            roles: ['homeowner'],
+        },
+        component: () => import('../views/base-layout/navigation/small-screen-owner-menu'),
+    },
+    {
         path: '/projects/menu/:id',
         name: 'projectMenu',
         meta: {
@@ -336,6 +345,33 @@ export default [
             roles: ['homeowner']
         },
         component: () => import('../views/pages/homeowner/tradesperson-recommendation'),
+    },
+    {
+        path: '/homeowner/my-contact-details',
+        name: 'homeownerContactDetails',
+        meta: {
+            authRequired: true,
+            roles: ['homeowner']
+        },
+        component: () => import('../views/pages/homeowner/my-contact-details'),
+    },
+    {
+        path: '/homeowner/manage-account',
+        name: 'homeownerManageAccount',
+        meta: {
+            authRequired: true,
+            roles: ['homeowner']
+        },
+        component: () => import('../views/pages/homeowner/my-account'),
+    },
+    {
+        path: '/homeowner/notification-settings',
+        name: 'homeownerNotificationSettings',
+        meta: {
+            authRequired: true,
+            roles: ['homeowner']
+        },
+        component: () => import('../views/pages/homeowner/notifications-settings'),
     },
     {
         path: '/my-projects/:id',
