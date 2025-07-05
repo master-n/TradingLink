@@ -1,21 +1,13 @@
 <template>
   <nav class="bottom-nav navbar navbar-expand navbar-light bg-light justify-content-around d-md-none"
        v-if="isMobile && loggedIn">
-    <router-link class="nav-link" to="/new-leads">
+    <router-link class="nav-link" to="/post-a-job">
       <i class="bi bi-house-door-fill d-block"></i>
-      <small>New Leads</small>
+      <small>Post a job</small>
     </router-link>
-    <router-link class="nav-link" to="/new-leads">
+    <router-link class="nav-link" to="/homeowner/my-projects">
       <i class="bi bi-briefcase d-block"></i>
-      <small>Leads</small>
-    </router-link>
-    <router-link class="nav-link" to="/contact-details">
-      <i class="bi bi-people d-block"></i>
-      <small>Contacts</small>
-    </router-link>
-    <router-link class="nav-link active" to="/profile-menu">
-      <i class="bi bi-person-circle d-block"></i>
-      <small>Profile</small>
+      <small>My jobs</small>
     </router-link>
   </nav>
 </template>
@@ -23,7 +15,7 @@
 <script>
 
 export default {
-  name: "mobile-nav",
+  name: "homeowner-mobile-nav",
   data() {
     return {
       isMobile: false,

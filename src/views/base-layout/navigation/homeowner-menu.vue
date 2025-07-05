@@ -83,7 +83,7 @@
               </li>
               <hr>
               <li>
-                <router-link to="/register">My Account</router-link>
+                <router-link to="/homeowner/my-contact-details">My Account</router-link>
               </li>
               <hr>
               <li>
@@ -114,10 +114,10 @@
                 <div class="user-card dropdown-menu" aria-labelledby="dropdownMenuButton3">
                   <ul style="box-shadow: rgba(0, 0, 0, 0.15) 0 0.0625rem 0.375rem; border-radius: 0.25rem;">
                     <li>
-                       <h6 class="text-capitalize">{{ user.name }}</h6>
+                       <h6 class="text-muted text-capitalize">{{ user.name }}</h6>
                     </li>
                     <li>
-                      <router-link to="#">
+                      <router-link to="/homeowner/my-contact-details">
                         <i class="bi bi-person-bounding-box text-primary-1"></i> Profile
                       </router-link>
                     </li>
@@ -175,12 +175,6 @@ export default {
   },
 
   computed: {
-    registrationSteps() {
-      return 8 - this.user.registration_step;
-    },
-    isRegistrationComplete() {
-      return this.user.registration_status ==='complete'
-    },
     loggedIn() {
       return this.$store.getters.GET_USER_INFO;
     }
@@ -203,28 +197,5 @@ export default {
 <style scoped>
 .top-bar2 {
   background: white !important;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: white;
-  border-top: 1px solid #dee2e6;
-  z-index: 100;
-}
-
-.nav-link {
-  text-align: center;
-  padding: 10px;
-  color: #6c757d;
-}
-
-.nav-link.active {
-  color: #007bff;
-}
-
-.nav-link i {
-  font-size: 1.25rem;
 }
 </style>

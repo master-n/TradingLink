@@ -2,7 +2,7 @@
   <div>
     <topHeader></topHeader>
     <div class="mt-4 text-end pe-4">
-      <router-link to="/profile-menu" v-if="isMobile" class="mb-4">
+      <router-link :to="'/projects/menu/'+job_id" v-if="isMobile" class="mb-4">
         <i class="bi bi-chevron-left"></i> Back to Menu
       </router-link>
     </div>
@@ -30,11 +30,16 @@
 </template>
 
 <script>
-import topHeader from '../base-layout/header-2';
-import SideBar from './navigation/tradesperson-sidebar';
-import MobileFooter from '../../components/mobile-nav';
+import topHeader from '../base-layout/navigation/homeowner-menu';
+import SideBar from './navigation/homeowner-settings-sidebar';
+import MobileFooter from '../../components/homeowner-mobile-nav';
+import appConfig from "../../../app.config.json";
 
 export default {
+  page: {
+    title: "Homeowner Dashboard",
+    meta: [{name: "description", content: appConfig.description}]
+  },
   components: {
     topHeader,
     SideBar,
@@ -43,7 +48,8 @@ export default {
   data() {
     return {
       isMobile: false,
-      showMainContent: false
+      showMainContent: false,
+      job_id: null
     };
   },
   methods: {
@@ -61,6 +67,8 @@ export default {
         this.showMainContent = true;
       }
     }
+  },
+  created() {
   },
   mounted() {
     this.checkScreenSize();

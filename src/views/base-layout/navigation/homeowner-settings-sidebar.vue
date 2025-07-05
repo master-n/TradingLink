@@ -11,106 +11,32 @@
         </div>
         <div class="flex-grow-1">
           <h4 class="profile-name">{{ user.name }}</h4>
-          <h5 class="card-title mb-1">{{ user.parish_name }} ~ <small>{{ user.city_name }}</small></h5>
         </div>
       </div>
-      <router-link to="/user-profile" class="btn btn-outline-dark btn-block" style="border-color: #bebebe;">
-        <i class="bi bi-eye me-2"></i> View profile
-      </router-link>
-    </div>
-
-    <!-- Complete Registration -->
-    <a @click="completeRegistration" v-if="!isRegistrationComplete"
-       class="d-flex justify-content-between align-items-center mt-5 cursor-pointer">
-      <div>
-        <i class="bi bi-person-lines-fill mr-2"></i> Complete registration
-      </div>
-      <span class="badge bg-secondary rounded-pill">{{ registrationSteps }} steps left</span>
-      <i class="bi bi-chevron-right d-lg-none"></i>
-    </a>
-
-    <!-- List Groups -->
-    <div class="list-group mt-4">
-      <router-link to="/company-description"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                   id="company-description">
-        <div>
-          <i class="bi bi-building mr-2"></i> Company description
-        </div>
-        <i class="bi bi-chevron-right d-lg-none"></i>
-      </router-link>
-      <router-link to="/reviews"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                   id="reviews">
-        <div>
-          <i class="bi bi-star mr-2"></i> Reviews
-        </div>
-        <i class="bi bi-chevron-right d-lg-none"></i>
-      </router-link>
-      <router-link to="/portfolio" id="portfolio"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          <i class="bi bi-camera mr-2"></i> Portfolio
-        </div>
-        <i class="bi bi-chevron-right d-lg-none"></i>
-      </router-link>
-      <router-link to="/inbox" id="inbox"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          <i class="bi bi-envelope mr-2"></i> Inbox
-        </div>
-        <span class="badge bg-danger text-white rounded-pill">2</span>
-        <i class="bi bi-chevron-right d-lg-none"></i>
-      </router-link>
-
     </div>
 
     <!-- Account Section -->
     <div class="list-group">
       <h6 class="font-weight-bold">Account</h6>
-      <router-link to="/contact-details" id="contact-details"
+      <router-link to="/homeowner/my-contact-details" id="contact-details"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-file-text mr-2"></i> Contact details
         </div>
-        <span class="badge action-required rounded-pill" v-if="!user.identity_verified || user.identity_verified ==='rejected'">Action required</span>
 
-        <span class="badge bg-secondary text-white rounded-pill" v-if="user.identity_verified ==='pending'">Pending</span>
-        <i class="bi bi-chevron-right d-lg-none"></i>
       </router-link>
-      <router-link to="/manage-account" id="manage-account"
+      <router-link to="/homeowner/manage-account" id="manage-account"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-person-circle mr-2"></i> Manage account
         </div>
         <i class="bi bi-chevron-right d-lg-none"></i>
       </router-link>
-      <router-link to="saved-leads" id="saved-leads"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          <i class="bi bi-bookmark mr-2"></i> Saved leads
-        </div>
-        <i class="bi bi-chevron-right d-lg-none"></i>
-      </router-link>
     </div>
 
     <div class="list-group mt-4">
-      <h6 class="font-weight-bold">Lead settings</h6>
-      <router-link to="/work-area" id="work-area"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          <i class="bi bi-briefcase mr-2"></i> Work area
-        </div>
-        <i class="bi bi-chevron-right d-lg-none"></i>
-      </router-link>
-      <router-link to="/services" id="services"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <div>
-          <i class="bi bi-tools mr-2"></i> Services
-        </div>
-        <i class="bi bi-chevron-right d-lg-none"></i>
-      </router-link>
-      <router-link to="/notifications" id="notifications"
+      <h6 class="font-weight-bold">Settings</h6>
+      <router-link to="/homeowner/notification-settings" id="notifications"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-bell mr-2"></i> Notifications
@@ -121,7 +47,7 @@
 
     <div class="list-group mt-4">
       <h6 class="font-weight-bold">Support</h6>
-      <router-link to="/support" id="support"
+      <router-link to="/homeowner/support" id="support"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <i class="bi bi-info-circle mr-2"></i> Support centre
@@ -143,7 +69,7 @@
 
 <script>
 export default {
-  name: "Tradesperson-sidebar",
+  name: "HomeOwnerSidebar",
   data() {
     return {
       user: this.$store.getters.GET_USER_INFO || {},

@@ -36,7 +36,7 @@ import appConfig from "../../../app.config.json";
 
 export default {
   page: {
-    title: "Homeowner Dashboard | " + appConfig.name,
+    title: "Homeowner Dashboard",
     meta: [{name: "description", content: appConfig.description}]
   },
   components: {
