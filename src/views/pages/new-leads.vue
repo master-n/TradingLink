@@ -195,7 +195,7 @@
                         <span class="light-blue">Remote</span>
                       </div>
                       <div class="apply-btn">
-                        <a href="job-details.html"><span><img src="../../../public/frontend/assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
+                        <a href="#"><span><img src="../../../public/frontend/assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
                       </div>
                     </div>
                   </div>
@@ -260,7 +260,6 @@ export default {
     },
   },
   methods: {
-
     checkScreenSize() {
       this.isMobile = window.innerWidth < 992;
       this.showSidebar = !this.isMobile;
@@ -269,8 +268,6 @@ export default {
   mounted() {
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize);
-    $('body').addClass('bg-wight')
-
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.checkScreenSize);

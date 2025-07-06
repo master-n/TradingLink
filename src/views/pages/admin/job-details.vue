@@ -1,13 +1,17 @@
 <template>
-  <BaseDashboardLayout>
-    <template v-slot:title>
-      <h4 class="title mb-3 font-weight-bold ps-4">Responses to your job: <span
-          class="text-capitalize">{{ project?.headline }}</span></h4>
-    </template>
+  <div>
+    <topHeader/>
     <div class="container">
       <div class="row">
         <!-- Job Description Section -->
-        <div class="col-md-8">
+        <div class="col-md-8 offset-md-2">
+          <div class="mt-4 text-end pe-4">
+            <router-link :to="'/admin/job-posts'" class="mb-4">
+              <i class="bi bi-chevron-left"></i> Back to Jobs
+            </router-link>
+          </div>
+          <h4 class="title mb-3 font-weight-bold ps-4">Job Details: <span
+              class="text-capitalize">{{ project?.headline }}</span></h4>
           <div class="card mb-4" v-if="!isLoading">
             <div class="card-header d-flex justify-content-between align-items-center">
               <div><i class="bi bi-chat-right"></i> {{ project.responses || 0 }} responses</div>
@@ -48,8 +52,8 @@
                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                       <div v-for="(question,i) in project.questions" :key="i">
-                      <h6>{{question.formLabel}}</h6>
-                      <p class="fw-light">{{question.answers}}</p>
+                        <h6>{{question.formLabel}}</h6>
+                        <p class="fw-light">{{question.answers}}</p>
                       </div>
                     </div>
                   </div>
@@ -85,17 +89,21 @@
         </div>
       </div>
     </div>
-  </BaseDashboardLayout>
+
+  </div>
 </template>
 
 <script>
-import BaseDashboardLayout from '../../base-layout/homeowner-dashboard';
+import HomeFooter from '../../base-layout/footer';
+import topHeader from '../../base-layout/admin-header'
+import SideBar from '../../base-layout/navigation/tradesperson-sidebar';
+import MobileFooter from '../../../components/mobile-nav';
 import appConfig from "../../../../app.config.json";
 import {userService} from "@/apis/user.service";
 
 export default {
   page: {
-    title: "Project Details",
+    title: "Admin My Projects",
     meta: [{name: "description", content: appConfig.description}]
   },
   data() {
@@ -106,26 +114,20 @@ export default {
     };
   },
   components: {
-    BaseDashboardLayout
+    HomeFooter,
+    topHeader,
+    SideBar,
+    MobileFooter
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.getters.GET_USER_INFO;
+    },
   },
   methods: {
-    async save() {
-      this.isLoading = true;
-      userService.updateGuarantee({
-        guarantee: this.guarantee,
-      }).then((res) => {
-        this.isLoading = false;
-        const {status, message, extra} = res;
-        if (!status) {
-          this.$store.dispatch('error', {message: message, showSwal: true});
-          return;
-        }
-        this.$store.dispatch('success', {message, showSwal: true});
-      });
-    },
     getProjectDetails(project_id) {
       this.isLoading = true;
-      userService.getProjectDetails(project_id).then((res) => {
+      userService.jobDetails(project_id).then((res) => {
         this.isLoading = false;
         const {status, message, extra} = res;
         if (!status) {
@@ -135,6 +137,7 @@ export default {
         this.project = extra;
       });
     }
+
   },
   created() {
     this.project_id = this.$route.params.id
@@ -144,16 +147,11 @@ export default {
     this.getProjectDetails(this.project_id);
   },
   mounted() {
-  }
+    $('#job-posts').addClass('active')
+  },
 };
 </script>
 
 <style scoped>
-.card {
-  margin-bottom: 20px;
-}
 
-/*.accordion-button:not(.collapsed) {*/
-/*  color: var(--primary-color1) !important;*/
-/*}*/
 </style>

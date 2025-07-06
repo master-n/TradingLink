@@ -1,41 +1,45 @@
 <template>
-  <div class="container py-5">
-    <h2 class="mb-4">Add Questions for Trade</h2>
+  <div>
+    <topHeader/>
+    <div class="container">
+      <h2 class="mb-4">Add Questions for Trade</h2>
 
-    <div class="mb-3">
-      <label class="form-label">Select Trade</label>
-      <select v-model="selectedTrade" class="form-select">
-        <option disabled value="">Select a trade</option>
-        <option v-for="trade in trades" :key="trade.id" :value="trade.id">{{ trade.name }}</option>
-      </select>
-    </div>
-
-    <div class="card mb-5">
-      <div class="card-body">
-        <label class="form-label">Main Question</label>
-        <input class="form-control mb-2" v-model="question.formLabel" placeholder="e.g. What is the issue?" />
-
-        <NestedOption
-            v-for="(opt, index) in question.options"
-            :key="index"
-            :option="opt"
-            @remove="question.options.splice(index, 1)"
-        />
-
-        <button class="btn btn-sm btn-secondary mt-2" @click="addOption(question)">+ Add Option</button>
+      <div class="mb-3">
+        <label class="form-label">Select Trade</label>
+        <select v-model="selectedTrade" class="form-select">
+          <option disabled value="">Select a trade</option>
+          <option v-for="trade in trades" :key="trade.id" :value="trade.id">{{ trade.name }}</option>
+        </select>
       </div>
-    </div>
 
-    <button class="btn btn-success ms-2" :disabled="!selectedTrade" @click="submitQuestions">Save</button>
+      <div class="card mb-5">
+        <div class="card-body">
+          <label class="form-label">Main Question</label>
+          <input class="form-control mb-2" v-model="question.formLabel" placeholder="e.g. What is the issue?"/>
+
+          <NestedOption
+              v-for="(opt, index) in question.options"
+              :key="index"
+              :option="opt"
+              @remove="question.options.splice(index, 1)"
+          />
+
+          <button class="btn btn-sm btn-secondary mt-2" @click="addOption(question)">+ Add Option</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" :disabled="!selectedTrade" @click="submitQuestions">Save</button>
+    </div>
   </div>
 </template>
 
 <script>
 import NestedOption from '../../../components/optionNode.vue';
 import {userService} from "@/apis/user.service";
+import topHeader from '../../base-layout/admin-header'
 
 export default {
-  components: { NestedOption },
+  components: {NestedOption, topHeader},
   data() {
     return {
       selectedTrade: '',
@@ -65,7 +69,6 @@ export default {
       });
     },
     submitQuestions() {
-
       const payload = {
         trade_id: this.selectedTrade,
         question: this.question
@@ -87,6 +90,9 @@ export default {
         this.tradeLoader = false
       });
     },
-  }
+  },
+  mounted() {
+    $('#question-builder').addClass('active')
+  },
 };
 </script>

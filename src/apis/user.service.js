@@ -21,7 +21,11 @@ export const userService = {
     getUserInfo,
     getGuarantee,
     getProjectDetails,
+    jobDetails,
     getPostedServices,
+    getJobPosts,
+    getTradePeople,
+    getHomeowners,
     updateGuarantee,
     getPortfolio,
     getBusinessType,
@@ -185,9 +189,45 @@ function getProjectDetails(id) {
     })
 }
 
+function jobDetails(id) {
+    return new Promise((resolve) => {
+        axios.get(`/api/job/${id}`, useBasicAuthHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
 function getPostedServices() {
     return new Promise((resolve) => {
         axios.get(`/api/posted-services`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getJobPosts() {
+    return new Promise((resolve) => {
+        axios.get(`/api/job-posts`, useBasicAuthHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getTradePeople() {
+    return new Promise((resolve) => {
+        axios.get(`/api/admin/tradespeople`, useBasicAuthHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getHomeowners() {
+    return new Promise((resolve) => {
+        axios.get(`/api/admin/homeowners`, useBasicAuthHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));

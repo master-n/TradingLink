@@ -45,6 +45,42 @@ export default [
         component: () => import('../views/pages/find-tradesperson'),
     },
     {
+        path: '/admin',
+        name: 'admin',
+        meta: {
+            authRequired:false,
+        },
+        component: () => import('../views/pages/admin/question-builder'),
+    },
+    {
+        path: '/admin/job-posts',
+        name: 'jobPosts',
+        meta: {
+            authRequired:false,
+        },
+        component: () => import('../views/pages/admin/jobs'),
+    },
+    {
+        path: '/jobs/:id',
+        name: 'jobDetails',
+        component: () => import('../views/pages/admin/job-details'),
+    },
+    {
+        path: '/question-builder',
+        name: 'questionBuilder',
+        component: () => import('../views/pages/admin/question-builder'),
+    },
+    {
+        path: '/admin/homeowners',
+        name: 'homeowners',
+        component: () => import('../views/pages/admin/homeowner'),
+    },
+    {
+        path: '/admin/tradespeople',
+        name: 'tradespeople',
+        component: () => import('../views/pages/admin/tradespeople'),
+    },
+    {
         path: '/create-account',
         name: 'createAccount',
         component: () => import('../views/pages/auth/create-account'),
@@ -307,14 +343,6 @@ export default [
         },
 
         component: () => import('../views/pages/homeowner/service-request-posted'),
-    },
-    {
-        path: '/question-builder',
-        name: 'questionBuilder',
-        meta: {
-            // authRequired: true,
-        },
-        component: () => import('../views/pages/admin/question-builder'),
     },
     {
         path: '/profile-menu',

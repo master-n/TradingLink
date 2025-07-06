@@ -1,37 +1,5 @@
 <template>
   <div>
-<!--    <div class="top-bar2" style="justify-content: end">-->
-<!--      &lt;!&ndash; Top bar content &ndash;&gt;-->
-<!--      <div class="top-bar-right">-->
-<!--        <div class="language-select">-->
-<!--          <img src="../../../public/frontend/assets/images/icon/flag-eng.svg" alt="image">-->
-<!--          <span>Language</span>-->
-<!--          <ul class="topbar-sublist">-->
-<!--            <li>-->
-<!--              <img src="../../../public/frontend/assets/images/icon/flag-germeny.svg" alt="image">-->
-<!--              <span>Germany</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <img src="../../../public/frontend/assets/images/icon/flag-french.svg" alt="image">-->
-<!--              <span>French</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <img src="../../../public/frontend/assets/images/icon/flag-bangla.svg" alt="image">-->
-<!--              <span>Bengali</span>-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--        </div>-->
-<!--        <div class="social-area">-->
-<!--          <ul>-->
-<!--            <li><a href="https://www.facebook.com/"><i class="bx bxl-facebook"></i></a></li>-->
-<!--            <li><a href="https://twitter.com/"><i class='bx bxl-twitter'></i></a></li>-->
-<!--            <li><a href="https://www.linkedin.com/"><i class='bx bxl-linkedin'></i></a></li>-->
-<!--            <li><a href="https://www.instagram.com/"><i class='bx bxl-instagram'></i></a></li>-->
-<!--          </ul>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
     <header class="header-area style-3 mt-4">
       <!-- Header content -->
       <div class="menu-area">
