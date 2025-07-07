@@ -69,7 +69,7 @@
         <div>
           <i class="bi bi-envelope mr-2"></i> Inbox
         </div>
-        <span class="badge bg-danger text-white rounded-pill">2</span>
+<!--        <span class="badge bg-danger text-white rounded-pill">2</span>-->
         <i class="bi bi-chevron-right d-lg-none"></i>
       </router-link>
 

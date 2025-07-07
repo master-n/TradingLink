@@ -5,12 +5,15 @@ export const userService = {
     login,
     logout,
     getTrades,
+    getTradespersonsByTrade,
     getTradeQuestion,
     getParisCities,
+    getServiceInvites,
     createAccount,
     registerHomeOwner,
     signUp,
     saveProfession,
+    sendInvite,
     saveTravelToWork,
     workArea,
     businessType,
@@ -24,6 +27,7 @@ export const userService = {
     jobDetails,
     getPostedServices,
     getJobPosts,
+    getJobsNearMe,
     getTradePeople,
     getHomeowners,
     updateGuarantee,
@@ -100,6 +104,15 @@ function registerHomeOwner(payload) {
 function saveProfession(payload) {
     return new Promise((resolve) => {
         axios.post('/api/profession', payload, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function sendInvite(payload) {
+    return new Promise((resolve) => {
+        axios.post('/api/invites', payload, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -191,7 +204,7 @@ function getProjectDetails(id) {
 
 function jobDetails(id) {
     return new Promise((resolve) => {
-        axios.get(`/api/job/${id}`, useBasicAuthHeaders())
+        axios.get(`/api/job/${id}`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -210,6 +223,15 @@ function getPostedServices() {
 function getJobPosts() {
     return new Promise((resolve) => {
         axios.get(`/api/job-posts`, useBasicAuthHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getJobsNearMe() {
+    return new Promise((resolve) => {
+        axios.get(`/api/get-jobs-near-me`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -448,6 +470,16 @@ function getTrades(limit) {
     });
 }
 
+function getTradespersonsByTrade(tradeName) {
+    return new Promise((resolve) => {
+        axios.get(`/api/tradesperson-by-name${tradeName ? '?name=' + tradeName : ''}`, useBasicAuthHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
 function getTradeQuestion(id) {
     return new Promise((resolve) => {
         axios.get(`/api/trades/${id}/questions`, useBasicAuthHeaders())
@@ -461,6 +493,15 @@ function getTradeQuestion(id) {
 function getParisCities() {
     return new Promise((resolve) => {
         axios.get("/api/parishes-cities", useBasicAuthHeaders())
+            .then((response) => {
+                resolve(response.data);
+            }).catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function getServiceInvites() {
+    return new Promise((resolve) => {
+        axios.get("/api/get-invites", useBearerTokenHeaders())
             .then((response) => {
                 resolve(response.data);
             })

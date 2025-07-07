@@ -1341,20 +1341,13 @@
                 <div class="swiper-slide swiper-slide-duplicate-active" data-swiper-slide-index="0" role="group"
                      aria-label="1 / 2" style="width: 636px; margin-right: 20px;">
                   <div class="client-feedback-wrap hover-btn">
-                    <span class="for-border"></span>
                     <div class="client-feedback-inner">
+                      <h5 class="fw-bold">Replace wooden front door with upvc</h5>
+
                       <div class="client-feedback-top">
                         <div class="author-area">
-                          <div class="author-img">
-                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">
-                            <div class="author-quat">
-                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">
-                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">
-                            </div>
-                          </div>
                           <div class="author-content">
                             <h5>Rakhab Uddin</h5>
-                            <span>UI/UX Engineer</span>
                           </div>
                         </div>
                         <div class="reviews">
@@ -1368,8 +1361,7 @@
                         </div>
                       </div>
                       <div class="client-feedback-content">
-                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the
-                          beguiled and demoralized.</p>
+                        <p>"Wow! Very efficient and professional. Really good communication on time and did a great job of de-weeding the …"</p>
                       </div>
                     </div>
                   </div>
@@ -1390,7 +1382,6 @@
                           </div>
                           <div class="author-content">
                             <h5>Mrs. Jordan Harry</h5>
-                            <span>UI/UX Engineer</span>
                           </div>
                         </div>
                         <div class="reviews">
@@ -1404,8 +1395,7 @@
                         </div>
                       </div>
                       <div class="client-feedback-content">
-                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the
-                          beguiled and demoralized.</p>
+                        <p>"They provide a professional service with attention to detail and competitive pricing. I recommend their servic…"</p>
                       </div>
                     </div>
                   </div>
@@ -1426,7 +1416,6 @@
                           </div>
                           <div class="author-content">
                             <h5>Rakhab Uddin</h5>
-                            <span>UI/UX Engineer</span>
                           </div>
                         </div>
                         <div class="reviews">
@@ -1440,8 +1429,7 @@
                         </div>
                       </div>
                       <div class="client-feedback-content">
-                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the
-                          beguiled and demoralized.</p>
+                        <p>"Quick turnaround, good price, good communication and 10yr warranty"</p>
                       </div>
                     </div>
                   </div>
@@ -1463,7 +1451,6 @@
                           </div>
                           <div class="author-content">
                             <h5>Mrs. Jordan Harry</h5>
-                            <span>UI/UX Engineer</span>
                           </div>
                         </div>
                         <div class="reviews">
@@ -1477,8 +1464,7 @@
                         </div>
                       </div>
                       <div class="client-feedback-content">
-                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the
-                          beguiled and demoralized.</p>
+                        <p>"Fitted me in next day as I was in a hurry and done an excellent job. Would 100% recommend"</p>
                       </div>
                     </div>
                   </div>

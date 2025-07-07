@@ -9,18 +9,16 @@
       <div class="row justify-content-center align-items-center mb-4 mb-sm-0">
         <!-- Column with text content -->
         <div class="col-md-4 offset-md-2 order-md-first order-last">
-          <h1 class="mt-4 mt-sm-0">Painters & Decorators near me</h1>
-          <p>Easily find vetted and reviewed local Painters & Decorators. Just post your job to get free quotes from
-            MyBuilder's Painters & Decorators near you across the UK.</p>
+          <h1 class="mt-4 mt-sm-0">{{ selectedTrade ? selectedTrade : 'Jobs' }} near me</h1>
+          <p>Discover vetted and reviewed local {{ selectedTrade ? selectedTrade : 'professionals' }} with ease. Simply
+            post your job to receive free quotes from TradeLink's trusted
+            {{ selectedTrade ? selectedTrade : 'professionals' }} in your area.</p>
           <div class="input-group mb-3">
-            <select class="form-select">
-              <option selected>Bathroom Fitting</option>
-              <option value="1">Kitchen Fitting</option>
-              <option value="2">Plumbing</option>
-              <option value="3">Electrical</option>
+            <select class="form-select" v-model="selectedTrade">
+              <option v-for="(trade,i) in trades" :key="i" :value="trade.name">{{ trade.name }}</option>
             </select>
           </div>
-          <router-link to="/post-a-job" class="mb-4">
+          <router-link :to="`/post-a-job?category=${selectedTrade}`" class="mb-4">
             <button class="btn btn-primary big-button">Continue</button>
           </router-link>
         </div>
@@ -54,9 +52,7 @@
                 <div class="recent-article-content text-center card-body">
                   <h5 class="fw-bold">Post your job for free</h5>
                   <p class="fw-lighter">Tell us what you need done. Whether it's plumbing, painting, or gardening — give
-                    as
-                    much detail as you
-                    can so tradespeople understand the job clearly.
+                    as much detail as you can so tradespeople understand the job clearly.
                   </p>
                 </div>
               </div>
@@ -101,7 +97,7 @@
       <div class="container">
         <!-- Header with Search Bar -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h1>Some of our top rated painters & decorators</h1>
+          <h1>Some of our top {{ selectedTrade ? selectedTrade : 'professionals' }}</h1>
         </div>
         <div class="me-3 col-md-3 col-8 mb-4">
           <input type="text" class="form-control" placeholder="Your address">
@@ -109,23 +105,23 @@
 
         <!-- Sorting Options -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <p>48114 Results</p>
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-              Sort by: Recommended
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-              <li><a class="dropdown-item" href="#">Recommended</a></li>
-              <li><a class="dropdown-item" href="#">Highest Rated</a></li>
-              <li><a class="dropdown-item" href="#">Most Reviewed</a></li>
-            </ul>
-          </div>
+          <p>{{ tradespersons.length }} Results</p>
+<!--          <div class="dropdown">-->
+<!--            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown"-->
+<!--                    data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--              Sort by: Recommended-->
+<!--            </button>-->
+<!--            <ul class="dropdown-menu" aria-labelledby="sortDropdown">-->
+<!--              <li><a class="dropdown-item" href="#">Recommended</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">Highest Rated</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">Most Reviewed</a></li>-->
+<!--            </ul>-->
+<!--          </div>-->
         </div>
 
         <!-- Cards for Painters and Decorators -->
         <div class="row">
-          <div class="col-md-4 mb-4 d-flex">
+          <div class="col-md-4 mb-4 d-flex" v-for="(tradesperson,i) in tradespersons" :key="i">
             <div class="card flex-fill d-flex flex-column h-100">
               <!-- Card Body with fixed height -->
               <div class="card-body d-flex flex-column" style="height: 300px;">
@@ -134,15 +130,14 @@
                        class="rounded-circle me-3"
                        style="width: 50px; height: 50px;">
                   <div>
-                    <h5 class="card-title">HY Handyman services</h5>
+                    <h5 class="card-title">{{ tradesperson.name }}</h5>
                     <div class="d-flex align-items-center">
                       <span class="badge bg-primary-1 text-light me-2">★ 5/5</span>
                       <span>(1,341 reviews)</span>
                     </div>
                   </div>
                 </div>
-                <p class="card-text">Hello, my name is Hristo, I am a professional handyman owner of a small company HY
-                  Handyman services with over 15 years experience in London and Kent...</p>
+                <p class="card-text">Hello, my name is Hristo, I am a professional handyman owner of a small company HY Handyman services with over 15 years experience in London and Kent...</p>
                 <button class="btn btn-outline-primary-1 w-100 ">Get in touch</button>
               </div>
               <!-- Card Footer with fixed height -->
@@ -151,62 +146,6 @@
                 <p>Painting & Decorating - 22 Apr 2023</p>
                 <p>Hristo was great and very knowledgeable. He was honest and delivered a great finish to a
                   previously damaged wall...</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4 d-flex">
-            <div class="card flex-fill d-flex flex-column h-100">
-              <!-- Card Body with fixed height -->
-              <div class="card-body d-flex flex-column" style="height: 300px;">
-                <div class="d-flex align-items-center mb-3">
-                  <img src="../../../public/frontend/assets/images/home/step-3.png" alt="Probuild Contracts"
-                       class="rounded-circle me-3"
-                       style="width: 50px; height: 50px;">
-                  <div>
-                    <h5 class="card-title">Probuild Contracts</h5>
-                    <div class="d-flex align-items-center">
-                      <span class="badge bg-primary-1 text-light me-2">★ 4.9/5</span>
-                      <span>(737 reviews)</span>
-                    </div>
-                  </div>
-                </div>
-                <p class="card-text">We are a family-run business with 50 years of experience in all aspects of building
-                  work. All our work comes with a written guarantee...</p>
-                <button class="btn btn-outline-primary-1 w-100 ">Get in touch</button>
-              </div>
-              <!-- Card Footer with fixed height -->
-              <div class="card-footer text-muted d-flex flex-column" style="height: 150px;">
-                <p class="fw-lighter mb-1"><i class="bi bi-chat-dots"/> Latest review:</p>
-                <p>Painting & Decorating - 22 Apr 2023</p>
-                <p>Excellent team. Managed the work well.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4 d-flex">
-            <div class="card flex-fill d-flex flex-column h-100">
-              <!-- Card Body with fixed height -->
-              <div class="card-body d-flex flex-column" style="height: 300px;">
-                <div class="d-flex align-items-center mb-3">
-                  <img src="../../../public/frontend/assets/images/home/step-3.png" alt="Probuild Contracts"
-                       class="rounded-circle me-3"
-                       style="width: 50px; height: 50px;">
-                  <div>
-                    <h5 class="card-title">Probuild Contracts</h5>
-                    <div class="d-flex align-items-center">
-                      <span class="badge bg-primary-1 text-light me-2">★ 4.9/5</span>
-                      <span>(737 reviews)</span>
-                    </div>
-                  </div>
-                </div>
-                <p class="card-text">We are a family-run business with 50 years of experience in all aspects of building
-                  work. All our work comes with a written guarantee...</p>
-                <button class="btn btn-outline-primary-1 w-100 ">Get in touch</button>
-              </div>
-              <!-- Card Footer with fixed height -->
-              <div class="card-footer text-muted d-flex flex-column" style="height: 150px;">
-                <p class="fw-lighter mb-1"><i class="bi bi-chat-dots"/> Latest review:</p>
-                <p>Painting & Decorating - 22 Apr 2023</p>
-                <p>Excellent team. Managed the work well.</p>
               </div>
             </div>
           </div>
@@ -269,19 +208,12 @@ export default {
   },
   data() {
     return {
-      email: '',
       selectedTradeId: '',
-      selectedParishId: '',
-      selectedCityId: '',
-      selectedParish: '',
-      selectedCity: '',
+      selectedTrade: '',
       trades: [],
-      parishes: {},
-      emailError: false,
-      generalError: '',
+      tradespersons: [],
       isLoading: false,
       tradeLoader: false,
-      parishLoader: false,
     };
   },
   components: {
@@ -289,9 +221,7 @@ export default {
     topHeader
   },
   methods: {
-    submit() {
-      this.$router.push('/create-account')
-    },
+
     getTrades() {
       this.tradeLoader = true
       userService.getTrades().then((res) => {
@@ -300,43 +230,22 @@ export default {
       });
     },
 
-    async getParisCities() {
-      this.parishLoader = true
-      await this.$store.dispatch('showLoader')
-      userService.getParisCities().then((res) => {
-        this.parishes = res.extra;
-        this.parishLoader = false
-
+    getTradespersonsByTrade() {
+      this.isLoading = true
+      userService.getTradespersonsByTrade(this.selectedTrade).then((res) => {
+        this.tradespersons = res.extra;
+        this.isLoading = false
       });
     },
 
-    async signUp() {
-      this.emailError = false;
-      this.generalError = '';
-      this.isLoading = true;
-      this.$store.dispatch("signUp", {
-        email: this.email,
-        parish_id: this.selectedParishId,
-        city_id: this.selectedCityId,
-        main_trade: this.selectedTradeId
-      }).then((response) => {
-        const {status, message} = response;
-        this.isLoading = false;
-        if (!status) {
-          if (message.toLowerCase().includes('email')) {
-            this.emailError = true;
-          }
-          this.generalError = message;
-          return;
-        }
-        this.$router.push(`/create-account`);
-      });
-    }
-
   },
   created() {
+    const category = this.$route.query.category;
+    if (category) {
+      this.selectedTrade = category
+    }
     this.getTrades();
-    this.getParisCities();
+    this.getTradespersonsByTrade()
   },
   mounted() {
     $('.sidebar-button').on("click", function () {
@@ -370,33 +279,5 @@ export default {
 </script>
 
 <style scoped>
-.form-input {
-  border: 1px solid #787878 !important;
-}
 
->>> .select1 {
-  /*border: 1px solid #787878 !important;*/
-}
-
->>> .select2-selection {
-  border: 0 !important;
-}
-
-.recruters-card {
-  background: white !important;
-}
-
-.img-before::before {
-  background: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.1) 49.48%, rgba(0, 0, 0, 0.5) 100%);
-}
-
-.img-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #00000052;
-  border-radius: 0.25rem;
-}
 </style>

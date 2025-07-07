@@ -4,43 +4,50 @@
       <h4 class="title mb-5 font-weight-bold">Inbox</h4>
     </template>
 
-    <h5>Inbox</h5>
-
-    <div class="row mt-4 mb-5">
-      <div class="col-md-8">
-        <div v-if="guaranteeLoader">
-          <div v-for="(item,i) in 2" :key="i">
-            <div class="card mb-3">
-              <div class="card-body">
+    <div class="row mt-5">
+      <div class="col-lg-12" v-if="isLoading">
+        <div class="job-listing-card mb-30" v-for="(item,i) in 4" :key="i">
+          <div class="job-list-content">
+            <div class="company-area">
+              <div class="company-details">
+                <div class="lines shine"></div>
+                <div class="lines shine"></div>
+                <div class="lines shine"></div>
+                <div class="lines shine"></div>
                 <div class="lines shine"></div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="col-lg-12 mb-30" v-for="(invite, i) in services" :key="i">
+        <div class="job-listing-card">
+          <div class="job-list-content">
+            <div class="company-area">
+              <div class="company-details">
+                <div class="name-location">
+                  <h5 class="text-capitalize mb-2"><router-link :to="`/job-lead-details/${invite.service.city_name}/${invite.service.id}`">{{ invite.service.headline }}</router-link></h5>
+                  <small class="fw-light">{{invite.service.trade.name}} ~ #{{invite.service.id}}</small>
+                  <p class="fw-light mt-3"><i class="bi bi-pin-map"></i> {{ invite.service.city_name }} ({{invite.service.distance}} miles), <small
+                      class="fw-light">{{invite.service.created_at | toHumanDate()}}</small></p>
+                    <div class="alert alert-primary mt-4" v-if="invite.status ==='pending'">
+                      <i class="bi bi-envelope"></i> You have sent an invite to this job. Waiting for the homeowner to respond.
+                    </div>
 
-        <!-- Chat area -->
-        <div class="card">
-          <div class="card-header bg-primary-1 text-white">
-            Chat
-          </div>
-          <div class="card-body" style="height: 400px; overflow-y: auto;">
-            <div v-for="(message, index) in messages" :key="index" class="mb-3">
-              <div :class="message.from === 'me' ? 'text-end' : 'text-start'">
-                <div :class="message.from === 'me' ? 'bg-primary-1 text-white p-2 rounded d-inline-block' : 'bg-light p-2 rounded d-inline-block'">
-                  {{ message.text }}
+                    <div v-else-if="invite.status === 'accepted'">
+                      <router-link class="btn btn-primary" :to="`/chat?job=${invite.service.headline}&id=${invite.id}`"><i class="bi bi-chat-dots"></i> Send a message to the homeowner to discuss the job.</router-link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card-footer d-flex">
-            <input v-model="newMessage" @keyup.enter="sendMessage" type="text" class="form-control me-2" placeholder="Type your message...">
-            <button class="btn btn-primary" @click="sendMessage">Send</button>
-          </div>
         </div>
-        <!-- End Chat area -->
-
       </div>
+      <h4 v-if="!services.length && !isLoading">
+        <router-link to="/new-leads">send an invite to a job lead to start chatting</router-link>
+      </h4>
     </div>
+
   </BaseDashboardLayout>
 </template>
 
@@ -57,13 +64,8 @@ export default {
   },
   data() {
     return {
-      guarantee: '',
       isLoading: false,
-      guaranteeLoader: false,
-      messages: [
-        { from: 'other', text: 'Hello! How can I help you?' },
-        { from: 'me', text: 'I need assistance with my project.' }
-      ],
+      services: [],
       newMessage: '',
     };
   },
@@ -85,28 +87,21 @@ export default {
         this.$store.dispatch('success', {message, showSwal: true});
       });
     },
-    getGuarantee() {
-      this.guaranteeLoader = true;
-      userService.getGuarantee().then((res) => {
-        this.guaranteeLoader = false;
+    getServiceInvites() {
+      this.isLoading = true;
+      userService.getServiceInvites().then((res) => {
+        this.isLoading = false;
         const {status, message, extra} = res;
         if (!status) {
           this.$store.dispatch('error', {message: message, showSwal: true});
           return;
         }
-        this.guarantee = extra.guarantee;
+        this.services = extra;
       });
     },
-    sendMessage() {
-      if (this.newMessage.trim() !== '') {
-        this.messages.push({ from: 'me', text: this.newMessage.trim() });
-        this.newMessage = '';
-        // Here you can add API call to actually send the message
-      }
-    }
   },
   created() {
-    this.getGuarantee();
+    this.getServiceInvites();
   },
   mounted() {
     $('#inbox').addClass('active')
