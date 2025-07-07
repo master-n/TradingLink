@@ -479,6 +479,17 @@ export default [
         },
         component: () => import('../views/pages/inbox'),
     },
+
+    {
+        path: '/chat',
+        name: 'chat',
+        meta: {
+            authRequired: true,
+            roles: ['tradesperson']
+
+        },
+        component: () => import('../views/pages/chat'),
+    },
     {
         path: '/contact-details',
         name: 'contact-details',
@@ -521,16 +532,25 @@ export default [
     {
         path: '/new-leads',
         name: 'new-leads',
-        meta:{
+        meta: {
             authRequired: true,
         },
         component: () => import('../views/pages/new-leads'),
     },
 
     {
+        path: '/job-lead-details/:name/:id',
+        name: 'leadDetails',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/pages/job-lead-details'),
+    },
+
+    {
         path: '/homeowner/my-projects',
         name: 'homeowner-my-projects',
-        meta:{
+        meta: {
             authRequired: true,
             roles: ['homeowner']
 

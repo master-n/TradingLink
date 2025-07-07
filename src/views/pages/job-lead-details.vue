@@ -1,16 +1,37 @@
 <template>
   <div>
-    <topHeader/>
+    <topHeader></topHeader>
     <div class="container">
       <div class="row">
         <!-- Job Description Section -->
         <div class="col-md-8 offset-md-2">
           <div class="mt-4 text-end pe-4">
-            <router-link :to="'/admin/job-posts'" class="mb-4">
-              <i class="bi bi-chevron-left"></i> Back to Jobs
-            </router-link>
+            <a @click="$router.go(-1)" class="cursor-pointer mb-4">
+              <i class="bi bi-chevron-left"></i> Go Back
+            </a>
           </div>
-          <h4 class="title mb-3 font-weight-bold ps-4">Job Details: <span
+
+          <div v-if="project.invite && !isLoading">
+            <div v-if="project.invite.status ==='pending'" class="alert alert-primary mt-4">
+              <i class="bi bi-envelope"></i> You have sent an invite to this job. Waiting for the homeowner to respond.
+            </div>
+            <div v-else-if="project.invite.status === 'accepted'">
+              <router-link class="btn btn-primary"
+                           :to="`/chat?job=${project.invite.service.headline}&id=${project.invite.id}`"><i
+                  class="bi bi-chat-dots"></i> Send a message to the homeowner to discuss the job.
+              </router-link>
+            </div>
+          </div>
+
+
+          <div class="d-flex align-items-center mt-4" v-if="!project.invite && !isLoading">
+            <h6 class="fw-lighter mb-0 me-3">Interested in this job?</h6>
+            <button class="btn btn-primary flex-shrink-1" @click="sendInvite()">
+              <i class="bi bi-envelope"></i> Send an invite
+            </button>
+          </div>
+
+          <h4 class="title mb-3 font-weight-bold ps-4 mt-4">Job Details: <span
               class="text-capitalize">{{ project?.headline }}</span></h4>
           <div class="card mb-4" v-if="!isLoading">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -36,7 +57,9 @@
                 </div>
                 <div class="row mt-3">
                   <div class="col-md-4">Location:</div>
-                  <div class="col-md-8 text-left"><i class="bi bi-pin-map"></i> {{ project.city_name}} {{ project.parish_name ? '~ ' + project.parish_name : '' }}</div>
+                  <div class="col-md-8 text-left"><i class="bi bi-pin-map"></i> {{ project.city_name }}
+                    {{ project.parish_name ? '~ ' + project.parish_name : '' }}
+                  </div>
                 </div>
               </div>
               <hr/>
@@ -52,8 +75,8 @@
                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                       <div v-for="(question,i) in project.questions" :key="i">
-                        <h6>{{question.formLabel}}</h6>
-                        <p class="fw-light">{{question.answers}}</p>
+                        <h6>{{ question.formLabel }}</h6>
+                        <p class="fw-light">{{ question.answers }}</p>
                       </div>
                     </div>
                   </div>
@@ -86,29 +109,37 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
+    <!-- Footer -->
+    <div v-show="!isMobile">
+      <HomeFooter></HomeFooter>
+    </div>
+    <MobileFooter></MobileFooter>
 
   </div>
 </template>
 
 <script>
-import HomeFooter from '../../base-layout/footer';
-import topHeader from '../../base-layout/admin-header'
-import SideBar from '../../base-layout/navigation/tradesperson-sidebar';
-import MobileFooter from '../../../components/mobile-nav';
-import appConfig from "../../../../app.config.json";
+import HomeFooter from '../base-layout/footer';
+import topHeader from '../base-layout/header-2';
+import SideBar from '../base-layout/navigation/tradesperson-sidebar';
+import MobileFooter from '../../components/mobile-nav';
+import appConfig from "../../../app.config.json";
 import {userService} from "@/apis/user.service";
 
 export default {
   page: {
-    title: "Admin My Projects",
+    title: "Job Leads",
     meta: [{name: "description", content: appConfig.description}]
   },
   data() {
     return {
+      isMobile: false,
       isLoading: false,
+      inviteLoader: false,
       project_id: null,
       project: {},
     };
@@ -125,6 +156,10 @@ export default {
     },
   },
   methods: {
+    checkScreenSize() {
+      this.isMobile = window.innerWidth < 992;
+      this.showSidebar = !this.isMobile;
+    },
     getProjectDetails(project_id) {
       this.isLoading = true;
       userService.jobDetails(project_id).then((res) => {
@@ -136,7 +171,27 @@ export default {
         }
         this.project = extra;
       });
+    },
+
+    sendInvite() {
+      this.inviteLoader = true;
+      const payload = {
+        request_id: this.project.id,
+      };
+      userService.sendInvite(payload).then((res) => {
+        this.inviteLoader = false;
+        const {status, message, extra} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true});
+          this.$router.push('/error/404');
+          return;
+        }
+        this.$store.dispatch('success', {message: 'Invite sent successfully!', showSwal: true});
+        this.getProjectDetails(this.project_id)
+      });
+
     }
+
   },
   created() {
     this.project_id = this.$route.params.id
@@ -146,7 +201,11 @@ export default {
     this.getProjectDetails(this.project_id);
   },
   mounted() {
-    $('#job-posts').addClass('active')
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize);
   },
 };
 </script>

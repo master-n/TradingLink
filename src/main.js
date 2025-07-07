@@ -26,6 +26,9 @@ import ImageMagnifier from 'vue-image-magnifier'
 
 Vue.use(ImageMagnifier)
 
+import {initializeApp} from "firebase/app";
+
+
 
 
 Vue.config.productionTip = false
@@ -38,23 +41,28 @@ Vue.use(VueGoogleMaps, {
     installComponents: true
 });
 
+const firebaseConfig = {
+    apiKey: "AIzaSyBCyDzjOoDo9Ps3y2yP5wH1w1UFHsTe9VE",
+    authDomain: "redcabs-326d4.firebaseapp.com",
+    databaseURL: "https://redcabs-326d4-default-rtdb.firebaseio.com",
+    projectId: "redcabs-326d4",
+    storageBucket: "redcabs-326d4.appspot.com",
+    messagingSenderId: "114266712759",
+    appId: "1:114266712759:web:4c212de3390a1e2797bb32",
+    measurementId: "G-BK7HJ77JDX"
+};
+
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
+
 
 // Vue.use(VueDraggable)
 // Vue.use(VueQuillEditor)
 // Vue.use(VueMask)
-//
-// Vue.component('VueSlideBar', VueSlideBar)
 
-
-
-// Vue.component('apexchart', VueApexCharts)
 Vue.use(BootstrapVue)
-// // Vue.use(Vuelidate)
-// Vue.use(require('vue-chartist'))
-// Vue.component('simplebar', simplebar)
-// Vue.use(VueStringFilter)
-// Vue.use(VueTour)
-// Vue.use(Lightbox)
+
 
 
 
