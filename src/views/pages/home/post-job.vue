@@ -56,9 +56,7 @@
                              class="me-2"
                              :id="'checkbox-' + question.id + '-' + index"
                              :value="option.formLabel"
-                             v-model="question.answers"
-                             :required="index === 0 && question.required && !question.answers.length"
-                             @change="onOptionSelected(option,i)">
+                             v-model="question.answers">
                       <span>{{ option.formLabel }}</span>
                       <div v-if="isCheckboxOtherSelected(option, i)">
                         <input type="text"

@@ -11,6 +11,9 @@
                   <h4 class="text-center">Trades</h4>
                 </div>
                 <div class="col-lg-12">
+                  <button class="btn btn-primary btn-sm mb-3 me-2" @click="openCreateModal">
+                    Create New Trade
+                  </button>
                   <button class="btn btn-danger btn-sm mb-3" @click="deleteSelectedTrades" :disabled="selectedTrades.length === 0">
                     Delete Selected
                   </button>
@@ -58,6 +61,15 @@
       </div>
     </div>
 
+    <!-- Create Modal -->
+    <b-modal v-model="createModalShow" title="Create Trade" @ok="handleCreateOk">
+      <form @submit.stop.prevent="handleCreateSubmit">
+        <b-form-group label="Trade Name" label-for="trade-name-input">
+          <b-form-input id="trade-name-input" v-model="createTradeForm.name" required></b-form-input>
+        </b-form-group>
+      </form>
+    </b-modal>
+
     <!-- Edit Modal -->
     <b-modal v-model="editModalShow" title="Edit Trade" @ok="handleEditOk">
       <form @submit.stop.prevent="handleEditSubmit">
@@ -98,6 +110,10 @@ export default {
       user: this.$store.getters.GET_USER_INFO,
       showSidebar: false,
       isMobile: false,
+      createModalShow: false,
+      createTradeForm: {
+        name: ''
+      },
       isLoading: false,
       services: [],
       editModalShow: false,
@@ -150,6 +166,36 @@ export default {
         });
       });
     },
+
+    openCreateModal() {
+      this.createModalShow = true;
+    },
+
+    handleCreateOk(bvModalEvt) {
+      bvModalEvt.preventDefault();
+      this.handleCreateSubmit();
+    },
+
+    handleCreateSubmit() {
+      this.createModalShow = false;
+      confirm("This action cannot be reverted", () => {
+        this.isLoading = true;
+        const payload = {
+          name: this.createTradeForm.name
+        };
+        userService.createTrade(payload).then((res) => {
+          this.isLoading = false;
+          const { status, message,extra } = res;
+          if (!status) {
+            this.$store.dispatch('error', { message: message, showSwal: true });
+            return;
+          }
+          this.$store.dispatch('success', { message: 'Trade created successfully!', showSwal: true });
+          this.createTradeForm.name = '';
+          this.services.unshift(extra);
+        });
+      });
+    },
     deleteTrade(id) {
       confirm("Are you sure you want to delete this trade?", () => {
         this.isLoading = true;
@@ -164,7 +210,7 @@ export default {
             return;
           }
           this.$store.dispatch('success', { message: 'Trade deleted successfully!', showSwal: true });
-          this.getTrades();
+          this.services = this.services.filter(service => service.id !== id);
         });
       });
     },
@@ -185,7 +231,7 @@ export default {
           this.$store.dispatch('success', { message: 'Selected trades deleted successfully!', showSwal: true });
           this.selectedTrades = [];
           this.selectAll = false;
-          this.getTrades();
+          this.services = this.services.filter(service => !this.selectedTrades.includes(service.id));
         });
       });
     },

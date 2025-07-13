@@ -14,26 +14,40 @@
 
       <div class="card mb-5">
         <div class="card-body">
-          <label class="form-label">Main Question</label>
-          <input class="form-control mb-2" v-model="question.formLabel" placeholder="e.g. What is the issue?"/>
+          <div class="row">
+            <div class="col-md-9">
+              <label class="form-label">Main Question</label>
+              <input class="form-control mb-2" v-model="question.formLabel" placeholder="e.g. What is the issue?"/>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Option Type</label>
+              <select v-model="question.type" class="form-select mb-3">
+                <option value="StandardChoiceOption">Select One</option>
+                <option value="StandardCheckOption">Multiple Select</option>
+                <option value="StandardTextAreaOption">Text Area</option>
+              </select>
+            </div>
+          </div>
+
           <div v-if="isLoading">
             Loading Questions...
           </div>
           <div v-else>
-          <NestedOption
-              v-for="(opt, index) in question.options"
-              :key="index"
-              :option="opt"
-              @remove="question.options.splice(index, 1)"
-          />
+            <NestedOption
+                v-for="(opt, index) in question.options"
+                :key="index"
+                :option="opt"
+                :index="index"
+                @remove="question.options.splice(index, 1)"
+            />
           </div>
           <button class="btn btn-sm btn-secondary mt-2" @click="addOption(question)">+ Add Option</button>
         </div>
       </div>
 
-      <button class="btn btn-primary" :disabled="!selectedTrade || isLoading" @click="submitQuestions">
-        <b-spinner small v-if="isLoading"></b-spinner>
-        {{ isLoading ? 'Saving..' : 'Save' }}
+      <button class="btn btn-primary" :disabled="!selectedTrade || isSaving" @click="submitQuestions">
+        <b-spinner small v-if="isSaving"></b-spinner>
+        {{ isSaving ? 'Saving..' : 'Save' }}
       </button>
     </div>
   </div>
@@ -43,15 +57,23 @@
 import NestedOption from '../../../components/optionNode.vue';
 import {userService} from "@/apis/user.service";
 import topHeader from '../../base-layout/admin-header'
+import appConfig from "../../../../app.config.json";
 
 export default {
+  page: {
+    title: "Question Builder",
+    meta: [{name: "description", content: appConfig.description}]
+  },
   components: {NestedOption, topHeader},
+  name: 'QuestionBuilder',
+
   data() {
     return {
       selectedTrade: '',
       trades: [],
       isLoading: false,
       tradeLoader: false,
+      isSaving: false,
       question: {
         formLabel: '',
         type: 'StandardChoiceOption',
@@ -61,6 +83,12 @@ export default {
         next: null
       }
     };
+  },
+  watch: {
+    // Watch for changes in the question type
+    'question.type': function (newType) {
+      this.updateOptionsType(newType);
+    }
   },
   created() {
     this.fetchTrades();
@@ -89,10 +117,17 @@ export default {
       });
     },
 
+    updateOptionsType(newType) {
+      if (this.question.options) {
+        this.question.options.forEach(option => {
+          option.type = newType;
+        });
+      }
+    },
     addOption(question) {
       question.options.push({
         formLabel: '',
-        type: 'StandardChoiceOption',
+        type: this.question.type,
         required: true,
         requiredErrorMessage: 'This field is required',
         options: [],
@@ -105,13 +140,13 @@ export default {
         return;
       }
 
-      this.isLoading = true;
+      this.isSaving = true;
       const payload = {
         trade_id: this.selectedTrade,
         question: this.question
       };
       userService.saveTradeQuestions(payload).then((res) => {
-        this.isLoading = false;
+        this.isSaving = false;
         const {message, status, extra} = res;
         if (!status) {
           this.$store.dispatch('error', {message: message, showSwal: true});

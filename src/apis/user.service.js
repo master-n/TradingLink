@@ -44,6 +44,7 @@ export const userService = {
     savePortfolioOrder,
     deletePortfolio,
     deleteTrades,
+    createTrade,
     resendVerifyEmail,
     getPermissions,
     verifyHomeOwner,
@@ -386,6 +387,15 @@ function deletePortfolio(id) {
 function deleteTrades(tradeIds) {
     return new Promise((resolve) => {
         axios.post('/api/trade/delete', tradeIds, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function createTrade(formData) {
+    return new Promise((resolve) => {
+        axios.post('/admin/api/trade', formData, useBasicAuthHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));

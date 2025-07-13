@@ -10,9 +10,14 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
 
     if(error.response){
-        if(error.response.status === 401){
+        if (error.response.status === 401) {
             localStorage.clear();
-            window.location.href="login";
+            window.location.href = "login";
+        } else if (error.response.status === 500) {
+            const errorMessage = error.response.data.message ?
+                `Internal server error: ${error.response.data.message}` :
+                'An internal server error occurred. Please try again later.';
+            return Promise.reject(errorMessage);
         }
     }
     return Promise.reject(error);
