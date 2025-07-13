@@ -5,6 +5,7 @@ export const userService = {
     login,
     logout,
     getTrades,
+    postJobTrades,
     getTradespersonsByTrade,
     getTradeQuestion,
     getParisCities,
@@ -492,6 +493,16 @@ function getPermissions() {
 function getTrades(limit) {
     return new Promise((resolve) => {
         axios.get(`/api/trades${limit ? '?limit=' + limit : ''}`, useBasicAuthHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function postJobTrades() {
+    return new Promise((resolve) => {
+        axios.get(`/api/post-job-trades`, useBasicAuthHeaders())
             .then((response) => {
                 resolve(response.data);
             })

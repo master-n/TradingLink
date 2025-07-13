@@ -394,7 +394,7 @@ export default {
     },
     getTrades() {
       this.isLoading = true;
-      userService.getTrades().then((res) => {
+      userService.postJobTrades().then((res) => {
         this.isLoading = false;
         this.trades = res.extra;
         const routerQuery = this.$route.query.category;
