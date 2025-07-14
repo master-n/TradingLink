@@ -36,6 +36,7 @@ export const userService = {
     getBusinessType,
     getProfessions,
     getBusinessDetails,
+    getUserProfile,
     getIdStatus,
     checkIdVerified,
     editPortfolio,
@@ -313,6 +314,14 @@ function getBusinessDetails() {
             }).catch(err => resolve({status: false, message: err}));
     })
 }
+function getUserProfile(userId) {
+    return new Promise((resolve) => {
+        axios.get(`/api/user-profile/${userId}`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
 
 function getIdStatus() {
     return new Promise((resolve) => {
@@ -583,7 +592,7 @@ function resetPassword(payload) {
 
 function updatePersonalInfo(payload) {
     return new Promise((resolve) => {
-        axios.post('/api/update-personal-info', payload, useBearerTokenHeaders())
+        axios.post('/api/update-personal-info', payload, useBearerTokenHeaders(true))
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));

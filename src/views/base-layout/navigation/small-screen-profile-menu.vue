@@ -3,14 +3,17 @@
     <div class="settings-widget">
       <!-- Profile Section -->
       <div class="profile-section d-flex align-items-center p-3">
-        <div class="profile-image">
-          <i class="bi bi-person-fill"></i>
+        <div class="profile-image cursor-pointer" @click="triggerImageUpload">
+          <img v-if="user.photo" :src="user.photo" alt="Profile" class="" style="width: 50px; height: 50px; object-fit: cover; border-radius: 10px;" />
+          <i v-else class="bi bi-person-fill"></i>
         </div>
-        <div class="flex-grow-1 ms-3">
+        <div class="flex-grow-1 ms-3" @click="$router.push(`/user-profile/${user.id}`)">
           <h5 class="profile-name mb-0">{{ user.name }}</h5>
-          <small class="text-muted">{{ user.parish_name }} ~ {{ user.city_name }}</small>
+          <small class="text-muted">{{ user.city_name }} ~ {{ user.parish_name }}</small>
         </div>
       </div>
+      <input type="file" ref="profileImageInput" class="d-none" @change="handleImageUpload" accept="image/*"/>
+
 
       <!-- Complete Registration -->
       <div v-if="!isRegistrationComplete" class="registration-section">
@@ -131,6 +134,8 @@
 </template>
 
 <script>
+import {userService} from "@/apis/user.service";
+
 export default {
   name: "TradespersonSidebar",
   data() {
@@ -193,6 +198,25 @@ export default {
       if (!this.isMobile) {
         this.$router.push('/profile');
       }
+    },
+    triggerImageUpload() {
+      this.$refs.profileImageInput.click();
+    },
+    async handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('photo', file);
+      userService.updatePersonalInfo(formData).then((res) => {
+        const {status, message, extra} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true});
+          return;
+        }
+        this.$store.dispatch('updateUserInfo', extra);
+      });
+
     }
   },
   mounted() {

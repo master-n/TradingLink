@@ -32,8 +32,11 @@
             <div class="col-md-6 mb-4" v-for="(tradesperson, i) in tradespersons" :key="i">
               <div class="card">
                 <div class="card-body text-center">
-                  <i class="bi bi-person-circle mb-3" style="font-size: 2rem;"></i>
-                  <h5 class="card-title">{{ tradesperson.name }}</h5>
+                  <router-link :to="`/user-profile/${tradesperson.id}`">
+                    <img v-if="tradesperson.photo" :src="tradesperson.photo" alt="Profile" class="" style="width: 50px; height: 50px; object-fit: cover; border-radius: 10px;" />
+                    <i v-else class="bi bi-person-circle mb-3" style="font-size: 2rem;"></i>
+                    <h5 class="card-title">{{ tradesperson.name }}</h5>
+                  </router-link>
                   <p class="card-text fw-bold text-primary-1">New on Trade Link</p>
                   <p class="card-text fw-lighter">Active within <span class="fw-bold">{{ tradesperson.distance }} miles of {{
                       city_name

@@ -3,22 +3,25 @@
     <!-- Profile Section -->
     <div class="mb-4">
       <div class="d-flex align-items-center mb-4">
-        <div class="profile-image">
-          <i class="bi bi-person-fill"></i>
+        <div class="profile-image cursor-pointer" @click="triggerImageUpload">
+          <img v-if="user.photo" :src="user.photo" alt="Profile" class="" style="width: 50px; height: 50px; object-fit: cover; border-radius: 10px;" />
+          <i v-else class="bi bi-person-fill"></i>
           <div class="edit-icon">
             <i class="bi bi-pencil-fill"></i>
           </div>
         </div>
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 cursor-pointer" @click="$router.push(`/user-profile/${user.id}`)">
           <h4 class="profile-name">{{ user.name }}</h4>
-          <h5 class="card-title mb-1">{{ user.parish_name }} ~ <small>{{ user.city_name }}</small></h5>
+          <h5 class="card-title my-1 small">{{ user.city_name }} ~ {{ user.parish_name }}</h5>
         </div>
       </div>
+      <input type="file" ref="profileImageInput" class="d-none" @change="handleImageUpload" accept="image/*"/>
+
     </div>
 
-    <div class="card">
+    <div class="card mb-4">
       <router-link to="/who-viewed-my-profile">
-        <div class="card-body d-flex justify-content-between align-items-center cursor-pointer">
+        <div class="card-body py-1 d-flex justify-content-between align-items-center cursor-pointer">
           <div class="d-flex align-items-center">
             <i class="bi bi-person-circle me-2" style="font-size: 1.5rem;"></i>
             <small class="mr-3">Profile Views</small>
@@ -31,7 +34,7 @@
 
     <!-- Complete Registration -->
     <a @click="completeRegistration" v-if="!isRegistrationComplete"
-       class="d-flex justify-content-between align-items-center mt-5 cursor-pointer">
+       class="d-flex justify-content-between align-items-center mb-4 cursor-pointer">
       <div>
         <i class="bi bi-person-lines-fill mr-2"></i> Complete registration
       </div>
@@ -40,7 +43,7 @@
     </a>
 
     <!-- List Groups -->
-    <div class="list-group mt-4">
+    <div class="list-group mb-4">
       <router-link to="/company-description"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    id="company-description">
@@ -152,6 +155,8 @@
 </template>
 
 <script>
+import {userService} from "@/apis/user.service";
+
 export default {
   name: "Tradesperson-sidebar",
   data() {
@@ -206,6 +211,25 @@ export default {
         default:
           console.log('Unknown registration step');
       }
+    },
+    triggerImageUpload() {
+      this.$refs.profileImageInput.click();
+    },
+    async handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('photo', file);
+      userService.updatePersonalInfo(formData).then((res) => {
+        const {status, message, extra} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true});
+          return;
+        }
+        this.$store.dispatch('updateUserInfo', extra);
+      });
+
     }
   }
 };

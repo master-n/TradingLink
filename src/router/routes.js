@@ -447,12 +447,8 @@ export default [
         component: () => import('../views/pages/profile-views'),
     },
     {
-        path: '/user-profile',
+        path: '/user-profile/:userId',
         name: 'user-profile',
-        meta:{
-            authRequired: true,
-            roles: ['tradesperson']
-        },
         component: () => import('../views/pages/user-profile'),
     },
     {

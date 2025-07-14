@@ -264,7 +264,6 @@ export default {
       });
     },
 
-
   },
   created() {
     this.checkIdVerified();

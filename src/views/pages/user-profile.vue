@@ -1,114 +1,216 @@
 <template>
-  <BaseDashboardLayout>
-    <template v-slot:title>
-      <h4 class="title mb-5 font-weight-bold">Profile</h4>
-    </template>
+<div>
+  <div class="container">
+    <homeOwnerHeader v-if="isHomeOwner"/>
 
-    <div class="row mt-4 mb-5">
+    <topHeader v-else/>
+  </div>
 
-      <!-- Profile Area -->
-      <div class="col-md-12">
-        <div class="text-center">
-            <img
-                :src="userProfile.avatar"
-                class="mb-3"
-                width="120"
-                height="120"
-                alt="User Avatar"
-                style="border-radius: 10px; object-fit: cover;">
-          <h4 class="card-title">{{ userProfile.name }}</h4>
-          <p class="text-muted"><i class="fas fa-map-marker-alt"></i> {{ userProfile.parish_name }}  {{userProfile.city_name?' ~ ' + userProfile.city_name:''}}</p>
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div @click="$router.go(-1)" class="text-muted mb-5 cursor-pointer"><i class="bi bi-arrow-left"></i> Back</div>
 
-          <!-- Good to know -->
-          <div class="my-3">
-            <p><i class="fas fa-user-check text-primary-1"></i> Verified by Trade Link</p>
-            <p><i class="fas fa-shield-alt text-primary-1"></i> Offers warranty</p>
+        <div class="alert bg-primary-1 mb-5 py-1" v-if="checkIfUser">
+          <p class="fw-lighter text-light small mb-0"><i class="bi bi-info-circle"/> Viewing profile as a customer</p>
+          <router-link to="/profile" class="small text-light">Edit Profile <i class="bi bi-arrow-right"/></router-link>
+        </div>
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-5">
+          <img v-if="userInfo.photo" :src="userInfo.photo" alt="Company Logo"
+               class="rounded-circle me-3" width="60"
+               height="60" style="object-fit: cover;"/>
+          <div v-else class="profile-image cursor-pointer rounded-circle" style="width: 70px; height: 70px;">
+            <i class="bi bi-person-fill"></i>
           </div>
+          <div v-if="!userLoader">
+            <h6 class="mb-2">{{ userInfo.name }}</h6>
+            <div class="text-muted mb-2">
+              <i class="bi bi-star-fill text-primary-1"></i> 4.9/5 (551 reviews)
+            </div>
+            <div v-if="userInfo.city_name"><i class="bi bi-geo-alt"></i>
+              {{ userInfo.city_name ? `${userInfo.city_name} ~ ${userInfo.parish_name}` : '' }}
+            </div>
+            <div v-else><i class="bi bi-geo-alt"></i> N/A</div>
+          </div>
+          <div v-else class="w-50">
+            <div class="lines shine" v-for="(item,i) in 3" :key="i"></div>
+          </div>
+        </div>
+        <div class="mb-5" v-if="!checkIfUser">
+          <b-button variant="primary">Get in touch</b-button>
+        </div>
 
-          <!-- Portfolio -->
-          <div>
-            <h5 class="mb-3 mt-4 fw-bold">Portfolio</h5>
-            <div class="row justify-content-start align-items-stretch mx-sm-0 mx-5">
-              <div v-for="(item, index) in portfolio" :key="index" class="col-md-3 mb-3">
-                <div
-                    class="card h-100 shadow-sm"
-                    style="cursor: pointer;"
-                >
-                  <img
-                      :src="item.file || 'https://placehold.co/400x300'"
-                      class="card-img-top"
-                      @click="openGallery(index)"
-                      style="height: 200px; object-fit: cover;"
-                  >
-                  <div class="card-body">
-                    <h5 class="mb-2 p-description" @click="openGallery(index)">{{ item.title || 'Untitled' }}</h5>
-                    <p class="p-description" @click="openGallery(index)">{{
-                        item.description || 'No description provided.'
-                      }}</p>
-                  </div>
+        <!-- Tabs -->
+        <b-tabs v-model="tabIndex" fill>
+          <b-tab title="Profile">
+            <!-- Good to know -->
+            <div class="mb-4 mt-4">
+              <h6>Good to know</h6>
+              <ul class="list-unstyled">
+                <!--                <li><i class="bi bi-person-check me-2"></i> Verified by Trade Link</li>-->
+                <li><i class="bi bi-shield-check me-2"></i> {{ guarantee ? 'Offers warranty' : 'N/A' }}</li>
+                <!--                <li><i class="bi bi-building me-2"></i> Registered at Companies House</li>-->
+              </ul>
+            </div>
+
+            <!-- About -->
+            <div class="mb-4" v-if="userInfo.description">
+              <h6 class="fw-bold">About this company *</h6>
+              <p class="fw-lighter small">
+                {{ userInfo.description || 'No description provided.' }}
+              </p>
+              <!--              <p class="fst-italic small">-->
+              <!--                *Trade Lin does not check company descriptions. If you think something is incorrect,-->
+              <!--                <a href="#">let us know</a>.-->
+              <!--              </p>-->
+            </div>
+
+            <!-- Portfolio -->
+            <div class="mt-2" v-if="portfolio.length >0">
+              <h6 class="fw-bold">Portfolio</h6>
+              <div class="row g-2">
+                <div class="col-4 col-sm-3 col-md-2" v-for="(item, index) in portfolio" :key="index">
+                  <img :src="item.file || 'https://placehold.co/400x300'" class="img-fluid rounded border"
+                       alt="Portfolio image" @click="openGallery(index)"/>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </b-tab>
 
+          <b-tab title="Reviews">
+            <p class="mt-4 fw-lighter small">Customer reviews will be displayed here.</p>
+          </b-tab>
+        </b-tabs>
+
+      </div>
     </div>
-  </BaseDashboardLayout>
+    <!-- Back -->
+  </div>
+
+  <!-- Gallery Modal -->
+  <b-modal v-model="galleryVisible" size="xl" hide-footer centered>
+    <div class="d-flex flex-row">
+      <b-button
+          variant="light"
+          class="position-absolute btn-primary"
+          style="top: 50%; left: 20px; transform: translateY(-50%); z-index: 10; border-radius: 50%; width: 50px; height: 50px;"
+          @click="prevImage"
+          :disabled="currentIndex === 0"
+      >
+        <i class="bi bi-chevron-left"></i>
+      </b-button>
+      <b-button
+          variant="light"
+          class="position-absolute btn-primary"
+          style="top: 50%; right: 20px; transform: translateY(-50%); z-index: 10; border-radius: 50%; width: 50px; height: 50px;"
+          @click="nextImage"
+          :disabled="currentIndex === portfolio.length - 1"
+      >
+        <i class="bi bi-chevron-right"></i>
+      </b-button>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <img
+            :src="portfolio[currentIndex]?.file || 'https://placehold.co/400x300'"
+            class="img-fluid w-100" style="object-fit: cover"
+        >
+      </div>
+      <div class="col-md-6">
+        <h5 class="mt-4">{{ portfolio[currentIndex]?.title || 'Untitled' }}</h5>
+        <p>{{ portfolio[currentIndex]?.description || 'No description provided.' }}</p>
+      </div>
+    </div>
+  </b-modal>
+
+</div>
 </template>
 
 <script>
 import BaseDashboardLayout from '../base-layout/tradesperson-dashboard';
 import appConfig from "../../../app.config.json";
 import {userService} from "@/apis/user.service";
+import topHeader from '../base-layout/navigation/home-menu';
+import store from "@/store/store";
+import homeOwnerHeader from '../base-layout/navigation/homeowner-menu'
+
 
 export default {
   page: {
     title: "User Profile",
     meta: [{name: "description", content: appConfig.description}]
   },
+  name: 'UserProfile',
   data() {
     return {
+      tabIndex: 0,
       userProfile: this.$store.getters.GET_USER_INFO || {},
       portfolioLoader: false,
-      portfolio: []
+      portfolio: [],
+      galleryVisible: false,
+      userLoader: false,
+      currentIndex: 0,
+      guarantee: '',
+      userInfo: {},
     };
   },
   components: {
-    BaseDashboardLayout
+    BaseDashboardLayout,
+    topHeader,
+    homeOwnerHeader
   },
   watch: {
-    '$store.getters.GET_USER_INFO': {
-      handler(newUser) {
-        this.user = newUser || {};
-      },
-      immediate: true,
-      deep: true
-    }
   },
+  computed: {
+    checkIfUser() {
+      return Number(this.userProfile.id) === Number(this.userInfo.id);
+    },
+    isHomeOwner() {
+      const loggedUser = store.getters.GET_USER_INFO;
+      if (!loggedUser) {
+        return false
+      }
+      const userRole = loggedUser.roles?.[0] || '';
+      return userRole === 'homeowner';
+    }
 
+  },
   methods: {
     openGallery(index) {
-      // Logic to open a gallery modal or redirect to a detailed view
-      console.log(`Open gallery for item at index: ${index}`);
+      this.currentIndex = index;
+      this.galleryVisible = true;
     },
-    getPortfolio() {
-      this.portfolioLoader = true;
-      userService.getPortfolio().then((res) => {
-        this.portfolioLoader = false;
-        const {status, message, extra} = res;
-        if (!status) {
-          this.$store.dispatch('error', {message: message, showSwal: true});
-          return;
-        }
-        this.portfolio = extra.portfolio;
-      });
+    prevImage() {
+      if (this.currentIndex > 0) this.currentIndex--;
+    },
+    nextImage() {
+      if (this.currentIndex < this.portfolio.length - 1) this.currentIndex++;
     },
 
+    getUserProfile(userId) {
+      this.userLoader = true;
+      userService.getUserProfile(userId).then((res) => {
+        this.userLoader = false;
+        const {status, extra} = res;
+        if (!status) {
+          this.$router.push('/error/404')
+          return;
+        }
+        this.userInfo = extra;
+      });
+    }
 
   },
   created() {
-    this.getPortfolio();
+    // Fetch user profile data
+    const userId = this.$route.params.userId;
+    if (!userId) {
+      this.$router.push('/unauthorized')
+      return;
+    }
+    this.getUserProfile(userId);
   },
   mounted() {
   }
@@ -116,26 +218,4 @@ export default {
 </script>
 
 <style scoped>
-.portfolio-item {
-  transition: transform 0.2s;
-}
-
-.portfolio-item:hover {
-  transform: scale(1.05);
-}
-
->>> .slick-arrow{
-  top: 30% !important;
-  z-index: 100;
-}
-
-.p-description {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /*min-height: 48px;*/
-}
-
 </style>
