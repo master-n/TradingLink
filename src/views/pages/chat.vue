@@ -316,6 +316,11 @@ export default {
   mounted() {
     $('#inbox').addClass('active')
   },
+  beforeDestroy() {
+    if (this.unsubscribeMessages) {
+      this.unsubscribeMessages(); // Detach the Firebase listener
+    }
+  },
 };
 </script>
 

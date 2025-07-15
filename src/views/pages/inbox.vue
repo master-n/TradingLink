@@ -72,7 +72,7 @@
 import BaseDashboardLayout from '../base-layout/tradesperson-dashboard';
 import appConfig from "../../../app.config.json";
 import {userService} from "@/apis/user.service";
-import {getDatabase, ref, get,off, onValue} from "firebase/database";
+import {getDatabase, off, onValue, ref} from "firebase/database";
 
 
 export default {

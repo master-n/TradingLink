@@ -60,7 +60,7 @@ export default {
       if (this.isMobile) {
         this.showMainContent = true;
       }
-    }
+    },
   },
   mounted() {
     this.checkScreenSize();

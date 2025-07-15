@@ -72,7 +72,7 @@
         <div>
           <i class="bi bi-envelope mr-2"></i> Inbox
         </div>
-<!--        <span class="badge bg-danger text-white rounded-pill">2</span>-->
+        <span class="badge bg-danger text-white rounded-pill">{{ inboxCount }}</span>
         <i class="bi bi-chevron-right d-lg-none"></i>
       </router-link>
 
@@ -162,6 +162,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.GET_USER_INFO || {},
+      inboxCount: this.$store.getters.GET_INBOX_COUNT || 0,
     };
   },
   computed: {
@@ -181,8 +182,16 @@ export default {
       },
       immediate: true,
       deep: true
+    },
+    '$store.getters.GET_INBOX_COUNT': {
+      handler(count) {
+        this.inboxCount = count || 0;
+      },
+      immediate: true,
+      deep: true
     }
   },
+
   methods: {
     completeRegistration() {
       // Check the registration step and route accordingly
@@ -231,7 +240,7 @@ export default {
       });
 
     }
-  }
+  },
 };
 </script>
 

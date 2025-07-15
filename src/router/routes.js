@@ -110,6 +110,7 @@ export default [
             },
         },
     },
+
     {
         path: '/about-you',
         name: 'about-you',
@@ -632,6 +633,7 @@ export default [
         name: 'MyProposalsContacts',
         meta: {
             authRequired: true,
+            roles: ['tradesperson']
         },
         component: () => import('../views/pages/my-contacts'),
     },

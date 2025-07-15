@@ -37,7 +37,9 @@
             <ul v-else>
               <li><router-link to="/new-leads">New leads</router-link></li>
               <hr>
-              <li><router-link to="/contact-details">Contacts</router-link></li>
+              <li>
+                <router-link to="/my-proposals/contacts">Contacts</router-link>
+              </li>
               <hr>
               <li>
                 <router-link to="/profile">My Account <i class="bi bi-list ms-2"></i></router-link>
@@ -51,12 +53,15 @@
           <!-- Navigation right content -->
           <ul v-if="loggedIn">
             <li class="d-md-flex d-none active"><router-link to="/new-leads">New leads</router-link></li>
-            <li class="d-md-flex d-none"><router-link to="/contact-details">Contacts</router-link></li>
+            <li class="d-md-flex d-none">
+              <router-link to="/my-proposals/contacts">Contacts</router-link>
+            </li>
             <li class="d-md-flex d-none">
               <div class="btn-group dropdown">
                 <div class="notifications-area dropdown-toggle" role="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="sign-in-btn">
                     <a class="primry-btn-1 lg-btn">My Account <i class="bi bi-list ms-2"></i></a>
+                    <span style="width: 20px; height: 20px;" class="bg-danger">{{ inboxCount }}</span>
                   </div>
                 </div>
                 <div class="user-card dropdown-menu" aria-labelledby="dropdownMenuButton3">
@@ -75,6 +80,7 @@
                     <li>
                       <router-link to="/profile">
                         <i class="bi bi-person-circle text-primary-1"></i> Profile
+                        <span class="badge bg-danger text-white rounded-pill" v-if="inboxCount">{{ inboxCount }}</span>
                       </router-link>
                     </li>
                     <li>
@@ -123,7 +129,17 @@ export default {
     return {
       isMobile: false,
       user: this.$store.getters.GET_USER_INFO || {},
+      inboxCount: this.$store.getters.GET_INBOX_COUNT || 0,
     };
+  },
+  watch: {
+    '$store.getters.GET_INBOX_COUNT': {
+      handler(count) {
+        this.inboxCount = count || 0;
+      },
+      immediate: true,
+      deep: true
+    }
   },
   computed: {
     registrationSteps() {
@@ -176,7 +192,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.checkScreenSize);
-  }
+  },
 };
 </script>
 

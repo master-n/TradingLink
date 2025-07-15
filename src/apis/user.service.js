@@ -12,6 +12,7 @@ export const userService = {
     getTradeQuestion,
     getParisCities,
     getServiceInvites,
+    getUserInterest,
     createAccount,
     registerHomeOwner,
     signUp,
@@ -624,6 +625,16 @@ function getParisCities() {
 function getServiceInvites() {
     return new Promise((resolve) => {
         axios.get("/api/get-invites", useBearerTokenHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function getUserInterest() {
+    return new Promise((resolve) => {
+        axios.get("/api/get-user-interest", useBearerTokenHeaders())
             .then((response) => {
                 resolve(response.data);
             })

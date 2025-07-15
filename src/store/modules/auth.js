@@ -2,16 +2,16 @@ import {userService} from '@/apis/user.service';
 
 const state = {
     userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
+    inboxCount: localStorage.getItem("inboxCount") || null,
 }
 
 const getters = {
     'GET_USER_INFO'() {
         return state.userInfo
     },
-    userInformation(state) {
-        return state.userInfo;
+    'GET_INBOX_COUNT'() {
+        return state.inboxCount;
     }
-
 }
 
 const mutations = {
@@ -24,8 +24,20 @@ const mutations = {
 
     'CLEAR_USER_INFO'() {
         state.userInfo = '';
+        state.inboxCount = 0;
         localStorage.removeItem('userInfo');
+        localStorage.removeItem('inboxCount');
 
+    },
+
+    // Updates inbox count in state
+    SET_INBOX_COUNT(state, count) {
+        if (typeof count !== 'number') {
+            console.error('count must be a number');
+            return;
+        }
+        state.inboxCount = count;
+        localStorage.setItem("inboxCount", count);
     },
 
     UPDATE_USER_INFO(state, userData) {
@@ -121,6 +133,13 @@ const actions = {
             commit('UPDATE_USER_INFO', payload)
             resolve('User info updated successfully')
         })
+    },
+
+    updateInboxCount({commit}, count) {
+        return new Promise((resolve) => {
+            commit('SET_INBOX_COUNT', count);
+            resolve('Inbox count updated successfully');
+        });
     },
 
     updatePersonalInfo({commit, dispatch}, payload) {

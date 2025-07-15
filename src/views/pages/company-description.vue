@@ -11,7 +11,7 @@
             <i class="bi bi-pencil-square"></i> Edit
           </button>
         </div>
-        <p>{{ user.description }}</p>
+        <p class="fw-lighter small">{{ user.description }}</p>
       </div>
     </div>
 
