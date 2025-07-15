@@ -13,11 +13,13 @@
           <p>Discover vetted and reviewed local {{ selectedTrade ? selectedTrade : 'professionals' }} with ease. Simply
             post your job to receive free quotes from TradeLink's trusted
             {{ selectedTrade ? selectedTrade : 'professionals' }} in your area.</p>
+
           <div class="input-group mb-3">
-            <select class="form-select" v-model="selectedTrade">
+            <select class="form-select" v-model="selectedTrade" :disabled="tradeLoader">
               <option v-for="(trade,i) in trades" :key="i" :value="trade.name">{{ trade.name }}</option>
             </select>
           </div>
+
           <router-link :to="`/post-a-job?category=${selectedTrade}`" class="mb-4">
             <button class="btn btn-primary big-button">Continue</button>
           </router-link>
@@ -230,7 +232,6 @@ export default {
     topHeader
   },
   methods: {
-
     getTrades() {
       this.tradeLoader = true
       userService.getTrades().then((res) => {
