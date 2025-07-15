@@ -88,10 +88,15 @@
               <h6 class="text-center fw-lighter">Be the first to send a message</h6>
             </div>
           </div>
-          <div class="card-footer d-flex">
+          <div class="card-footer d-flex" v-if="jobDetails.status !=='complete'">
             <input v-model="newMessage" @keyup.enter="sendMessage" type="text" class="form-control me-2"
                    placeholder="Type your message...">
             <button class="btn btn-primary" @click="sendMessage">Send</button>
+          </div>
+          <div class="card-footer d-flex" v-else>
+            <input type="text" class="form-control me-2" placeholder="Type your message...">
+            <button class="btn btn-primary" disabled>Send
+            </button>
           </div>
         </div>
         <!-- End Chat area -->

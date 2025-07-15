@@ -1095,26 +1095,24 @@
         </div>
         <div class="row gy-5 justify-content-center align-items-stretch">
           <div class="col-lg-4 col-md-6 d-flex">
-            <div class="recent-article-wrrap card flex-fill d-flex flex-column">
+            <div class="fancy-card card flex-fill d-flex flex-column">
               <div class="recent-article-img card-img-top" style="height: 200px;">
                 <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-1.png" alt="Post your job">
               </div>
-              <div class="recent-article-content text-center card-body">
+              <div class="text-center card-body" style="background: white;">
                 <h5 class="fw-bold">Post your job</h5>
                 <p class="fw-lighter">Tell us what you need done. Whether it's plumbing, painting, or gardening — give
-                  as
-                  much detail as you
-                  can so tradespeople understand the job clearly.
+                  as much detail as you can so tradespeople understand the job clearly.
                 </p>
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 d-flex">
-            <div class="recent-article-wrrap card flex-fill d-flex flex-column">
+            <div class="fancy-card card flex-fill d-flex flex-column">
               <div class="recent-article-img card-img-top" style="height: 200px;">
                 <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-2.png" alt="Trades respond">
               </div>
-              <div class="recent-article-content card-body text-center">
+              <div class="card-body text-center" style="background: white;">
                 <h5 class="fw-bold">Trades respond</h5>
                 <p class="fw-lighter">Skilled tradespeople will reply with quotes, questions, and links to their
                   profiles.
@@ -1124,11 +1122,11 @@
             </div>
           </div>
           <div class="col-lg-4 col-md-6 d-flex">
-            <div class="recent-article-wrrap card">
+            <div class="fancy-card card">
               <div class="recent-article-img card-img-top" style="height: 200px;">
                 <img class="img-fluid" src="../../../../public/frontend/assets/images/home/step-3.png" alt="Choose and connect">
               </div>
-              <div class="recent-article-content card-body text-center">
+              <div class="card-body text-center" style="background: white;">
                 <h5 class="fw-bold">Choose and connect</h5>
                 <p class="fw-lighter">When you're ready, select the tradesperson who best fits your job. Once you
                   confirm,

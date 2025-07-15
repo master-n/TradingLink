@@ -26,7 +26,7 @@
 <!--            <button class="request-review-btn">Request a review</button>-->
           </div>
         </div>
-        <h3 class="font-weight-bold mt-4">Reviews ({{ total_rating }})</h3>
+        <h6 class="fw-bold mt-4">Reviews ({{ total_rating }})</h6>
 
         <div
             v-for="(review, index) in reviews"
@@ -36,21 +36,25 @@
           <div class="card-body d-flex">
             <!-- Image -->
             <img
-                :src="review.image || '/img/no-image.png'"
-                alt="Review"
-                class="review-image rounded"
+                :src="review.image"
+                :alt="review.rater.name"
+                class="review-image rounded-circle"
+                v-if="review.rater.photo"
             />
+            <div v-else class="profile-image cursor-pointer rounded-circle" style="width: 50px; height: 50px;">
+              <i class="bi bi-person-fill"></i>
+            </div>
 
             <!-- Content -->
             <div class="review-content ml-3">
-              <h6 class="review-title text-primary font-weight-bold">
-                {{ review.title }}
+              <h6 class="review-title text-primary-1 font-weight-bold text-decoration-underline">
+                {{ review.service_request.headline }}
               </h6>
               <div class="review-by text-muted">
-                The job was done by {{ review.tradesperson }}
+                Rated by {{ review.rater.name }}
               </div>
               <div class="review-description mt-2 text-dark">
-                “{{ review.description }}”
+                “{{ review.comment }}”
               </div>
             </div>
 
@@ -60,7 +64,7 @@
                 <i
                     v-for="n in 5"
                     :key="n"
-                    :class="['bi', n <= review.rating ? 'bi-star-fill text-primary' : 'bi-star']"
+                    :class="['bi', n <= review.rating ? 'bi-star-fill text-primary-1' : 'bi-star']"
                 ></i>
               </div>
             </div>
@@ -95,6 +99,7 @@ export default {
       rating: '',
       total_rating: '',
       isLoading: false,
+      user: this.$store.getters.GET_USER_INFO || {},
     };
   },
   components: {
@@ -108,7 +113,7 @@ export default {
     },
     getRatings() {
       this.isLoading = true;
-      userService.getRatings().then((res) => {
+      userService.getRatings(this.user.id).then((res) => {
         this.isLoading = false;
         const {extra, status} = res;
         if (status) {
@@ -177,8 +182,8 @@ export default {
 }
 
 .review-image {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
 }
 

@@ -8,7 +8,7 @@
     <div class="container">
       <div class="row justify-content-center align-items-center mb-4 mb-sm-0">
         <!-- Column with text content -->
-        <div class="col-md-4 offset-md-2 order-md-first order-last">
+        <div class="col-md-4 order-md-first order-last">
           <h1 class="mt-4 mt-sm-0">{{ selectedTrade ? selectedTrade : 'Jobs' }} near me</h1>
           <p>Discover vetted and reviewed local {{ selectedTrade ? selectedTrade : 'professionals' }} with ease. Simply
             post your job to receive free quotes from TradeLink's trusted
@@ -23,8 +23,8 @@
           </router-link>
         </div>
         <div class="col-md-6 position-relative text-white order-md-last order-first" style="border-radius: 5px;">
-          <div class="overlay position-absolute w-100 h-100 top-0 start-0"></div>
           <div class="img-before">
+            <div class="overlay position-absolute w-100 h-100 top-0 start-0"></div>
             <img class="img-fluid w-100 h-100" src="../../../public/frontend/assets/images/bg/carpenter.jpg"
                  alt="Skilled carpenter at work">
           </div>
@@ -44,7 +44,7 @@
           </div>
           <div class="row gy-5 justify-content-center align-items-stretch">
             <div class="col-lg-4 col-md-6 d-flex">
-              <div class="recent-article-wrrap card flex-fill d-flex flex-column">
+              <div class="fancy-card card flex-fill d-flex flex-column">
                 <div class="recent-article-img card-img-top" style="height: 200px;">
                   <img class="img-fluid" src="../../../public/frontend/assets/images/home/post-job.jpg"
                        alt="Post your job">
@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="col-lg-4 col-md-6 d-flex">
-              <div class="recent-article-wrrap card flex-fill d-flex flex-column">
+              <div class="fancy-card card flex-fill d-flex flex-column">
                 <div class="recent-article-img card-img-top" style="height: 200px;">
                   <img class="img-fluid" src="../../../public/frontend/assets/images/home/tradespeople-respond.jpg"
                        alt="Trades respond">
@@ -73,7 +73,7 @@
               </div>
             </div>
             <div class="col-lg-4 col-md-6 d-flex">
-              <div class="recent-article-wrrap card">
+              <div class="fancy-card card">
                 <div class="recent-article-img card-img-top" style="height: 200px;">
                   <img class="img-fluid" src="../../../public/frontend/assets/images/home/step-3.png"
                        alt="Choose and connect">
@@ -94,7 +94,7 @@
 
 
     <div class="home2-talent-area mb-120">
-      <div class="container">
+      <div class="container" style="max-width: calc(66rem);">
         <!-- Header with Search Bar -->
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h1>Some of our top {{ selectedTrade ? selectedTrade : 'professionals' }}</h1>
@@ -124,28 +124,37 @@
           <div class="col-md-4 mb-4 d-flex" v-for="(tradesperson,i) in tradespersons" :key="i">
             <div class="card flex-fill d-flex flex-column h-100">
               <!-- Card Body with fixed height -->
-              <div class="card-body d-flex flex-column" style="height: 300px;">
-                <div class="d-flex align-items-center mb-3">
-                  <img src="../../../public/frontend/assets/images/home/step-3.png" alt="HY Handyman services"
+              <div class="card-body d-flex flex-column" style="height: 270px;">
+                <div class="d-flex align-items-center mb-3 cursor-pointer" @click="$router.push(`/user-profile/${tradesperson.id}`)">
+                  <img :src="tradesperson.photo" :alt="tradesperson.name"
                        class="rounded-circle me-3"
-                       style="width: 50px; height: 50px;">
+                       style="width: 50px; height: 50px; object-fit: cover" v-if="tradesperson.photo">
+                  <div v-else class="profile-image cursor-pointer rounded-circle" style="width: 50px; height: 50px;">
+                    <i class="bi bi-person-fill"></i>
+                  </div>
                   <div>
                     <h5 class="card-title">{{ tradesperson.name }}</h5>
                     <div class="d-flex align-items-center">
-                      <span class="badge bg-primary-1 text-light me-2">★ 5/5</span>
-                      <span>(1,341 reviews)</span>
+                      <span class="badge bg-primary-1 text-light me-2">★ {{ tradesperson.latest_rating?tradesperson.average_rating:5 }}/5</span>
+                      <span v-if="tradesperson.latest_rating">({{ tradesperson.total_ratings }} reviews)</span>
                     </div>
                   </div>
                 </div>
-                <p class="card-text">Hello, my name is Hristo, I am a professional handyman owner of a small company HY Handyman services with over 15 years experience in London and Kent...</p>
+                <p class="card-text line-clamp small fw-lighter">{{tradesperson.description ? tradesperson.description : 'No description available' }}</p>
                 <button class="btn btn-outline-primary-1 w-100 ">Get in touch</button>
               </div>
               <!-- Card Footer with fixed height -->
-              <div class="card-footer text-muted d-flex flex-column" style="height: 150px; overflow:hidden">
-                <p class="fw-lighter mb-1"><i class="bi bi-chat-dots"/> Latest review:</p>
-                <p>Painting & Decorating - 22 Apr 2023</p>
-                <p>Hristo was great and very knowledgeable. He was honest and delivered a great finish to a
-                  previously damaged wall...</p>
+              <div class="card-footer text-muted d-flex flex-column" style="min-height: 70px; overflow:hidden">
+                <div v-if="tradesperson.latest_rating">
+                  <p class="fw-lighter mb-1 small"><i class="bi bi-chat-dots"/> Latest review:</p>
+                  <p class="small mb-1 fw-lighter"><span class="text-decoration-underline">{{ tradesperson.latest_rating?.service_request?.headline }}</span> - {{tradesperson.latest_rating?.created_at | toHumanDayMonthYear}}</p>
+                  <p class="small line-clamp fw-lighter">{{tradesperson.latest_rating?.comment ? tradesperson.latest_rating?.comment : 'No reviews yet' }}</p>
+                </div>
+                <div v-else>
+                  <p class="fw-lighter mb-1 small"><i class="bi bi-chat-dots"/> Latest review:</p>
+                  <p class="small mb-1 fw-lighter">No reviews yet</p>
+                </div>
+
               </div>
             </div>
           </div>

@@ -6,6 +6,8 @@ export const userService = {
     logout,
     getTrades,
     postJobTrades,
+    completeJob,
+    submitRating,
     getTradespersonsByTrade,
     getTradeQuestion,
     getParisCities,
@@ -293,9 +295,9 @@ function getRecommendedTradesperson(service_id) {
     })
 }
 
-function getRatings() {
+function getRatings(id) {
     return new Promise((resolve) => {
-        axios.get(`/api/user/rating`, useBearerTokenHeaders())
+        axios.get(`/api/user/rating/${id}`, useBasicAuthHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -569,6 +571,25 @@ function postJobTrades() {
     });
 }
 
+function completeJob(payload) {
+    return new Promise((resolve) => {
+        axios.post(`/api/complete-job`, payload, useBearerTokenHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function submitRating(payload) {
+    return new Promise((resolve) => {
+        axios.post(`/api/rate`, payload, useBearerTokenHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
 
 
 function getTradespersonsByTrade(tradeName) {

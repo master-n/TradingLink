@@ -39,14 +39,21 @@
                       class="fw-light">{{invite.service.created_at | toHumanDate()}}</small>
                   </p>
 
+                  <div class="alert alert-primary mt-4" v-if="invite.service.status ==='complete'">
+                    <i class="bi bi-envelope"></i> Job has been completed. You can no longer send messages.
+                  </div>
+
+                  <div v-else>
                     <div class="alert alert-primary mt-4" v-if="invite.status ==='pending'">
                       <i class="bi bi-envelope"></i> You have sent an invite to this job. Waiting for the homeowner to respond.
                     </div>
-
                     <div v-else-if="invite.status === 'accepted'">
-                      <router-link class="btn btn-primary" :to="`/chat?job=${invite.service.headline}&id=${invite.id}`"><i class="bi bi-chat-dots"></i> Send a message to the homeowner to discuss the job.
+                      <router-link class="btn btn-primary" :to="`/chat?job=${invite.service.headline}&id=${invite.id}`">
+                        <i class="bi bi-chat-dots"></i> Send a message to the homeowner to discuss the job.
                       </router-link>
+                    </div>
                   </div>
+
                 </div>
               </div>
             </div>

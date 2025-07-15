@@ -27,7 +27,7 @@
           <div v-if="!userLoader">
             <h6 class="mb-2">{{ userInfo.name }}</h6>
             <div class="text-muted mb-2">
-              <i class="bi bi-star-fill text-primary-1"></i> 4.9/5 (551 reviews)
+              <i class="bi bi-star-fill text-primary-1"></i> {{average_rating}}/5 {{reviews.length?`(${ total_rating } review${total_rating>1?'s':''})`:''}}
             </div>
             <div v-if="userInfo.city_name"><i class="bi bi-geo-alt"></i>
               {{ userInfo.city_name ? `${userInfo.city_name} ~ ${userInfo.parish_name}` : '' }}
@@ -50,7 +50,7 @@
               <h6>Good to know</h6>
               <ul class="list-unstyled">
                 <!--                <li><i class="bi bi-person-check me-2"></i> Verified by Trade Link</li>-->
-                <li><i class="bi bi-shield-check me-2"></i> {{ guarantee ? 'Offers warranty' : 'N/A' }}</li>
+                <li><i class="bi bi-shield-check me-2"></i> {{ userInfo.guarantee ? 'Offers warranty' : 'Does not offer warranty' }}</li>
                 <!--                <li><i class="bi bi-building me-2"></i> Registered at Companies House</li>-->
               </ul>
             </div>
@@ -80,7 +80,26 @@
           </b-tab>
 
           <b-tab title="Reviews">
-            <p class="mt-4 fw-lighter small">Customer reviews will be displayed here.</p>
+            <p class="mt-4 fw-lighter small" v-if="reviews.length < 1">Customer reviews will be displayed here.</p>
+            <div v-for="(review, index) in reviews" :key="index" class="mb-5 mt-4 border-bottom pb-3">
+              <h6 class="mb-1 text-capitalize small">{{ review.rater.name }}, {{ review.service_request.city_name }}</h6>
+              <div class="text-warning mb-2">
+                <span v-for="n in review.rating" :key="n">★</span>
+                <span class="text-muted ms-2 small">Review left on {{ review.created_at | toHumanDayMonthYear }}</span>
+              </div>
+
+              <h6 class="fw-bold text-decoration-underline mb-2 text-capitalize">{{ review.service_request.headline }}</h6>
+              <p class="fw-lighter">{{ review.comment }}</p>
+
+              <!-- Tradesperson Reply -->
+              <div v-if="review.reply" class="mt-3 border-start border-3 ps-3">
+                <small class="fw-bold text-muted">Answer from tradesperson:</small>
+                <div class="bg-light rounded p-3 mt-1">
+                  <p class="mb-1">message of the reply</p>
+                  <small class="text-muted">Reply created date</small>
+                </div>
+              </div>
+            </div>
           </b-tab>
         </b-tabs>
 
@@ -154,6 +173,10 @@ export default {
       currentIndex: 0,
       guarantee: '',
       userInfo: {},
+      userId: null,
+      average_rating: '',
+      total_rating: '',
+      reviews: []
     };
   },
   components: {
@@ -189,9 +212,9 @@ export default {
       if (this.currentIndex < this.portfolio.length - 1) this.currentIndex++;
     },
 
-    getUserProfile(userId) {
+    getUserProfile() {
       this.userLoader = true;
-      userService.getUserProfile(userId).then((res) => {
+      userService.getUserProfile(this.userId).then((res) => {
         this.userLoader = false;
         const {status, extra} = res;
         if (!status) {
@@ -200,17 +223,32 @@ export default {
         }
         this.userInfo = extra;
       });
-    }
+    },
+    getRatings() {
+      this.userLoader = true;
+      userService.getRatings(this.userId).then((res) => {
+        this.userLoader = false;
+        const {status, extra} = res;
+        if (!status) {
+          this.$router.push('/error/404')
+          return;
+        }
+        this.average_rating = extra.average_rating;
+        this.total_rating = extra.total_rating;
+        this.reviews = extra.reviews;
+      });
+    },
 
   },
   created() {
     // Fetch user profile data
-    const userId = this.$route.params.userId;
-    if (!userId) {
+    this.userId = this.$route.params.userId;
+    if (!this.userId) {
       this.$router.push('/unauthorized')
       return;
     }
-    this.getUserProfile(userId);
+    this.getUserProfile();
+    this.getRatings();
   },
   mounted() {
   }

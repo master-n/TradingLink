@@ -48,13 +48,56 @@
                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                       <div v-for="(question,i) in project.questions" :key="i">
-                      <h6>{{question.formLabel}}</h6>
-                      <p class="fw-light">{{question.answers}}</p>
+                        <h6>{{ question.formLabel }}</h6>
+                        <p class="fw-light">{{ question.answers }}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="text-center" v-if="project.status !=='complete'">
+                <button class="btn btn-primary mt-3" @click="completeJob">Mark job as done</button>
+              </div>
+
+              <div v-if="project.status === 'complete' && !ratingSubmitted" class="mt-4">
+                <form @submit.prevent="submitRating">
+                  <h5>Rate the professional who completed this job</h5>
+
+                  <div class="mb-3">
+                    <label for="professional" class="form-label">Professional:</label>
+                    <select v-model="user_id" id="professional" class="form-select" required>
+                      <option disabled value="">Select professional</option>
+                      <option v-for="(invite,i) in invites" :key="i" :value="invite.invited_user.id">
+                        {{ invite.invited_user.name }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="ratingSelect" class="form-label">Rating (1-5):</label>
+                    <select v-model="rating" id="ratingSelect" class="form-select" required>
+                      <option disabled value="">Select rating</option>
+                      <option v-for="n in 5" :key="n" :value="n">{{ n }} Star{{ n > 1 ? 's' : '' }}</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="reviewText" class="form-label">Leave a short review:</label>
+                    <textarea v-model="reviewText" id="reviewText" class="form-control" rows="3"
+                              placeholder="Write your feedback..."></textarea>
+                  </div>
+
+                  <button class="btn btn-primary" :disabled="!rating" type="submit">
+                    Submit Rating
+                  </button>
+                </form>
+              </div>
+
+              <div v-else-if="ratingSubmitted" class="alert alert-success mt-4">
+                Thank you for rating the professional!
+              </div>
+
             </div>
           </div>
 
@@ -92,6 +135,7 @@
 import BaseDashboardLayout from '../../base-layout/homeowner-dashboard';
 import appConfig from "../../../../app.config.json";
 import {userService} from "@/apis/user.service";
+import {confirm} from "@/utils/functions";
 
 export default {
   page: {
@@ -103,15 +147,63 @@ export default {
       isLoading: false,
       project_id: null,
       project: {},
+      rating: null,
+      reviewText: '',
+      ratingSubmitted: false,
+      invites: [],
+      user_id: ''
     };
   },
   components: {
     BaseDashboardLayout
   },
   methods: {
-    getProjectDetails(project_id) {
+    getProjectDetails() {
       this.isLoading = true;
-      userService.getProjectDetails(project_id).then((res) => {
+      userService.getProjectDetails(this.project_id).then((res) => {
+        this.isLoading = false;
+        const {status, message, extra} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true});
+          return;
+        }
+        this.project = extra;
+        if(this.project.rating){
+          this.ratingSubmitted = true
+        }
+      });
+    },
+    submitRating() {
+      const payload = {
+        service_request_id: this.project_id,
+        rating: this.rating,
+        rated_user_id: this.user_id,
+        comment: this.reviewText,
+      };
+
+      userService.submitRating(payload).then((res) => {
+        const {status, message} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message, showSwal: true});
+          return;
+        }
+
+        this.ratingSubmitted = true;
+        this.$store.dispatch('success', {message: "Rating submitted successfully!"});
+      });
+    },
+
+    completeJob() {
+      confirm("This action cannot be reverted", () => {
+        this.markJobAsDone();
+      });
+    },
+    markJobAsDone() {
+      this.isLoading = true;
+      const payload = {
+        request_id: this.project_id,
+      };
+      userService.completeJob(payload).then((res) => {
         this.isLoading = false;
         const {status, message, extra} = res;
         if (!status) {
@@ -120,14 +212,29 @@ export default {
         }
         this.project = extra;
       });
-    }
+    },
+    getAcceptInterest() {
+      this.isLoading = true;
+      userService.getAcceptedInterest(this.project_id).then((res) => {
+        this.isLoading = false;
+        const {status, message, extra} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message: message, showSwal: true});
+          return;
+        }
+        this.invites = extra;
+      });
+    },
+
+
   },
   created() {
     this.project_id = this.$route.params.id
     if (!this.project_id) {
       this.$router.push('/unauthorized');
     }
-    this.getProjectDetails(this.project_id);
+    this.getProjectDetails();
+    this.getAcceptInterest();
   },
   mounted() {
   }

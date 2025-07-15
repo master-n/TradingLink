@@ -11,25 +11,33 @@
             </a>
           </div>
 
-          <div v-if="project.invite && !isLoading">
-            <div v-if="project.invite.status ==='pending'" class="alert alert-primary mt-4">
-              <i class="bi bi-envelope"></i> You have sent an invite to this job. Waiting for the homeowner to respond.
+          <div v-if="project.status ==='complete'" class="alert alert-primary mt-4">
+            <i class="bi bi-envelope"></i> Job has been completed. You can no longer send messages.
+          </div>
+
+          <div v-else>
+            <div v-if="project.invite && !isLoading">
+              <div v-if="project.invite.status ==='pending'" class="alert alert-primary mt-4">
+                <i class="bi bi-envelope"></i> You have sent an invite to this job. Waiting for the homeowner to
+                respond.
+              </div>
+              <div v-else-if="project.invite.status === 'accepted'">
+                <router-link class="btn btn-primary"
+                             :to="`/chat?job=${project.invite.service.headline}&id=${project.invite.id}`"><i
+                    class="bi bi-chat-dots"></i> Send a message to the homeowner to discuss the job.
+                </router-link>
+              </div>
             </div>
-            <div v-else-if="project.invite.status === 'accepted'">
-              <router-link class="btn btn-primary"
-                           :to="`/chat?job=${project.invite.service.headline}&id=${project.invite.id}`"><i
-                  class="bi bi-chat-dots"></i> Send a message to the homeowner to discuss the job.
-              </router-link>
+
+
+            <div class="d-flex align-items-center mt-4" v-if="!project.invite && !isLoading">
+              <h6 class="fw-lighter mb-0 me-3">Are you interested in this job?</h6>
+              <button class="btn btn-primary flex-shrink-1" @click="sendInvite()">
+                <i class="bi bi-envelope"></i> I'm interested in this job
+              </button>
             </div>
           </div>
 
-
-          <div class="d-flex align-items-center mt-4" v-if="!project.invite && !isLoading">
-            <h6 class="fw-lighter mb-0 me-3">Are you interested in this job?</h6>
-            <button class="btn btn-primary flex-shrink-1" @click="sendInvite()">
-              <i class="bi bi-envelope"></i> I'm interested in this job
-            </button>
-          </div>
 
           <h4 class="title mb-3 font-weight-bold ps-4 mt-4">Job Details: <span
               class="text-capitalize">{{ project?.headline }}</span></h4>
