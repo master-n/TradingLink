@@ -72,11 +72,11 @@
                       <div class="badge bg-secondary rounded-pill">{{ registrationSteps }} steps left</div>
                     </a>
                     </li>
-                    <li>
-                      <router-link to="/saved-leads">
-                        <i class="bi bi-bookmark text-primary-1"></i> Saved leads
-                      </router-link>
-                    </li>
+<!--                    <li>-->
+<!--                      <router-link to="/saved-leads">-->
+<!--                        <i class="bi bi-bookmark text-primary-1"></i> Saved leads-->
+<!--                      </router-link>-->
+<!--                    </li>-->
                     <li>
                       <router-link to="/profile">
                         <i class="bi bi-person-circle text-primary-1"></i> Profile
