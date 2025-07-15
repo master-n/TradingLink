@@ -248,11 +248,10 @@ export default {
 
     async updatePersonalInfo() {
       this.editLoader = true
-      await this.$store.dispatch('showLoader')
-      userService.updatePersonalInfo({
-        name: this.userInfo.name,
-      }).then((res) => {
-        this.$store.dispatch('hideLoader')
+      const formData = new FormData();
+      formData.append('name', this.userInfo.name);
+
+      userService.updatePersonalInfo(formData).then((res) => {
         this.editLoader = false
         this.edit = false
         const {status, message, extra} = res;
