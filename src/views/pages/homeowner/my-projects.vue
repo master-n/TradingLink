@@ -9,7 +9,7 @@
             <div class="job-listing-wrrap">
               <div class="row">
                 <div class="col-lg-12" v-if="isLoading">
-                  <div class="job-listing-card mb-30" v-for="(item,i) in 4" :key="i">
+                  <div class="job-listing-card mb-30" v-for="i in 4" :key="i">
                     <div class="job-list-content">
                       <div class="company-area">
                         <div class="company-details">

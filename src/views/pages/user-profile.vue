@@ -35,7 +35,7 @@
             <div v-else><i class="bi bi-geo-alt"></i> N/A</div>
           </div>
           <div v-else class="w-50">
-            <div class="lines shine" v-for="(item,i) in 3" :key="i"></div>
+            <div class="lines shine" v-for="i in 3" :key="i"></div>
           </div>
         </div>
         <div class="mb-5" v-if="!checkIfUser">
@@ -134,7 +134,7 @@
       <div class="col-md-6">
         <img
             :src="portfolio[currentIndex]?.file || 'https://placehold.co/400x300'"
-            class="img-fluid w-100" style="object-fit: cover"
+            class="img-fluid w-100" style="object-fit: cover" :alt="portfolio[currentIndex]?.title || 'Untitled'"
         >
       </div>
       <div class="col-md-6">

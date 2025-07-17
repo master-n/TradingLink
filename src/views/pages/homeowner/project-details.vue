@@ -10,7 +10,8 @@
         <div class="col-md-8">
           <div class="card mb-4" v-if="!isLoading">
             <div class="card-header d-flex justify-content-between align-items-center">
-              <div><i class="bi bi-chat-right"></i> {{ project.responses || 0 }} responses</div>
+              <div v-if="responseLoader" class="lines shine mt-0 w-50"></div>
+              <router-link :to="`/homeowner/chat/${project_id}`" v-else><i class="bi bi-chat-right"></i> {{ responseCount }} responses</router-link>
               <div>
                 <span class="text-capitalize">{{ project.created_at | toHumanDate }}</span>
               </div>
@@ -26,7 +27,7 @@
                   <div class="col-md-4">Job type:</div>
                   <div class="col-md-8 text-left">{{ project.trade ? project.trade.name : 'N/A' }}</div>
                 </div>
-                <div class="row mt-3" v-if="project.questions.length>0">
+                <div class="row mt-3" v-if="project.questions?.length>0">
                   <div class="col-md-4">Category:</div>
                   <div class="col-md-8 text-left">{{ project.questions[0]['answers'] }}</div>
                 </div>
@@ -136,6 +137,7 @@ import BaseDashboardLayout from '../../base-layout/homeowner-dashboard';
 import appConfig from "../../../../app.config.json";
 import {userService} from "@/apis/user.service";
 import {confirm} from "@/utils/functions";
+import {getDatabase, onValue, ref} from "firebase/database";
 
 export default {
   page: {
@@ -145,8 +147,10 @@ export default {
   data() {
     return {
       isLoading: false,
+      responseLoader: false,
       project_id: null,
       project: {},
+      responseCount: 0,
       rating: null,
       reviewText: '',
       ratingSubmitted: false,
@@ -171,6 +175,36 @@ export default {
         if(this.project.rating){
           this.ratingSubmitted = true
         }
+      });
+    },
+    countMessages() {
+      const db = getDatabase();
+      const userId = this.$store.getters.GET_USER_INFO.id;
+      const jobId = this.project_id;
+      this.responseLoader = true;
+
+      const messagesRef = ref(db, `chat_channels/${jobId}`);
+
+      onValue(messagesRef, (snapshot) => {
+        let totalResponses = 0;
+
+        if (snapshot.exists()) {
+          const conversations = snapshot.val();
+
+          for (let participantId in conversations) {
+            const userMessages = conversations[participantId]?.messages || {};
+
+            for (let msgKey in userMessages) {
+              const msg = userMessages[msgKey];
+
+              if (msg.from !== userId) {
+                totalResponses++;
+              }
+            }
+          }
+        }
+        this.responseLoader = false;
+        this.responseCount = totalResponses;
       });
     },
     submitRating() {
@@ -225,8 +259,6 @@ export default {
         this.invites = extra;
       });
     },
-
-
   },
   created() {
     this.project_id = this.$route.params.id
@@ -235,8 +267,23 @@ export default {
     }
     this.getProjectDetails();
     this.getAcceptInterest();
+    this.countMessages();
   },
   mounted() {
+    this.$nextTick(() => {
+      $('.sidebar-button').on("click", function () {
+        $('.main-menu').addClass('show-menu');
+      });
+      $('.menu-close-btn').on("click", function () {
+        $('.main-menu').removeClass('show-menu');
+      });
+      $('.search-btn').on("click", function () {
+        $('.mobile-search').addClass('slide');
+      });
+      $('.search-cross-btn').on("click", function () {
+        $('.mobile-search').removeClass('slide');
+      });
+    });
   }
 };
 </script>

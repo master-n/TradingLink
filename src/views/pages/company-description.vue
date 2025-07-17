@@ -23,7 +23,7 @@
     <div class="row mt-4 mb-5">
       <div class="col-md-8">
         <div v-if="guaranteeLoader">
-          <div v-for="(item,i) in 2" :key="i">
+          <div v-for="i in 2" :key="i">
             <div class="card mb-3">
               <div class="card-body">
                 <div class="lines shine"></div>
@@ -117,7 +117,7 @@ export default {
         guarantee: this.guarantee,
       }).then((res) => {
         this.isLoading = false;
-        const {status, message, extra} = res;
+        const {status, message} = res;
         if (!status) {
           this.$store.dispatch('error', {message: message, showSwal: true});
           return;

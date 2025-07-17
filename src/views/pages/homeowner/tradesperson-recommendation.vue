@@ -1,7 +1,12 @@
 <template>
   <div>
     <topHeader/>
-    <div class="container mt-5" style="margin-bottom: 7rem">
+    <div class="mt-4 text-end pe-4">
+      <a @click="$router.push(`/my-projects/${jobId}`)" class="cursor-pointer">
+        <i class="bi bi-chevron-left"></i> Job Details
+      </a>
+    </div>
+    <div class="container mt-4" style="margin-bottom: 7rem">
       <div class="row">
         <div class="col-md-12 text-center mb-4">
           <h1>Let's find the best tradespeople near you</h1>
@@ -61,7 +66,7 @@
             </div>
           </div>
           <div class="row" v-else>
-            <div class="col-md-6 mb-4" v-for="(item,i) in 4" :key="i">
+            <div class="col-md-6 mb-4" v-for="i in 4" :key="i">
               <div class="card">
                 <div class="card-body">
                   <div class="lines shine"></div>

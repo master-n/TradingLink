@@ -51,7 +51,7 @@
                   <input :id="trade.id" :value="trade.id" :checked="selectedTrades.includes(trade.id)" type="checkbox" class="form-check-input" @change="toggleTradeSelection(trade)">
                 </div>
                 <div v-if="tradeLoader">
-                  <div v-for="(item,i) in 10" :key="i">
+                  <div v-for="i in 10" :key="i">
                     <div class="profession-item">
                       <div class="lines shine"></div>
                     </div>
@@ -105,9 +105,6 @@
 import Auth from "../../layouts/auth";
 import appConfig from "../../../../app.config.json";
 import topHeader from '../../base-layout/header-1'
-
-import {required, email} from "vuelidate/lib/validators";
-import store from "@/store/store";
 import {userService} from "@/apis/user.service";
 
 /**
@@ -186,7 +183,7 @@ export default {
     },
     getProfessions() {
       userService.getProfessions().then((res) => {
-        const {status, message, extra} = res;
+        const {status, extra} = res;
         if (status) {
           // professions are assumed to be IDs
           this.selectedTrades = extra['professions'].map((profession)=>profession.id);

@@ -7,7 +7,7 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-body" v-if="isLoading">
-            <div class="lines shine" v-for="(item,i) in 3" :key="i"></div>
+            <div class="lines shine" v-for="i in 3" :key="i"></div>
           </div>
           <div class="card-body" v-else>
             <h6 class="reviews-title">Overall rating</h6>
@@ -158,16 +158,6 @@ export default {
 .review-count {
   color: #6c757d;
   margin-left: 5px;
-}
-
-.request-review-btn {
-  background-color: var(--primary-color1);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-weight: bold;
-  width: 100%;
 }
 
 .reviews-title {

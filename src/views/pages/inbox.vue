@@ -6,7 +6,7 @@
 
     <div class="row mt-5">
       <div class="col-lg-12" v-if="isLoading">
-        <div class="job-listing-card mb-30" v-for="(item,i) in 4" :key="i">
+        <div class="job-listing-card mb-30" v-for="i in 4" :key="i">
           <div class="job-list-content">
             <div class="company-area">
               <div class="company-details">
@@ -100,7 +100,7 @@ export default {
         guarantee: this.guarantee,
       }).then((res) => {
         this.isLoading = false;
-        const {status, message, extra} = res;
+        const {status, message} = res;
         if (!status) {
           this.$store.dispatch('error', {message: message, showSwal: true});
           return;
@@ -170,7 +170,5 @@ export default {
 </script>
 
 <style scoped>
-.card-body {
-  background: #f8f9fa;
-}
+
 </style>

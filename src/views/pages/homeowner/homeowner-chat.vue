@@ -1,19 +1,30 @@
 <template>
   <div class="container">
+
     <top-header/>
-    <div class="mt-4 text-end pe-4">
-      <a @click="$router.go(-1)" class="cursor-pointer mb-4">
+
+    <div class="mt-4 text-end pe-4 d-none d-sm-block">
+      <a @click="$router.push(`/my-projects/${jobId}`)" class="cursor-pointer mb-4">
+        <i class="bi bi-chevron-left"></i> Go Back
+      </a>
+    </div>
+    <div class="my-4 text-end pe-4">
+      <a v-if="isMobile && !showChatList" @click="showChatList = true" class="cursor-pointer">
+        <i class="bi bi-chevron-left"></i> Chats
+      </a>
+
+      <a v-if="isMobile && showChatList" @click="$router.push(`/my-projects/${jobId}`)" class="cursor-pointer">
         <i class="bi bi-chevron-left"></i> Go Back
       </a>
     </div>
 
+
     <h4 class="title mb-5 font-weight-bold mt-5">Messages</h4>
 
     <div class="row mt-4 mb-5">
-
-      <div class="col-md-3">
+      <div class="col-md-3" v-if="!isMobile || showChatList">
         <div class="card">
-          <div class="" style="height: 550px; overflow-y: auto;">
+          <div class="" style="height: 550px; overflow-y: auto; overflow-x: hidden;">
             <div class="card-body">
               <div class=" media mb-3">
                 <div class="media-body d-flex justify-content-start align-items-center">
@@ -69,7 +80,7 @@
         <!-- end card-->
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6" v-if="!isMobile || !showChatList">
         <!-- Chat area -->
         <div class="card">
           <div class="card-header bg-primary-1 text-white">
@@ -102,7 +113,7 @@
         <!-- End Chat area -->
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-3 d-none d-md-block">
         <div class="card">
           <div class="card-body" style="height: 560px; overflow-y: auto;" v-if="jobDetails">
             <div class="mb-3">
@@ -202,6 +213,8 @@ export default {
       newMessage: '',
       jobId: '',
       selectedTradesperson: '',
+      showChatList: false,
+      isMobile: false,
     };
   },
   components: {
@@ -212,7 +225,11 @@ export default {
     chatTradesperson(invite) {
       this.selectedTradesperson = invite.invited_user_id;
       const jobId = this.jobId;
+      if (this.isMobile) {
+        this.showChatList = false;
+      }
       this.listenToMessages(jobId, this.selectedTradesperson);
+
     },
 
 
@@ -315,6 +332,10 @@ export default {
       });
     },
 
+    checkScreenSize() {
+      this.isMobile = window.innerWidth < 768;
+    },
+
   },
   created() {
     this.jobId = this.$route.params.jobId
@@ -326,6 +347,12 @@ export default {
   },
   mounted() {
     $('#inbox').addClass('active')
+    this.isMobile = window.innerWidth < 768;
+    window.addEventListener('resize', this.checkScreenSize);
+
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize);
   },
 };
 </script>
