@@ -11883,7 +11883,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     border-color: rgb(0 167 172 / .4)
 }
 
-.faq-page .genarel-qustions-area h4 {
+.genarel-qustions-area h4 {
     font-family: var(--font-exo2);
     font-weight: 700;
     font-size: 1.5rem;
@@ -11891,11 +11891,11 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     margin-bottom: 30px
 }
 
-.faq-page .genarel-qustions-area .accordion .accordion-item {
+.genarel-qustions-area .accordion .accordion-item {
     border: none
 }
 
-.faq-page .genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button {
+.genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button {
     border: 1px solid #EEE;
     border-radius: 5px;
     font-family: var(--font-exo2);
@@ -11905,17 +11905,17 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     padding: 13px 20px
 }
 
-.faq-page .genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button:focus {
+.genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button:focus {
     box-shadow: none
 }
 
-.faq-page .genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button:not(.collapsed) {
+.genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button:not(.collapsed) {
     border: 1px solid rgb(0 167 172 / .5);
     background-color: #fff0;
     box-shadow: none
 }
 
-.faq-page .genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button::after {
+.genarel-qustions-area .accordion .accordion-item .accordion-header .accordion-button::after {
     content: "";
     background-image: url(../images/icon/accrodian--arrow.svg);
     width: 1.6rem;
@@ -11923,7 +11923,7 @@ header.style-7 .main-menu ul li.menu-item-has-children > i {
     opacity: .4
 }
 
-.faq-page .genarel-qustions-area .accordion .accordion-body {
+.genarel-qustions-area .accordion .accordion-body {
     font-family: var(--font-work-sans);
     font-weight: 400;
     font-size: 1rem;
