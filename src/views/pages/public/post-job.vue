@@ -27,16 +27,24 @@
               </div>
             </div>
 
-            <form class="dynamic-questions" @submit.prevent="nextQuestion">
-              <div class="question-section" v-for="(question, i) in questions" :key="i">
-                <h5 class="fw-bold mb-2" :id="'question-' + i" :ref="'question-' + i">{{ question.formLabel }}</h5>
-                <div v-if="question.options && question.options.length">
-                  <div v-for="(option, index) in question.options" :key="index">
-                    <!-- Radio Option -->
-                    <label class="option-box" v-if="option.type === 'StandardChoiceOption'">
-                      <input type="radio"
-                             class="me-2"
-                             :id="'option-' + question.id + '-' + index"
+            <div v-if="questionLoader">
+              <div class="text-center">
+                <b-spinner small></b-spinner>
+                <p class="fw-lighter">Loading questions...</p>
+              </div>
+            </div>
+
+            <div v-else>
+              <form class="dynamic-questions" @submit.prevent="nextQuestion">
+                <div class="question-section" v-for="(question, i) in questions" :key="i">
+                  <h5 class="fw-bold mb-2" :id="'question-' + i" :ref="'question-' + i">{{ question.formLabel }}</h5>
+                  <div v-if="question.options && question.options.length">
+                    <div v-for="(option, index) in question.options" :key="index">
+                      <!-- Radio Option -->
+                      <label class="option-box" v-if="option.type === 'StandardChoiceOption'">
+                        <input type="radio"
+                               class="me-2"
+                               :id="'option-' + question.id + '-' + index"
                              :name="'question-' + question.id"
                              :value="option.formLabel"
                              :required="question.required"
@@ -124,7 +132,7 @@
                 </label>
 
                 <div v-if="photo ==='Yes'">
-                  <p class="fw-lighter">Add up to 25 files up to 15 MB each</p>
+                  <p class="fw-lighter">Add up to 5 files up to 15 MB each</p>
                   <vue-dropzone
                       id="certificateDropzone"
                       ref="dropzone"
@@ -282,6 +290,8 @@
 
               </form>
             </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -327,6 +337,7 @@ export default {
       selectedOption: null,
       nextButton: true,
       isLoading: false,
+      questionLoader: false,
       headline: '',
       lastQuestion: false,
       showHeadline: true,
@@ -343,7 +354,8 @@ export default {
         maxFilesize: 20.0,
         addRemoveLinks: true,
         autoProcessQueue: false,
-        maxFiles: 1
+        maxFiles: 5,
+        acceptedFiles: 'image/*'
       },
       cityName: '',
       parishName: '',
@@ -385,12 +397,23 @@ export default {
     },
     dropzoneMaxFileExceeded(file) {
       this.$refs.dropzone.removeFile(file);
-      alert('You can only upload one file at a time.');
+      // alert('You can only upload one file at a time.');
     },
     resetForms() {
+      if (this.currentQuestionIndex < 1) {
+        this.loadFirstStep()
+        return;
+      }
       this.selectedTradeName = '';
       this.questions = [];
       this.currentQuestionIndex = 0;
+      this.lastQuestion = false;
+      this.showHeadline = false;
+      this.showAddPhoto = false;
+      this.showLocationView = false;
+      this.showAuthView = false;
+      this.showLoginView = false;
+      this.showRegisterView = false;
     },
     getTrades() {
       this.isLoading = true;
@@ -413,7 +436,9 @@ export default {
       this.fetchQuestions();
     },
     fetchQuestions() {
+      this.questionLoader = true
       userService.getTradeQuestion(this.selectedTrade).then((res) => {
+        this.questionLoader = false
         this.questions = Array.isArray(res.extra) ? res.extra : [res.extra];
         this.currentQuestionIndex = 0;
         setTimeout(() => {
