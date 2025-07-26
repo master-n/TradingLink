@@ -38,7 +38,7 @@
         <NestedOption :option="opt" :index="idx" @remove="option.next.options.splice(idx, 1)" />
       </div>
 
-      <button class="btn btn-sm btn-secondary my-2" v-if="option.next.type !== 'StandardTextAreaOption'" @click="addOption(option.next)">Add Option</button>
+      <button class="btn btn-sm btn-secondary my-2" @click="addOption(option.next)">Add Option</button>
     </div>
   </div>
 </template>
