@@ -434,6 +434,7 @@ export default {
     },
     onOptionSelected(option, questionIndex) {
       this.lastQuestion = false;
+      this.currentQuestionIndex = questionIndex
       if (this.questions.length - 1 !== questionIndex) {
         this.questions.splice(questionIndex + 1);
       }
