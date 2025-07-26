@@ -10,7 +10,7 @@
             <div class="menu-container">
               <ul>
                 <li><router-link to="/post-a-job">Post a job <i class='bx bx-up-arrow-alt'></i></router-link></li>
-                <li><router-link to="/faq">How it works<i class='bx bx-up-arrow-alt'></i></router-link></li>
+                <li><router-link to="/faq">How it works (FAQ)<i class='bx bx-up-arrow-alt'></i></router-link></li>
                 <li><router-link to="/find-a-trade">Find trades <i class='bx bx-up-arrow-alt'></i></router-link></li>
               </ul>
             </div>
