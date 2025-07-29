@@ -1197,8 +1197,7 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <h5 class="mb-3 mt-3 mt-md-2">Tradelink is the reliable way to get more of the work you
-              want.</h5>
+            <h5 class="mb-3 mt-3 mt-md-2">Tradelink helps you find the kind of jobs you actually want, quickly and reliably.</h5>
 
             <p class="font-weight-lighter mb-3">Sign up for free to receive a steady stream
               of local job opportunities that match your skills.</p>
