@@ -247,7 +247,7 @@ function getProjectInterest(id) {
 
 function jobDetails(id) {
     return new Promise((resolve) => {
-        axios.get(`/api/job/${id}`, useBasicAuthHeaders())
+        axios.get(`/api/admin/job/${id}`, useBasicAuthHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
