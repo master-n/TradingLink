@@ -54,6 +54,7 @@
                       <div v-if="isOtherSelected(question,option)">
                         <input type="text"
                                class="form-control mt-2"
+                               required
                                v-model="question.other_answer"
                                placeholder="Please specify"/>
                       </div>
