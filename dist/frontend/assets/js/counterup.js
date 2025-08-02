@@ -59,7 +59,11 @@
   
               // Updates the number until we're done
               var f = function() {
-                  $this.text($this.data('counterup-nums').shift());
+                  let nums = $this.data('counterup-nums');
+                  if (!Array.isArray(nums)) {
+                      return;
+                  }
+                  $this.text(nums.shift());
                   if ($this.data('counterup-nums').length) {
                       setTimeout($this.data('counterup-func'), $settings.delay);
                   } else {
