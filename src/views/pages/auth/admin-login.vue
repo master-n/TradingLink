@@ -1,18 +1,13 @@
 <template>
   <div>
-    <RoleBasedHeader :userRole="userRole" />
-
+    <topHeader></topHeader>
     <div class="login-area mt-50 mb-120">
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
             <div class="form-wrapper">
-
               <div class="form-title mb-25">
-                <div @click="$router.go(-1)" class="mb-4 cursor-pointer">
-                  <i class="bi bi-chevron-left"></i> Back
-                </div>
-                <h3>Login to TradeLink</h3>
+                <h3>Admin Login</h3>
                 <span></span>
               </div>
 
@@ -22,18 +17,16 @@
                 </ul>
               </div>
 
-              <form @submit.prevent="login" class="border">
+              <form @submit.prevent="login">
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-inner mb-20">
-                      <label for="email">Email*</label>
-                      <div class="input-area">
-                        <img src="../../../../public/frontend/assets/images/icon/email-2.svg" alt="">
-                        <input type="email" id="email" v-model="email" placeholder="Email" required>
-                      </div>
+                      <label for="email">Email</label>
+                      <input type="email" id="email" v-model="email" placeholder="" required>
+
                     </div>
                     <div class="form-inner mb-20">
-                      <label class="large-font" for="email">Password</label>
+                      <label class="large-font" for="password">Password</label>
                       <input v-model="password"
                              :type="obscurePassword ? 'password': 'text'"
                              id="password"/>
@@ -51,6 +44,12 @@
                       </button>
                     </div>
                   </div>
+
+                  <div class="text-center mb-4">
+                    <router-link to="/forgot-password" class="text-primary-1 text-decoration-underline mb-3"
+                                 style="font-size: 14px">Forgot your password?
+                    </router-link>
+                  </div>
                 </div>
               </form>
             </div>
@@ -62,27 +61,22 @@
 </template>
 
 <script>
-import Auth from "../../layouts/auth";
 import appConfig from "../../../../app.config.json";
 import topHeader from '../../base-layout/header-2'
 
-import {required, email} from "vuelidate/lib/validators";
 import store from "@/store/store";
-import {userService} from "@/apis/user.service";
-import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 /**
  * Login component
  */
 export default {
-  name: "AuthLogin",
   page: {
     title: "Login",
     meta: [{name: "description", content: appConfig.description}],
   },
   data() {
     return {
-      email: this.$store.getters.GET_USER_INFO ? this.$store.getters.GET_USER_INFO.email : "",
+      email: "",
       password: "",
       obscurePassword: true,
       isLoading: false,
@@ -91,21 +85,7 @@ export default {
     };
   },
   components: {
-    Auth,
-    topHeader,
-    RoleBasedHeader
-  },
-  computed: {
-    userInfo() {
-      return this.$store.getters.GET_USER_INFO;
-    },
-    userRole() {
-      const loggedUser = store.getters.GET_USER_INFO;
-      if(!loggedUser){
-        return '';
-      }
-      return loggedUser?.roles?.[0] || '';
-    },
+    topHeader
   },
 
   created() {
@@ -115,20 +95,43 @@ export default {
     login() {
       this.isLoading = true
       this.errorMessage = ''
-      userService.login(this.email, this.password).then((res) => {
-        this.isLoading = false
-        const {status, message, extra} = res;
-        if (!status) {
-          this.errorMessage = message;
-          return;
+      this.$store.dispatch("adminLogin", {
+        email: this.email,
+        password: this.password,
+      }).then(() => {
+        const loggedUser = store.getters.GET_USER_INFO;
+        const userRole = loggedUser.roles?.[0] || '';
+        if (userRole === 'admin') {
+          this.$router.push('/admin');
+        }else {
+          this.$router.push('/');
         }
-        this.$store.dispatch('updateUserInfo', extra)
-        const queryParam = this.$route.query['redirect-to'];
-        console.log('Redirecting to:', queryParam);
-        const redirectPath = (typeof queryParam === 'string') ? queryParam : '/profile';
-        this.$router.push(redirectPath);
+      }).catch((message) => {
+        this.errorMessage = message;
+      }).finally(() => {
+        this.isLoading = false;
       });
+      this.$store.dispatch("clear");
     }
   },
+  mounted() {
+    $('.sidebar-button').on("click", function () {
+      $('.main-menu').addClass('show-menu');
+    });
+
+    $('.menu-close-btn').on("click", function () {
+      $('.main-menu').removeClass('show-menu');
+    });
+
+    $('body').removeClass('bg-wight');
+
+
+  }
 };
 </script>
+
+<style scoped>
+.bg-wight {
+  background: #F8F8F8 !important;
+}
+</style>

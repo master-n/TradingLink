@@ -1,8 +1,7 @@
 <template>
   <div>
-    <homeOwnerHeader v-if="isHomeOwner"/>
+    <RoleBasedHeader :userRole="userRole" />
 
-    <topHeader v-else/>
     <div class="py-5">
 
       <div class="container">
@@ -37,11 +36,9 @@
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import topHeader from '../../base-layout/navigation/home-menu'
 import appConfig from "../../../../app.config.json";
-import {userService} from "@/apis/user.service";
 import store from "@/store/store";
-import homeOwnerHeader from "@/views/base-layout/navigation/homeowner-menu";
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 export default {
   name: "Unauthorized",
@@ -56,19 +53,17 @@ export default {
     };
   },
   computed: {
-    isHomeOwner() {
+    userRole() {
       const loggedUser = store.getters.GET_USER_INFO;
       if(!loggedUser){
-        return false
+        return '';
       }
-      const userRole = loggedUser.roles?.[0] || '';
-      return userRole === 'homeowner';
-    }
+      return loggedUser?.roles?.[0] || '';
+    },
   },
   components: {
     HomeFooter,
-    topHeader,
-    homeOwnerHeader
+    RoleBasedHeader
   },
   methods: {
   },

@@ -1,8 +1,6 @@
 <template>
   <div>
-    <homeOwnerHeader v-if="isHomeOwner"/>
-
-    <topHeader v-else/>
+    <RoleBasedHeader :userRole="userRole" />
 
     <div class="hero2">
       <div class="hero-wapper overflow-visible">
@@ -1506,11 +1504,10 @@
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import topHeader from '../../base-layout/navigation/home-menu'
-import homeOwnerHeader from '../../base-layout/navigation/homeowner-menu'
 import appConfig from "../../../../app.config.json";
 import {userService} from "@/apis/user.service";
 import store from "@/store/store";
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 export default {
   name: "Home",
@@ -1531,19 +1528,18 @@ export default {
     };
   },
   computed: {
-    isHomeOwner() {
+    userRole() {
       const loggedUser = store.getters.GET_USER_INFO;
       if(!loggedUser){
-        return false
+        return '';
       }
-      const userRole = loggedUser.roles?.[0] || '';
-      return userRole === 'homeowner';
-    }
+      return loggedUser?.roles?.[0] || '';
+    },
+
   },
   components: {
     HomeFooter,
-    topHeader,
-    homeOwnerHeader
+    RoleBasedHeader
   },
   methods: {
     async getTrades() {

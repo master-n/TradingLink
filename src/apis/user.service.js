@@ -3,6 +3,7 @@ import axios from "../axios/axios-kaqadmin";
 
 export const userService = {
     login,
+    adminLogin,
     logout,
     getTrades,
     getForumQuestions,
@@ -91,6 +92,24 @@ function login(email, password) {
 
     return new Promise((resolve) => {
         axios.post('/api/oauth/token', data, useBasicAuthHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function adminLogin(email, password) {
+    const data = {
+        "grant_type": "password",
+        "client_id": process.env.VUE_APP_ADMIN_CLIENT_ID,
+        "client_secret": process.env.VUE_APP_ADMIN_CLIENT_SECRET,
+        "username": email,
+        "password": password,
+        "scope": "*"
+    }
+
+    return new Promise((resolve) => {
+        axios.post('/admin/api/login', data, useBasicAuthHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -247,7 +266,7 @@ function getProjectInterest(id) {
 
 function jobDetails(id) {
     return new Promise((resolve) => {
-        axios.get(`/api/admin/job/${id}`, useBasicAuthHeaders())
+        axios.get(`/admin/api/job/${id}`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -265,7 +284,7 @@ function getPostedServices() {
 
 function getJobPosts() {
     return new Promise((resolve) => {
-        axios.get(`/api/job-posts`, useBasicAuthHeaders())
+        axios.get(`/admin/api/job-posts`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -292,7 +311,7 @@ function userStats() {
 
 function getTradePeople() {
     return new Promise((resolve) => {
-        axios.get(`/api/admin/tradespeople`, useBasicAuthHeaders())
+        axios.get(`/admin/api/tradespeople`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -301,7 +320,7 @@ function getTradePeople() {
 
 function getHomeowners() {
     return new Promise((resolve) => {
-        axios.get(`/api/admin/homeowners`, useBasicAuthHeaders())
+        axios.get(`/admin/api/homeowners`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -372,7 +391,7 @@ function getBusinessDetails() {
 }
 function getUserProfile(userId) {
     return new Promise((resolve) => {
-        axios.get(`/api/user-profile/${userId}`, useBasicAuthHeaders())
+        axios.get(`/admin/api/user-profile/${userId}`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -381,7 +400,7 @@ function getUserProfile(userId) {
 
 function getTradesperson(userId) {
     return new Promise((resolve) => {
-        axios.get(`/api/tradesperson/${userId}`, useBasicAuthHeaders())
+        axios.get(`/admin/api/tradesperson/${userId}`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -417,7 +436,7 @@ function editPortfolio(formData, id) {
 
 function editTrade(formData, id) {
     return new Promise((resolve) => {
-        axios.post('/api/edit-trade/' + id, formData, useBasicAuthHeaders())
+        axios.post('/admin/api/edit-trade/' + id, formData, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -444,7 +463,7 @@ function savePortfolioOrder(formData) {
 
 function saveTradeQuestions(payload) {
     return new Promise((resolve) => {
-        axios.post('/api/save-questions', payload, useBasicAuthHeaders())
+        axios.post('/admin/api/save-questions', payload, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -461,7 +480,7 @@ function deletePortfolio(id) {
 
 function deleteTrades(tradeIds) {
     return new Promise((resolve) => {
-        axios.post('/api/trade/delete', tradeIds, useBasicAuthHeaders())
+        axios.post('/admin/api/trade/delete', tradeIds, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -470,7 +489,7 @@ function deleteTrades(tradeIds) {
 
 function createTrade(formData) {
     return new Promise((resolve) => {
-        axios.post('/admin/api/trade', formData, useBasicAuthHeaders())
+        axios.post('/admin/api/trade', formData, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
@@ -665,7 +684,7 @@ function contactFormSubmit(payload) {
 
 function verifyIdentity(payload) {
     return new Promise((resolve) => {
-        axios.post(`/api/admin/verify-identity`, payload, useBasicAuthHeaders())
+        axios.post(`/admin/api/verify-identity`, payload, useBearerTokenHeaders())
             .then((response) => {
                 resolve(response.data);
             })

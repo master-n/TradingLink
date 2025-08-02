@@ -1,7 +1,7 @@
 <template>
   <div>
-    <homeOwnerHeader v-if="isHomeOwner"/>
-    <topHeader v-else/>
+    <RoleBasedHeader :userRole="userRole" />
+
 
     <div class="container my-5">
       <div class="text-center mb-5">
@@ -47,10 +47,9 @@
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import topHeader from '../../base-layout/navigation/home-menu'
-import homeOwnerHeader from '../../base-layout/navigation/homeowner-menu'
 import store from '@/store/store'
 import appConfig from "../../../../app.config.json";
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 export default {
   name: "QualityRequirements",
@@ -101,16 +100,17 @@ export default {
   },
 
   computed: {
-    isHomeOwner() {
+    userRole() {
       const loggedUser = store.getters.GET_USER_INFO;
-      return loggedUser?.roles?.[0] === 'homeowner';
-    }
-  }
-  ,
+      if(!loggedUser){
+        return '';
+      }
+      return loggedUser?.roles?.[0] || '';
+    },
+  },
   components: {
     HomeFooter,
-    topHeader,
-    homeOwnerHeader
+    RoleBasedHeader,
   },
   mounted() {
     $('.sidebar-button').on("click", function () {
@@ -119,24 +119,6 @@ export default {
 
     $('.menu-close-btn').on("click", function () {
       $('.main-menu').removeClass('show-menu');
-    });
-// mobile-search-area
-
-    $('.search-btn').on("click", function () {
-      $('.mobile-search').addClass('slide');
-    });
-
-    $('.search-cross-btn').on("click", function () {
-      $('.mobile-search').removeClass('slide');
-    });
-    this.$nextTick(() => {
-      $('.select1').select2({
-        width: '100%',
-        multiple: false,
-        tags: false,
-        allowClear: true,
-      });
-
     });
   }
 

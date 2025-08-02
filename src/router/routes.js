@@ -50,10 +50,31 @@ export default [
         component: () => import('../views/pages/public/find-tradesperson'),
     },
     {
+        path: '/admin-login',
+        name: 'adminLogin',
+        meta: {
+            beforeResolve(routeTo, routeFrom, next) {
+                // If the user is already logged in
+                const loggedUser = store.getters.GET_USER_INFO;
+                if (loggedUser && loggedUser.roles.includes('admin')) {
+                    next({name: 'admin'});
+                } else {
+                    // Continue to the login page
+                    next()
+                }
+
+            },
+        },
+
+        component: () => import('../views/pages/auth/admin-login'),
+    },
+    {
         path: '/admin',
         name: 'admin',
         meta: {
-            authRequired:false,
+            authRequired: true,
+            roles: ['admin'],
+
         },
         component: () => import('../views/pages/admin/trades'),
     },
@@ -61,7 +82,9 @@ export default [
         path: '/admin/job-posts',
         name: 'jobPosts',
         meta: {
-            authRequired:false,
+            authRequired: true,
+            roles: ['admin'],
+
         },
         component: () => import('../views/pages/admin/jobs'),
     },
@@ -69,34 +92,55 @@ export default [
         path: '/admin/trades',
         name: 'adminTrades',
         meta: {
-            authRequired:false,
+            authRequired:true,
+            roles: ['admin'],
         },
         component: () => import('../views/pages/admin/trades'),
     },
     {
         path: '/jobs/:id',
         name: 'jobDetails',
+        meta:{
+            authRequired:true,
+            roles: ['admin'],
+        },
         component: () => import('../views/pages/admin/job-details'),
     },
     {
         path: '/question-builder',
         name: 'questionBuilder',
+        meta:{
+            authRequired:true,
+            roles: ['admin'],
+        },
         component: () => import('../views/pages/admin/question-builder'),
     },
     {
         path: '/admin/clients',
         name: 'homeowners',
+        meta:{
+            authRequired:true,
+            roles: ['admin'],
+        },
         component: () => import('../views/pages/admin/clients'),
     },
     {
         path: '/admin/tradespeople',
         name: 'tradespeople',
+        meta:{
+            authRequired:true,
+            roles: ['admin'],
+        },
         component: () => import('../views/pages/admin/tradespeople'),
     },
 
     {
         path: '/admin/tradesperson/:id/details',
         name: 'TradePersonDetails',
+        meta:{
+            authRequired:true,
+            roles: ['admin'],
+        },
         component: () => import('../views/pages/admin/tradesperson-details'),
     },
     {

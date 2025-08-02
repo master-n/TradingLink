@@ -27,7 +27,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
         store.dispatch('setRedirectPath', routeTo.fullPath);
 
         if (routeTo.path.startsWith('/admin')) {
-            return next('/admin/login');
+            return next('/admin-login');
         }
         return next('/login');
     }
@@ -38,6 +38,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
         if (publicPages.includes(routeTo.path)) {
             if (userRole === 'homeowner') return next('/homeowner/my-projects');
             if (userRole === 'tradesperson') return next('/profile');
+            if (userRole === 'admin') return next('/admin');
             return next('/error/403');
         }
 
@@ -47,11 +48,12 @@ router.beforeEach((routeTo, routeFrom, next) => {
             if (userRole === '') return next('/logout');
             if (userRole === 'homeowner') return next('/homeowner/my-projects');
             if (userRole === 'tradesperson') return next('/profile');
+            if (userRole === 'admin') return next('/admin');
             return next('/error/403');
         }
 
         // Check permission-based access (exclude admin, branch, customer, and customer_service)
-        if (!['homeowner', 'tradesperson'].includes(userRole)) {
+        if (!['homeowner', 'tradesperson','admin'].includes(userRole)) {
             const requiredPermissions = routeTo.matched.flatMap(route => route.meta.permissions || []);
             const hasPermission = requiredPermissions.every(permission => userPermissions.includes(permission));
 

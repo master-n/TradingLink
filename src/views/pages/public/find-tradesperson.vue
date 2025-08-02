@@ -1,9 +1,6 @@
 <template>
   <div>
-    <!--  <div class="eg-preloder">-->
-    <!--  </div>-->
-
-    <topHeader/>
+    <RoleBasedHeader :userRole="userRole" />
 
     <div class="container">
       <div class="row justify-content-center align-items-center mb-4 mb-sm-0">
@@ -211,6 +208,8 @@ import HomeFooter from '../../base-layout/footer'
 import topHeader from '../../base-layout/header-2'
 import {userService} from "@/apis/user.service";
 import appConfig from "../../../../app.config.json";
+import store from "@/store/store";
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 export default {
   page: {
@@ -227,9 +226,19 @@ export default {
       tradeLoader: false,
     };
   },
+  computed: {
+    userRole() {
+      const loggedUser = store.getters.GET_USER_INFO;
+      if(!loggedUser){
+        return '';
+      }
+      return loggedUser?.roles?.[0] || '';
+    },
+  },
   components: {
     HomeFooter,
-    topHeader
+    topHeader,
+    RoleBasedHeader
   },
   methods: {
     getTrades() {
@@ -264,24 +273,6 @@ export default {
 
     $('.menu-close-btn').on("click", function () {
       $('.main-menu').removeClass('show-menu');
-    });
-// mobile-search-area
-
-    $('.search-btn').on("click", function () {
-      $('.mobile-search').addClass('slide');
-    });
-
-    $('.search-cross-btn').on("click", function () {
-      $('.mobile-search').removeClass('slide');
-    });
-    this.$nextTick(() => {
-      $('.select1').select2({
-        width: '100%',
-        multiple: false,
-        tags: false,
-        allowClear: true,
-      });
-
     });
   }
 

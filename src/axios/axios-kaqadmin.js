@@ -11,8 +11,8 @@ instance.interceptors.response.use(function (response) {
 
     if(error.response){
         if (error.response.status === 401) {
-            localStorage.clear();
-            window.location.href = "login";
+            // localStorage.clear();
+            // window.location.href = "login";
         } else if (error.response.status === 500) {
             const errorMessage = error.response.data.message ?
                 `Internal server error: ${error.response.data.message}` :

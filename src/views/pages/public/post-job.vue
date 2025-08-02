@@ -1,7 +1,7 @@
 <template>
   <div>
-    <homeOwnerHeader v-if="isHomeOwner"/>
-    <topHeader v-else/>
+    <RoleBasedHeader :userRole="userRole" />
+
     <div class="container mt-5" style="margin-bottom: 7rem">
       <div class="row">
         <div class="col-md-8">
@@ -301,15 +301,13 @@
 </template>
 
 <script>
-import topHeader from '../../base-layout/header-2';
-import homeOwnerHeader from '../../base-layout/navigation/homeowner-menu'
-
 import QuestionRenderer from '../../../components/QuestionRenderer.vue';
 import {userService} from "@/apis/user.service";
 import vue2Dropzone from "vue2-dropzone";
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import appConfig from "../../../../app.config.json";
 import store from "@/store/store";
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 export default {
   name: "PostAJob",
@@ -318,8 +316,7 @@ export default {
     meta: [{name: "description", content: appConfig.pageDescriptions.postJob}]
   },
   components: {
-    topHeader,
-    homeOwnerHeader,
+    RoleBasedHeader,
     QuestionRenderer,
     vueDropzone: vue2Dropzone,
   },
@@ -375,14 +372,13 @@ export default {
     loggedInUser() {
       return this.$store.getters.GET_USER_INFO;
     },
-    isHomeOwner() {
+    userRole() {
       const loggedUser = store.getters.GET_USER_INFO;
       if(!loggedUser){
-        return false
+        return '';
       }
-      const userRole = loggedUser.roles?.[0] || '';
-      return userRole === 'homeowner';
-    }
+      return loggedUser?.roles?.[0] || '';
+    },
   },
   methods: {
     getTimeframeClass(label) {
@@ -729,24 +725,6 @@ export default {
 
     $('.menu-close-btn').on("click", function () {
       $('.main-menu').removeClass('show-menu');
-    });
-// mobile-search-area
-
-    $('.search-btn').on("click", function () {
-      $('.mobile-search').addClass('slide');
-    });
-
-    $('.search-cross-btn').on("click", function () {
-      $('.mobile-search').removeClass('slide');
-    });
-    this.$nextTick(() => {
-      $('.select1').select2({
-        width: '100%',
-        multiple: false,
-        tags: false,
-        allowClear: true,
-      });
-
     });
   }
 

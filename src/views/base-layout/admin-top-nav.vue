@@ -27,12 +27,18 @@
         <div class="for-mobile-menu d-lg-none d-block mt-5">
           <!-- Mobile menu items -->
           <ul>
-
             <li>
               <router-link to="/register">Visit website <i class="bi bi-globe2 ms-2"></i>
               </router-link>
             </li>
-            <hr>
+            <hr />
+            <li>
+              <router-link to="/logout" class="text-danger">
+                Log out <i class="bi bi-box-arrow-right ms-2 text-danger"/>
+              </router-link>
+            </li>
+
+            <hr />
           </ul>
         </div>
       </div>
@@ -41,19 +47,38 @@
         <!-- Navigation right content -->
         <ul>
           <li class="d-md-flex d-none">
+            <router-link to="/logout">Logout</router-link>
+          </li>
+
+          <li class="d-md-flex d-none">
             <div class="sign-in-btn">
-              <router-link to="/" class="primry-btn-1 lg-btn">Visit website <i class="bi bi-globe2 ms-2" /></router-link>
+              <router-link to="/" class="primry-btn-1 lg-btn">Visit website <i class="bi bi-globe2 ms-2"/></router-link>
             </div>
           </li>
         </ul>
         <div class="sidebar-button mobile-menu-btn">
-          <router-link to="/" class="primry-btn-1 lg-btn d-flex align-items-center">
-            <span>Visit website</span>
-            <i class="bi bi-globe2 ms-2"></i>
-          </router-link>
+          <button class="primry-btn-1 lg-btn d-flex align-items-center">
+            <span>Menu</span>
+            <i class="bi bi-list ms-2"></i>
+          </button>
         </div>
       </div>
     </div>
   </header>
 
 </template>
+
+<script>
+export default {
+  name: "AdminTopNav",
+  mounted() {
+    $('.sidebar-button').on("click", function () {
+      $('.main-menu').addClass('show-menu');
+    });
+
+    $('.menu-close-btn').on("click", function () {
+      $('.main-menu').removeClass('show-menu');
+    });
+  }
+}
+</script>

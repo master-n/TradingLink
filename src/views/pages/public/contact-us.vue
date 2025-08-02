@@ -1,7 +1,6 @@
 <template>
   <div>
-    <homeOwnerHeader v-if="isHomeOwner"/>
-    <topHeader v-else/>
+    <RoleBasedHeader :userRole="userRole" />
 
     <section class="container my-5 py-4">
       <div class="row justify-content-center">
@@ -55,11 +54,10 @@
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import topHeader from '../../base-layout/navigation/home-menu'
-import homeOwnerHeader from '../../base-layout/navigation/homeowner-menu'
 import store from '@/store/store'
 import {userService} from "@/apis/user.service";
 import appConfig from "../../../../app.config.json";
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 export default {
   name: "ContactFormOnly",
@@ -79,14 +77,16 @@ export default {
   },
   components: {
     HomeFooter,
-    topHeader,
-    homeOwnerHeader
+    RoleBasedHeader
   },
   computed: {
-    isHomeOwner() {
+    userRole() {
       const loggedUser = store.getters.GET_USER_INFO;
-      return loggedUser?.roles?.[0] === 'homeowner';
-    }
+      if(!loggedUser){
+        return '';
+      }
+      return loggedUser?.roles?.[0] || '';
+    },
   },
   methods: {
     submitForm() {
@@ -111,16 +111,6 @@ export default {
 
       $('.menu-close-btn').on("click", function () {
         $('.main-menu').removeClass('show-menu');
-      });
-// mobile-search-area
-
-      $('.search-btn').on("click", function () {
-        $('.mobile-search').addClass('slide');
-      });
-
-
-      $('.search-cross-btn').on("click", function () {
-        $('.mobile-search').removeClass('slide');
       });
     });
   },

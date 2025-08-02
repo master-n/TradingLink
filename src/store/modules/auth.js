@@ -87,6 +87,24 @@ const actions = {
         })
     },
 
+    adminLogin({commit, dispatch}, payload) {
+        return new Promise((resolve, reject) => {
+            dispatch('showLoader');
+            userService.adminLogin(payload.email, payload.password).then(data => {
+                dispatch('hideLoader')
+                const {status, extra, message} = data;
+                if (status) {
+                    commit('SET_USER_INFO', extra)
+                    dispatch('success', {message, showSwal: false}, {root: true});
+                    resolve(data)
+                } else {
+                    dispatch('error', {message}, {root: true});
+                    reject(message)
+                }
+            });
+        })
+    },
+
     signUp({commit, dispatch}, payload) {
         return new Promise((resolve) => {
             dispatch('showLoader');

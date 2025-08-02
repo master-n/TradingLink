@@ -183,9 +183,20 @@ export default {
     checkScreenSize() {
       this.isMobile = window.innerWidth < 768;
     },
+    menuNavigation(){
+      $('.sidebar-button').on("click", function () {
+        $('.main-menu').addClass('show-menu');
+      });
+
+      $('.menu-close-btn').on("click", function () {
+        $('.main-menu').removeClass('show-menu');
+      });
+    }
+
   },
   mounted() {
     this.checkScreenSize();
+    this.menuNavigation();
     window.addEventListener('resize', this.checkScreenSize);
   },
   beforeDestroy() {

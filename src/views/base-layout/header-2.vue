@@ -183,12 +183,23 @@ export default {
         default:
           console.log('Unknown registration step');
       }
+    },
+    menuNavigation(){
+      $('.sidebar-button').on("click", function () {
+        $('.main-menu').addClass('show-menu');
+      });
+
+      $('.menu-close-btn').on("click", function () {
+        $('.main-menu').removeClass('show-menu');
+      });
     }
 
   },
   mounted() {
     this.checkScreenSize();
+    this.menuNavigation();
     window.addEventListener('resize', this.checkScreenSize);
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.checkScreenSize);
