@@ -1,5 +1,9 @@
 <template>
-  <component :is="currentHeader" />
+  <div>
+    <component :is="currentHeader" />
+  </div>
+
+
 </template>
 
 <script>

@@ -1,6 +1,15 @@
 <template>
   <div>
     <RoleBasedHeader :userRole="userRole" />
+    <div class="container cursor-pointer" id="backButton">
+      <div class="mt-4 text-end pe-4">
+        <a @click="$router.go(-1)" class="mb-4">
+          <i class="bi bi-chevron-left"></i> Go Back
+        </a>
+      </div>
+
+    </div>
+
 
     <section class="container my-5 py-4">
       <div class="row align-items-center">

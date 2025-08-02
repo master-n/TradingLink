@@ -1687,6 +1687,7 @@ export default {
       $('.menu-close-btn').on("click", function () {
         $('.main-menu').removeClass('show-menu');
       });
+
     });
     document.addEventListener('click', this.handleClickOutside);
   },

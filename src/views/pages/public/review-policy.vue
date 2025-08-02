@@ -1,6 +1,15 @@
 <template>
   <div>
     <RoleBasedHeader :userRole="userRole" />
+    <div class="container">
+      <div class="mt-4 text-end pe-4">
+        <a @click="$router.go(-1)" class="mb-4">
+          <i class="bi bi-chevron-left"></i> Go Back
+        </a>
+      </div>
+
+    </div>
+
     <section class="container my-5">
       <h2 class="mb-4 d-flex align-items-center justify-content-center">
         <i class="bi bi-shield-check text-primary me-2" aria-hidden="true"></i>

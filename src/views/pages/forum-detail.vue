@@ -1,8 +1,9 @@
 <!-- ForumDetails.vue -->
 <template>
   <div>
-    <homeOwnerHeader v-if="isHomeOwner"/>
-    <topHeader v-else/>
+
+    <RoleBasedHeader :userRole="userRole" />
+
 
     <div class="container py-5">
       <h3 class="mb-4 text-center">{{query}}</h3>
@@ -70,6 +71,7 @@ import {userService} from "@/apis/user.service";
 import topHeader from "@/views/base-layout/navigation/homeowner-menu";
 import homeOwnerHeader from "@/views/base-layout/navigation/homeowner-menu";
 import store from "@/store/store";
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 
 export default {
   name: "ForumDetails",
@@ -82,13 +84,17 @@ export default {
   },
   components: {
     topHeader,
-    homeOwnerHeader
+    homeOwnerHeader,
+    RoleBasedHeader
   },
   computed: {
-    isHomeOwner() {
-      const user = store.getters.GET_USER_INFO;
-      return user?.roles?.[0] === 'homeowner';
-    }
+    userRole() {
+      const loggedUser = store.getters.GET_USER_INFO;
+      if(!loggedUser){
+        return '';
+      }
+      return loggedUser?.roles?.[0] || '';
+    },
   },
   methods: {
     fetchDetails() {

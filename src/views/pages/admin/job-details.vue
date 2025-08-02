@@ -131,7 +131,7 @@ export default {
   methods: {
     getProjectDetails(project_id) {
       this.isLoading = true;
-      userService.jobDetails(project_id).then((res) => {
+      userService.adminJobDetails(project_id).then((res) => {
         this.isLoading = false;
         const {status, message, extra} = res;
         if (!status) {

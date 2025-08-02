@@ -2,7 +2,14 @@
   <div>
 
     <RoleBasedHeader :userRole="userRole" />
+    <div class="container cursor-pointer">
+      <div class="mt-4 text-end pe-4">
+        <a @click="$router.go(-1)" class="mb-4">
+          <i class="bi bi-chevron-left"></i> Go Back
+        </a>
+      </div>
 
+    </div>
 
 
     <div class="inner-banner">
@@ -231,14 +238,6 @@ export default {
       }
       return loggedUser?.roles?.[0] || '';
     },
-    isHomeOwner() {
-      const loggedUser = store.getters.GET_USER_INFO;
-      if(!loggedUser){
-        return false
-      }
-      const userRole = loggedUser.roles?.[0] || '';
-      return userRole === 'homeowner';
-    }
   },
   components: {
     HomeFooter,

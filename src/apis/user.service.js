@@ -45,6 +45,7 @@ export const userService = {
     getProjectDetails,
     getProjectInterest,
     jobDetails,
+    adminJobDetails,
     getPostedServices,
     getJobPosts,
     getJobsNearMe,
@@ -275,9 +276,19 @@ function getProjectInterest(id) {
     })
 }
 
-function jobDetails(id) {
+function adminJobDetails(id) {
     return new Promise((resolve) => {
         axios.get(`/admin/api/job/${id}`, useBearerTokenHeaders())
+            .then(response => {
+                resolve(response.data)
+            }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+
+function jobDetails(id) {
+    return new Promise((resolve) => {
+        axios.get(`/api/job/${id}`, useBearerTokenHeaders())
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));

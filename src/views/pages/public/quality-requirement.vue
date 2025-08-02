@@ -1,6 +1,14 @@
 <template>
   <div>
     <RoleBasedHeader :userRole="userRole" />
+    <div class="container cursor-pointer">
+      <div class="mt-4 text-end pe-4">
+        <a @click="$router.go(-1)" class="mb-4">
+          <i class="bi bi-chevron-left"></i> Go Back
+        </a>
+      </div>
+
+    </div>
 
 
     <div class="container my-5">
