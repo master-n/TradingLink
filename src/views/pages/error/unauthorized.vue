@@ -6,10 +6,12 @@
 
       <div class="container">
         <h1>This page isn't available</h1>
-
-        <p>You can't view this page whilst logged in with this account.
-          <router-link to="/logout" class="text-decoration-underline">Logout.</router-link>
+        <p>You can't view this page whilst logged in with this account.</p>
+        <p>
+          To post a job, please <router-link to="/logout" class="text-decoration-underline">log out</router-link>
+          and sign in with a client account.
         </p>
+
       </div>
     </div>
 

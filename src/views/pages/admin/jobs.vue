@@ -41,13 +41,13 @@
                     <div class="job-list-content">
                       <div class="company-area">
                         <div class="company-details">
-                          <div class="name-location">
-                            <h5 class="text-capitalize"><router-link :to="'/jobs/'+service.id">{{ service.headline }}</router-link></h5>
+                          <router-link :to="'/jobs/'+service.id" class="name-location">
+                            <h5 class="text-capitalize">{{ service.headline }}</h5>
                             <div class="mb-2 small">Job Reference: {{service.job_reference || 'N/A'}}</div>
                             <p class="fw-light"><i class="bi bi-pin-map"></i> {{ service.city_name }}, <small
                                 class="fw-light">{{service.created_at | formatDate}}</small></p>
                             <p>Posted By: {{service.user.name}}</p>
-                          </div>
+                          </router-link>
                         </div>
                       </div>
                     </div>

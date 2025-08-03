@@ -6,7 +6,10 @@
       <div class="row justify-content-center align-items-center mb-4 mb-sm-0">
         <!-- Column with text content -->
         <div class="col-md-4 order-md-first order-last">
-          <h1 class="mt-4 mt-sm-0">{{ selectedTrade ? selectedTrade : 'Jobs' }} near me</h1>
+          <h1 class="mt-4 mt-sm-0">
+            {{ pluralizeTrade(selectedTrade) }} near me
+          </h1>
+
           <p>Discover vetted and reviewed local {{ selectedTrade ? selectedTrade : 'professionals' }} with ease. Simply
             post your job to receive free quotes from TradeLink's trusted
             {{ selectedTrade ? selectedTrade : 'professionals' }} in your area.</p>
@@ -205,7 +208,6 @@
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import topHeader from '../../base-layout/header-2'
 import {userService} from "@/apis/user.service";
 import appConfig from "../../../../app.config.json";
 import store from "@/store/store";
@@ -237,10 +239,18 @@ export default {
   },
   components: {
     HomeFooter,
-    topHeader,
     RoleBasedHeader
   },
   methods: {
+    pluralizeTrade(trade) {
+      if (!trade) return 'Jobs';
+
+      const lower = trade.toLowerCase().trim();
+
+      const alreadyPlural = lower.endsWith('s');
+
+      return alreadyPlural ? trade : trade + 's';
+    },
     getTrades() {
       this.tradeLoader = true
       userService.getTrades().then((res) => {
@@ -261,7 +271,7 @@ export default {
   created() {
     const category = this.$route.query.category;
     if (category) {
-      this.selectedTrade = category
+      this.selectedTrade = decodeURIComponent(category || '')
     }
     this.getTrades();
     this.getTradespersonsByTrade()

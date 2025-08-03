@@ -5,6 +5,7 @@ export const userService = {
     login,
     adminLogin,
     adminRegister,
+    deleteJob,
     logout,
     getTrades,
     pageStats,
@@ -19,6 +20,7 @@ export const userService = {
     submitReply,
     postJobTrades,
     updateQualificationStatus,
+    updateJob,
     postProfileView,
     contactFormSubmit,
     verifyIdentity,
@@ -126,6 +128,15 @@ function adminLogin(email, password) {
 function adminRegister(payload) {
     return new Promise((resolve) => {
         axios.post('/admin/api/sign-up', payload, useBasicAuthHeaders())
+            .then(response => {
+                 resolve(response.data)
+        }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function deleteJob(jobId) {
+    return new Promise((resolve) => {
+        axios.delete(`/admin/api/job/${jobId}`, useBearerTokenHeaders())
             .then(response => {
                  resolve(response.data)
         }).catch(err => resolve({status: false, message: err}));
@@ -727,6 +738,16 @@ function postJobTrades() {
 function updateQualificationStatus(payload) {
     return new Promise((resolve) => {
         axios.post(`/admin/api/update-qualification-status`, payload, useBearerTokenHeaders())
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function updateJob(jobId,payload) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/update-job/${jobId}`, payload, useBearerTokenHeaders())
             .then((response) => {
                 resolve(response.data);
             })

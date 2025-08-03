@@ -421,6 +421,12 @@ export default [
     },
 
     {
+        path: '/trades',
+        name: 'trades',
+        component: () => import('../views/pages/public/trades'),
+    },
+
+    {
         path: '/contact-us',
         name: 'contactUs',
         component: () => import('../views/pages/public/contact-us'),

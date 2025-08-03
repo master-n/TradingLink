@@ -8,12 +8,13 @@
           <div class="row">
             <div class="col-lg-7 d-flex align-items-center">
               <div class="hero-content">
-                <h1>What type of service do you <span>need?</span></h1>
-                <h4 class="text-light mt-5">What is your job?</h4>
+                <h1>Find Trusted Tradespeople Across Jamaica - Fast, Reliable, <span>Secure</span></h1>
+                <h4 class="text-light mt-5">Postyour job and get connected with eartined professionals today</h4>
                 <div class="job-search-area mt-3">
                   <form @submit.prevent>
                     <div class="form-inner job-title">
-                      <input type="text" id="search" placeholder="For example: cleaner" v-model="searchQuery" @input="filterCategories" @focus="showDropdown = true" @blur="collapseDropdown">
+                      <input type="text" id="search" placeholder="For example: cleaner" v-model="searchQuery"
+                             @input="filterCategories" @focus="showDropdown = true" @blur="collapseDropdown">
                       <ul v-if="showDropdown" class="list-group dropdown position-absolute w-100 text-start mt-1">
                         <li v-for="result in filteredCategories"
                             :key="result.id"
@@ -298,14 +299,13 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <div class="talent-wrap">
+            <div class="talent-wrap bg-primary-dark">
               <div class="talent-content">
-                <h4>There's lots of demand for good <span>tradespeople</span></h4>
-                <p>150,000 jobs posted every month</p>
+                <h4>Grow your business with Tradelink - Thousands of jobs posted every <span>month.</span></h4>
               </div>
-              <div class="find-btn">
-                <router-link class="primry-btn-2 lg-btn" to="/register">Sign up for free</router-link>
-              </div>
+              <button class="find-btn primry-btn-2 lg-btn" @click="goToSignUp()">
+                Sign up for free *
+              </button>
             </div>
           </div>
         </div>
@@ -548,7 +548,7 @@
 
     <div class="py-5 iJZMjH">
       <div class="container">
-        <a href="/post-a-job" class="hOqzfX kFPtkB">
+        <router-link to="/post-a-job" class="hOqzfX kFPtkB">
           <h2 class="text-light fw-bold">Post your job now</h2>
           <svg aria-hidden="true" focusable="false" data-prefix="fass" data-icon="circle-arrow-right"
                class="svg-inline--fa fa-circle-arrow-right " role="img" xmlns="http://www.w3.org/2000/svg"
@@ -556,7 +556,7 @@
             <path fill="currentColor"
                   d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zm409 17L297 385l-17 17L246.1 368l17-17 71-71L120 280l-24 0 0-48 24 0 214.1 0-71-71-17-17L280 110.1l17 17L409 239l17 17-17 17z"></path>
           </svg>
-        </a>
+        </router-link>
       </div>
     </div>
 
@@ -650,7 +650,7 @@ export default {
         );
       }
     },
-    collapseDropdown(){
+    collapseDropdown() {
       setTimeout(() => {
         this.showDropdown = false;
       }, 200);
@@ -660,9 +660,32 @@ export default {
         this.showDropdown = false;
       }
     },
-    goToPostJob(category){
+
+    goToPostJob(category) {
       this.$router.push(`/post-a-job?category=${category.name}`)
+    },
+
+    goToSignUp() {
+      const loggedUser = store.getters.GET_USER_INFO;
+
+      if (!loggedUser) {
+        this.$router.push('/register');
+        return;
+      }
+
+      const role = loggedUser?.roles?.[0] || '';
+
+      if (role === 'tradesperson') {
+        alert('You are already logged in as a tradesperson. You can browse available leads instead.');
+        this.$router.push('/new-leads');
+      } else if (role === 'homeowner') {
+        alert('You are already logged in as a homeowner. You can post a job instead.');
+        this.$router.push('/post-a-job');
+      } else {
+        alert(`You are already logged in as ${role}. This action is not available for your role.`);
+      }
     }
+
   },
   created() {
     this.getTrades();
@@ -778,17 +801,7 @@ export default {
 </script>
 
 <style scoped>
-.kFPtkB {
-  text-decoration: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.iJZMjH {
-  background-color: var(--primary-color1);
-  color: rgb(255, 255, 255);
-}
 
 .dropdown {
   position: absolute;
