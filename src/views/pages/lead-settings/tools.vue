@@ -49,16 +49,8 @@ export default {
     return {
       tools: [
         {
-          name: 'Standard Tradesperson Contract (PDF)',
-          url: '/downloads/contract-standard.pdf'
-        },
-        {
-          name: 'Customer Agreement Form (DOCX)',
-          url: '/downloads/customer-agreement.docx'
-        },
-        {
-          name: 'Work Completion Checklist (PDF)',
-          url: '/downloads/completion-checklist.pdf'
+          name: 'Client Contract Form (DOCX)',
+          url: '/frontend/assets/docs/Tradelink_Modern_Service_Agreement_Logo.docx'
         },
       ],
     };
