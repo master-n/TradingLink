@@ -19,7 +19,7 @@ const router = new VueRouter({
 
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom, next) => {
-    const publicPages = ['/login','register', '/forgot-password'];
+    const publicPages = ['/login','/register', '/forgot-password'];
     const authRequired = routeTo.matched.some(route => route.meta.authRequired);
     const loggedUser = store.getters.GET_USER_INFO;
 
