@@ -2,81 +2,63 @@
   <div>
     <RoleBasedHeader :userRole="userRole" />
 
-    <div class="hero2">
-      <div class="hero-wapper overflow-visible">
-        <div class="container-fluid px-0">
-          <div class="row">
-            <div class="col-lg-7 d-flex align-items-center">
-              <div class="hero-content">
-                <h1>Find Trusted Tradespeople Across Jamaica - Fast, Reliable, <span>Secure</span></h1>
-                <h4 class="text-light mt-5">Post your job and get connected with certified professionals today</h4>
-                <div class="job-search-area mt-3">
-                  <form @submit.prevent>
-                    <div class="form-inner job-title">
-                      <input type="text" id="search" placeholder="For example: cleaner" v-model="searchQuery"
-                             @input="filterCategories" @focus="showDropdown = true" @blur="collapseDropdown">
-                      <ul v-if="showDropdown" class="list-group dropdown position-absolute w-100 text-start mt-1">
-                        <li v-for="result in filteredCategories"
-                            :key="result.id"
-                            @click="goToPostJob(result)"
-                            class="list-group-item list-group-item-action">
-                          <div class="fw-bold">{{ result.name }}</div>
-                        </li>
-                      </ul>
+   <div class="tl-hero">
+  <div class="tl-hero-overlay">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="tl-hero-content">
+            <h1>Find Trusted Tradespeople Across <span>Jamaica</span></h1>
+            <p>
+              Connect with verified plumbers, electricians, builders, painters and more.
+              Post your job for free and receive quotes from local professionals.
+            </p>
 
-                    </div>
-                  </form>
+            <div class="tl-hero-buttons">
+              <router-link to="/post-a-job" class="tl-btn-primary">
+                Post a Job Free
+              </router-link>
 
-                </div>
+              <router-link to="/find-tradesperson" class="tl-btn-secondary">
+                Find a Tradesperson
+              </router-link>
+            </div>
+
+            <div class="tl-hero-note">
+              ✓ Free to post a job &nbsp; • &nbsp; No obligation
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="tl-hero-card">
+            <h4>Everything you need in one place</h4>
+            <p>Manage leads, send quotes, chat with customers and grow your business with Tradelink.</p>
+
+            <div class="tl-mini-dashboard">
+              <div>
+                <strong>12</strong>
+                <span>New Leads</span>
+              </div>
+              <div>
+                <strong>8</strong>
+                <span>Quotes Sent</span>
+              </div>
+              <div>
+                <strong>5</strong>
+                <span>Jobs Won</span>
               </div>
             </div>
-            <div class="col-lg-5 d-flex jsutify-content-end">
-              <div class="banner-image-area">
-                <div class="banner-img-left">
-                  <div class="banner-img1">
-                    <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-cutting.jpg"
-                         alt="">
-                  </div>
-                  <div class="banner-img2">
-                    <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-2.jpg" alt="">
-                  </div>
-                </div>
-                <div class="banner-img-center">
-                  <div class="banner-img3">
-                    <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/construction.jpg" alt=""
-                         style="width: 210px; height: 330px; object-fit: cover">
-                  </div>
-                  <div class="banner-img4">
-                    <div class="user-area" style="padding:10px 40px">
-                      <ul>
-                        <li>
-                          <div class="total-user">
-                            <h6>21k</h6>
-                          </div>
-                        </li>
-                      </ul>
-                      <p>People Joined!</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="banner-img-right">
-                  <div class="banner-img5">
-                    <div class="new-job-list">
-                      <h3>2400+</h3>
-                      <p>New Job Listed!</p>
-                    </div>
-                  </div>
-                  <div class="banner-img6">
-                    <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter.jpg"
-                         style="width: 150px; height: 230px; object-fit: cover" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
+
+            <router-link to="/register" class="tl-card-btn">
+              Register Today
+            </router-link>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
     <div class="counter-area home2-counter-area mb-20">
       <div class="container">
@@ -823,5 +805,102 @@ export default {
 
 .border-start{
   border-left: 3px solid #00A7AC !important;
+}
+
+  .tl-hero{
+    background-image:url('/frontend/assets/images/bg/construction.jpg');
+    background-size:cover;
+    background-position:center;
+    position:relative;
+    min-height:700px;
+}
+
+.tl-hero-overlay{
+    background:rgba(0,0,0,0.55);
+    min-height:700px;
+    display:flex;
+    align-items:center;
+}
+
+.tl-hero-content h1{
+    color:white;
+    font-size:60px;
+    font-weight:700;
+    line-height:1.1;
+}
+
+.tl-hero-content h1 span{
+    color:#00A7AC;
+}
+
+.tl-hero-content p{
+    color:white;
+    font-size:20px;
+    margin-top:20px;
+    max-width:600px;
+}
+
+.tl-hero-buttons{
+    margin-top:30px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.tl-btn-primary{
+    background:#00A7AC;
+    color:white;
+    padding:15px 30px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.tl-btn-secondary{
+    border:2px solid white;
+    color:white;
+    padding:15px 30px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.tl-hero-note{
+    color:white;
+    margin-top:20px;
+}
+
+.tl-hero-card{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.15);
+}
+
+.tl-mini-dashboard{
+    display:flex;
+    justify-content:space-between;
+    margin:30px 0;
+}
+
+.tl-mini-dashboard div{
+    text-align:center;
+}
+
+.tl-mini-dashboard strong{
+    display:block;
+    font-size:30px;
+    color:#00A7AC;
+}
+
+.tl-card-btn{
+    display:block;
+    text-align:center;
+    background:#00A7AC;
+    color:white;
+    padding:15px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
 }
 </style>
