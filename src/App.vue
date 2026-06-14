@@ -66,3 +66,43 @@ export default {
   }
 }
 </script>
+<style>
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  background: #ffffff;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.94),
+      rgba(255,255,255,0.94)
+    ),
+    url("/frontend/assets/images/site-bg.webp");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: -2;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(2px);
+  z-index: -1;
+  pointer-events: none;
+}
+</style>
