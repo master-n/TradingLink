@@ -3,13 +3,23 @@
     <div class="container">
       <div class="tl-footer-main">
         <div class="tl-footer-brand">
-          <img src="../../../public/frontend/assets/images/header1-logo.svg" alt="Tradelink logo" class="tl-footer-logo">
+  <img
+  src="/frontend/assets/images/jamaica-outline.svg"
+  alt="Jamaica Outline"
+  class="jamaica-outline"
+/>
 
-          <div>
-            <h3>Proudly Connecting <span>Jamaica’s</span> Trades Industry</h3>
-            <p>Helping homeowners find trusted tradespeople across Jamaica.</p>
-          </div>
-        </div>
+  <img
+    src="../../../public/frontend/assets/images/header1-logo.svg"
+    alt="Tradelink logo"
+    class="tl-footer-logo"
+  >
+
+  <div>
+    <h3>Proudly Connecting <span>Jamaica’s</span> Trades Industry</h3>
+    <p>Helping homeowners find trusted tradespeople across Jamaica.</p>
+  </div>
+</div>
 
         <div class="tl-footer-links">
           <div>
@@ -183,6 +193,42 @@ export default {
 
   .tl-map-line {
     justify-content: center;
+  }
+}
+.jamaica-outline {
+  width: 220px;
+  margin-bottom: 20px;
+  display: block;
+  opacity: 0.9;
+  filter: brightness(0) saturate(100%) invert(52%) sepia(34%) saturate(742%) hue-rotate(341deg) brightness(92%) contrast(88%);
+}
+
+.tl-footer-brand {
+  position: relative;
+  max-width: 450px;
+}
+
+.tl-footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  min-width: 550px;
+}
+
+.tl-footer-links h5 {
+  margin-bottom: 18px;
+}
+
+.tl-footer-links a {
+  display: block;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 992px) {
+  .tl-footer-links {
+    grid-template-columns: 1fr;
+    min-width: auto;
+    gap: 30px;
   }
 }
 </style>
