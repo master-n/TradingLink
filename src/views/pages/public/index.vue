@@ -1,757 +1,418 @@
 <template>
-  <div>
+  <div class="tl-home">
     <RoleBasedHeader :userRole="userRole" />
-<div class="hero2">
-  <div class="hero-wapper overflow-visible">
-    <div class="container-fluid px-0">
-      <div class="row">
-        <div class="col-lg-7 d-flex align-items-center">
-          <div class="hero-content">
-            <h1>Find Trusted Tradespeople Across Jamaica - Fast, Reliable, <span>Secure</span></h1>
-            <h4 class="text-light mt-5">Post your job and get connected with certified professionals today</h4>
 
-            <div class="job-search-area mt-3">
-              <form @submit.prevent>
-                <div class="form-inner job-title">
-                  <input type="text" id="search" placeholder="For example: cleaner" v-model="searchQuery"
-                    @input="filterCategories" @focus="showDropdown = true" @blur="collapseDropdown">
-
-                  <ul v-if="showDropdown" class="list-group dropdown position-absolute w-100 text-start mt-1">
-                    <li v-for="result in filteredCategories"
-                      :key="result.id"
-                      @click="goToPostJob(result)"
-                      class="list-group-item list-group-item-action">
-                      <div class="fw-bold">{{ result.name }}</div>
-                    </li>
-                  </ul>
-                </div>
-              </form>
+    <!-- HERO -->
+    <section class="tl-hero">
+      <div class="tl-hero__overlay"></div>
+      <div class="tl-hero__content">
+        <div class="tl-hero__text">
+          <h1 class="tl-hero__heading">
+            Find Trusted Tradespeople<br>
+            Across Jamaica —<br>
+            <span class="tl-hero__highlight">Fast, Reliable, Secure</span>
+          </h1>
+          <p class="tl-hero__sub">Post your job and get connected with certified professionals today</p>
+          <div class="tl-search">
+            <div class="tl-search__wrap">
+              <svg class="tl-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+              <input
+                class="tl-search__input"
+                type="text"
+                placeholder="What trade do you need? e.g. Plumber, Electrician"
+                v-model="searchQuery"
+                @input="filterCategories"
+                @focus="showDropdown = true"
+                @blur="collapseDropdown"
+                autocomplete="off"
+              />
+              <button class="tl-search__btn" @click="handleSearchBtn">Search</button>
             </div>
+            <ul v-if="showDropdown && filteredCategories.length" class="tl-search__dropdown">
+              <li
+                v-for="result in filteredCategories.slice(0, 8)"
+                :key="result.id"
+                @mousedown.prevent="goToPostJob(result)"
+                class="tl-search__item"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                {{ result.name }}
+              </li>
+            </ul>
+          </div>
+          <div class="tl-hero__quick">
+            <span class="tl-hero__quick-label">Popular:</span>
+            <button v-for="(t, i) in quickTrades" :key="i" class="tl-pill" @click="$router.push('/find-tradesperson?category=' + t)">{{ t }}</button>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="col-lg-5 d-flex jsutify-content-end">
-          <div class="banner-image-area">
-            <div class="banner-img-left">
-              <div class="banner-img1">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-cutting.jpg" alt="">
-              </div>
-
-              <div class="banner-img2">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-2.jpg" alt="">
-              </div>
-            </div>
-
-            <div class="banner-img-center">
-              <div class="banner-img3">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/construction.jpg" alt=""
-                  style="width: 210px; height: 330px; object-fit: cover">
-              </div>
-
-              <div class="banner-img4">
-                <div class="user-area" style="padding:10px 40px">
-                  <ul>
-                    <li>
-                      <div class="total-user">
-                        <h6>21k</h6>
-                      </div>
-                    </li>
-                  </ul>
-                  <p>People Joined!</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="banner-img-right">
-              <div class="banner-img5">
-                <div class="new-job-list">
-                  <h3>2400+</h3>
-                  <p>New Job Listed!</p>
-                </div>
-              </div>
-
-              <div class="banner-img6">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter.jpg"
-                  style="width: 150px; height: 230px; object-fit: cover" alt="">
-              </div>
+    <!-- TRUST BADGES -->
+    <section class="tl-trust">
+      <div class="tl-container">
+        <div class="tl-trust__grid">
+          <div class="tl-trust__item" v-for="(badge, i) in trustBadges" :key="i">
+            <div class="tl-trust__icon" v-html="badge.icon"></div>
+            <div>
+              <div class="tl-trust__title">{{ badge.title }}</div>
+              <div class="tl-trust__sub">{{ badge.sub }}</div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="tl-section tl-how">
+      <div class="tl-container">
+        <span class="tl-label">Simple Process</span>
+        <h2 class="tl-section__title">How <span class="tl-teal">Tradelink</span> works</h2>
+        <p class="tl-section__sub">Connect with trusted professionals in 3 easy steps</p>
+        <div class="tl-how__steps">
+          <div class="tl-how__step" v-for="(step, i) in steps" :key="i">
+            <div class="tl-how__img">
+              <img :src="step.img" :alt="step.title" />
+              <div class="tl-how__num">{{ String(i + 1).padStart(2, '0') }}</div>
+            </div>
+            <div class="tl-how__body">
+              <h3 class="tl-how__title">{{ step.title }}</h3>
+              <p class="tl-how__text">{{ step.body }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="tl-center">
+          <router-link to="/post-a-job" class="tl-btn tl-btn--primary">Post Your Job Free</router-link>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="tl-section tl-categories">
+      <div class="tl-container">
+        <div class="tl-section__header">
+          <div>
+            <span class="tl-label" style="text-align:left">Browse by Trade</span>
+            <h2 class="tl-section__title" style="text-align:left">Popular <span class="tl-teal">Categories</span></h2>
+          </div>
+          <router-link to="/find-tradesperson" class="tl-link-more">View all trades →</router-link>
+        </div>
+        <div class="tl-categories__grid">
+          <router-link
+            v-for="(trade, i) in trades"
+            :key="i"
+            :to="'/find-tradesperson?category=' + trade.name"
+            class="tl-cat-card"
+          >
+            <div class="tl-cat-card__icon" v-html="getCategoryIcon(trade.name)"></div>
+            <div class="tl-cat-card__name">{{ trade.name }}</div>
+            <svg class="tl-cat-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </router-link>
+        </div>
+        <div class="tl-center" style="margin-top:32px">
+          <router-link to="/find-tradesperson" class="tl-btn tl-btn--outline">Explore All Trades →</router-link>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOR TRADESPEOPLE -->
+    <section class="tl-tradesperson">
+      <div class="tl-container">
+        <div class="tl-tradesperson__inner">
+          <div class="tl-tradesperson__copy">
+            <span class="tl-label tl-label--light">For Tradespeople</span>
+            <h2 class="tl-tradesperson__heading">Looking for job <span class="tl-teal-light">leads?</span></h2>
+            <p class="tl-tradesperson__sub">Grow your business with Tradelink — thousands of jobs posted every month across all 14 parishes.</p>
+            <ul class="tl-perks">
+              <li v-for="(perk, i) in tradePerks" :key="i">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                {{ perk }}
+              </li>
+            </ul>
+            <button class="tl-btn tl-btn--white" @click="goToSignUp">Sign Up for Free ✦</button>
+          </div>
+          <div class="tl-tradesperson__badges">
+            <div class="tl-badge" v-for="(b, i) in tradeBadges" :key="i">
+              <div class="tl-badge__icon" v-html="b.icon"></div>
+              <div class="tl-badge__label">{{ b.label }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="tl-stats">
+      <div class="tl-container">
+        <div class="tl-stats__grid">
+          <div class="tl-stat" v-for="(s, i) in statItems" :key="i">
+            <div class="tl-stat__num">{{ s.num }}</div>
+            <div class="tl-stat__label">{{ s.label }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="tl-cta">
+      <div class="tl-container">
+        <h2 class="tl-cta__heading">Ready to get started?</h2>
+        <p class="tl-cta__sub">Join thousands of Jamaicans who trust Tradelink to connect them with quality professionals.</p>
+        <router-link to="/post-a-job" class="tl-btn tl-btn--primary">Post Your Job Now →</router-link>
+      </div>
+    </section>
+
+    <HomeFooter />
   </div>
-</div>
-
-
-    <div class="home2-working-process mb-120">
-      <div class="container" style="max-width: calc(66rem);">
-        <div class="row mb-60">
-          <div class="col-12 d-flex justify-content-center">
-            <div class="section-title1 text-center">
-              <img alt="image" class="img-fluid mb-2" src="../../../../public/frontend/assets/images/header1-logo.svg"
-                   style="height: 80px;">
-              <h2>How tradelink <span>works</span></h2>
-            </div>
-          </div>
-        </div>
-        <div class="row gy-5 justify-content-center align-items-stretch">
-          <div class="col-lg-4 col-md-4 d-flex">
-            <div class="fancy-card card flex-fill d-flex flex-column">
-              <div class="recent-article-img card-img-top" style="height: 200px;">
-                <img class="img-fluid w-100" src="../../../../public/frontend/assets/images/home/step-1.png" alt="Post your job">
-              </div>
-              <div class="text-center card-body" style="background: white;">
-                <h5 class="fw-bold">Post your job</h5>
-                <p class="text-muted">Tell us what you need done. Whether it's plumbing, painting, or gardening — give
-                  as much detail as you can so tradespeople understand the job clearly.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 d-flex">
-            <div class="fancy-card card flex-fill d-flex flex-column">
-              <div class="recent-article-img card-img-top" style="height: 200px;">
-                <img class="img-fluid w-100" src="../../../../public/frontend/assets/images/home/step-2.png" alt="Trades respond">
-              </div>
-              <div class="card-body text-center" style="background: white;">
-                <h5 class="fw-bold">Trades respond</h5>
-                <p class="text-muted">Skilled tradespeople will reply with quotes, questions, and links to their
-                  profiles.
-                  You can compare
-                  their experience, reviews, and portfolios before making a decision.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 d-flex">
-            <div class="fancy-card card flex-fill d-flex flex-column">
-              <div class="recent-article-img card-img-top" style="height: 200px;">
-                <img class="img-fluid w-100" src="../../../../public/frontend/assets/images/home/step-3.png" alt="Trades respond">
-              </div>
-              <div class="card-body text-center" style="background: white;">
-                <h5 class="fw-bold">Choose and connect</h5>
-                <p class="text-muted">When you're ready, select the tradesperson who best fits your job. Once you confirm, you’ll be connected directly to make arrangements and get started.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="home3-top-company mb-120">
-      <div class="container">
-        <div class="row mb-60">
-          <div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
-            <div class="section-title1">
-              <h2>Popular <span>Categories</span></h2>
-              <p>Find top-rated professionals and services from trusted users across Jamaica, island-wide.</p>
-            </div>
-            <div class="explore-btn">
-              <a href="#">Explore More
-                <span>
-                <img src="../../../../public/frontend/assets/images/icon/explore-elliose.svg" alt="">
-              </span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-center g-4">
-          <div class="col-lg-4 col-md-6 col-sm-10" v-for="(trade, i) in trades" :key="i">
-            <div class="top-company-card">
-              <div class="company-details">
-                <div class="name-location">
-                  <h5>
-                    <router-link :to="'/find-tradesperson?category='+trade.name">{{ trade.name }}</router-link>
-                  </h5>
-                </div>
-              </div>
-              <div class="job-details-vacancies">
-                <div class="apply-btn">
-                  <router-link :to="'/find-tradesperson?category='+trade.name"><span/>View
-                    Details
-                  </router-link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="home2-category-area mb-120">
-      <div class="container" style="    max-width: calc(66rem);">
-        <div class="row mb-60">
-          <div class="col-12 d-flex justify-content-center gap-3 mb-5">
-            <div class="section-title1 text-center">
-              <h2>Looking for job <span>leads?</span></h2>
-              <h4>Grow your business with <span class="">Tradelink</span></h4>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-4 offset-md-1">
-            <img src="../../../../public/frontend/assets/images/bg/carpenter.jpg" alt="Skilled carpenter at work"
-                 class="img-fluid card-cut">
-          </div>
-
-          <div class="col-12 col-md-6">
-            <h5 class="mb-3 mt-3 mt-md-2">Tradelink helps you find the kind of jobs you actually want, quickly and reliably.</h5>
-
-            <p class="text-muted mb-3">Sign up for free to receive a steady stream
-              of local job opportunities that match your skills.</p>
-
-            <p class="text-muted">Take on big jobs or smaller gap fillers - it’s up to you.</p>
-
-          </div>
-
-
-        </div>
-      </div>
-    </div>
-
-    <div class="home2-talent-area mb-120">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="talent-wrap bg-primary-dark">
-              <div class="talent-content">
-                <h4>Grow your business with Tradelink - Thousands of jobs posted every <span>month.</span></h4>
-              </div>
-              <button class="find-btn primry-btn-2 lg-btn" @click="goToSignUp()">
-                Sign up for free *
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="home5-clients-feedback-area">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="section-title3">
-            <h2 class="text-light">Find Trusted Tradespeople for Your Project</h2>
-            <p class="text-light">Join thousands of happy clients. Post your job and get quotes from verified professionals today.</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-3">
-            <div class="card card-cut bg-primary-1 text-light mb-sm-2 mb-3">
-              <div class="card-body py-5" style="margin-bottom: 1rem">
-                <h3 class="">Verified Reviews from Real Customers</h3>
-                <p class="text-light mt-3" style="font-size: 18px">Authentic feedback from homeowners like you</p>
-                <div class="text-center mt-5">
-                  <router-link to="/post-a-job" class="btn btn-light text-center py-3 btn-block">Get Free Quotes</router-link>
-                </div>
-              </div>
-            </div>
-          </div>
-<!--          <div class="col-lg-9">-->
-<!--            <div class="swiper home5-feedback-slider swiper-initialized swiper-horizontal swiper-pointer-events">-->
-<!--              <div class="swiper-wrapper" id="swiper-wrapper-a97345a614234bc4" aria-live="off"-->
-<!--                   style="transform: translate3d(-2624px, 0px, 0px); transition-duration: 1700ms;">-->
-<!--                <div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="0" role="group"-->
-<!--                     aria-label="1 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Rakhab Uddin</h5>-->
-<!--                            <span>UI/UX Engineer</span>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the-->
-<!--                          beguiled and demoralized.</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-prev" data-swiper-slide-index="1"-->
-<!--                     role="group" aria-label="2 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Mrs. Jordan Harry</h5>-->
-<!--                            <span>UI/UX Engineer</span>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the-->
-<!--                          beguiled and demoralized.</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate-active" data-swiper-slide-index="0" role="group"-->
-<!--                     aria-label="1 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <h5 class="fw-bold">Replace wooden front door with upvc</h5>-->
-
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Rakhab Uddin</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"Wow! Very efficient and professional. Really good communication on time and did a great job of de-weeding the …"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="1"-->
-<!--                     role="group" aria-label="2 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Mrs. Jordan Harry</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"They provide a professional service with attention to detail and competitive pricing. I recommend their servic…"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate swiper-slide-active" data-swiper-slide-index="0"-->
-<!--                     role="group" aria-label="1 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Rakhab Uddin</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"Quick turnaround, good price, good communication and 10yr warranty"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev"-->
-<!--                     data-swiper-slide-index="1" role="group" aria-label="2 / 2"-->
-<!--                     style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Mrs. Jordan Harry</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"Fitted me in next day as I was in a hurry and done an excellent job. Would 100% recommend"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>-->
-<!--          </div>-->
-        </div>
-      </div>
-    </div>
-
-    <div class="py-5 iJZMjH">
-      <div class="container">
-        <router-link to="/post-a-job" class="hOqzfX kFPtkB">
-          <h2 class="text-light fw-bold">Post your job now</h2>
-          <svg aria-hidden="true" focusable="false" data-prefix="fass" data-icon="circle-arrow-right"
-               class="svg-inline--fa fa-circle-arrow-right " role="img" xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 512 512" fill="currentColor" color="#FFFFFF" style="width: 1.5rem; height: 1.5rem;">
-            <path fill="currentColor"
-                  d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zm409 17L297 385l-17 17L246.1 368l17-17 71-71L120 280l-24 0 0-48 24 0 214.1 0-71-71-17-17L280 110.1l17 17L409 239l17 17-17 17z"></path>
-          </svg>
-        </router-link>
-      </div>
-    </div>
-
-    <HomeFooter></HomeFooter>
-
-  </div>
-
 </template>
 
 <script>
 import HomeFooter from '../../base-layout/footer'
-import appConfig from "../../../../app.config.json";
-import {userService} from "@/apis/user.service";
-import store from "@/store/store";
-import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
+import appConfig from "../../../../app.config.json"
+import { userService } from "@/apis/user.service"
+import store from "@/store/store"
+import RoleBasedHeader from "@/views/base-layout/roleBasedHeader"
 
 export default {
   name: "Home",
   page: {
-    title: "Home",
-    meta: [{name: "description", content: appConfig.description}]
+    title: "Find Trusted Tradespeople in Jamaica | TradeLinkJA",
+    meta: [{ name: "description", content: appConfig.description }]
   },
+  components: { HomeFooter, RoleBasedHeader },
   data() {
     return {
       trades: [],
       stats: null,
-      tradesLoader: false,
-      statsLoader: false,
-      categoryLoader: false,
-      user: this.$store.getters.GET_USER_INFO || {},
       searchQuery: '',
       showDropdown: false,
-      categories: ['Engineering', 'Marketing', 'Healthcare', 'Education', 'Finance', 'IT', 'Construction'],
-      filteredCategories: []
-    };
+      categories: [],
+      filteredCategories: [],
+      quickTrades: ['Plumber', 'Electrician', 'Carpenter', 'Painter', 'Tiler'],
+      trustBadges: [
+        { title: 'Verified Tradespeople', sub: 'All tradespeople are verified', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>` },
+        { title: 'Secure Messaging', sub: 'Chat safely in-app', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>` },
+        { title: 'Customer Reviews', sub: 'Real reviews from real customers', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>` },
+        { title: 'Island-wide Coverage', sub: 'Connecting you across Jamaica', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>` },
+      ],
+      steps: [
+        {
+          title: 'Post your job',
+          body: 'Tell us what you need done. Whether it\'s plumbing, painting, or electrical — give as much detail as you can so tradespeople understand the job clearly.',
+          img: '/frontend/assets/images/bg/carpenter-cutting.jpg'
+        },
+        {
+          title: 'Trades respond',
+          body: 'Skilled tradespeople will reply with quotes and links to their profiles. Compare their experience, reviews, and portfolios before deciding.',
+          img: '/frontend/assets/images/bg/carpenter-2.jpg'
+        },
+        {
+          title: 'Choose & connect',
+          body: 'When you\'re ready, select the tradesperson who best fits your job. Once confirmed, you\'ll be connected directly to make arrangements.',
+          img: '/frontend/assets/images/bg/tradesperson.jpg'
+        },
+      ],
+      tradePerks: [
+        'Free to register and set up your profile',
+        'Get matched to jobs in your trade and area',
+        'Build your reputation with verified reviews',
+        'No monthly subscription fees',
+      ],
+      tradeBadges: [
+        { label: 'Verified Badge', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>` },
+        { label: 'Star Ratings', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>` },
+        { label: 'Portfolio', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>` },
+        { label: 'Job Alerts', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>` },
+      ],
+    }
   },
   computed: {
     userRole() {
-      const loggedUser = store.getters.GET_USER_INFO;
-      if(!loggedUser){
-        return '';
-      }
-      return loggedUser?.roles?.[0] || '';
+      const loggedUser = store.getters.GET_USER_INFO
+      return loggedUser?.roles?.[0] || ''
     },
-
-  },
-  components: {
-    HomeFooter,
-    RoleBasedHeader
+    statItems() {
+      return [
+        { num: this.stats ? `${this.stats.tradespeople_count}+` : '1,200+', label: 'Verified Tradespeople' },
+        { num: this.stats ? `${this.stats.jobs_count}+` : '2,400+', label: 'Jobs Posted' },
+        { num: '14', label: 'Parishes Covered' },
+        { num: '4.8★', label: 'Average Rating' },
+      ]
+    }
   },
   methods: {
-    async getTrades() {
-      this.tradeLoader = true
-      userService.getTrades(6).then((res) => {
-        this.trades = res.extra;
-        this.tradeLoader = false
-      });
+    getTrades() { userService.getTrades(6).then(res => { this.trades = res.extra }) },
+    getAllTrades() {
+      userService.postJobTrades().then(res => {
+        this.filteredCategories = res.extra
+        this.categories = res.extra
+      })
     },
-    async getAllTrades() {
-      this.categoryLoader = true
-      userService.postJobTrades().then((res) => {
-        this.filteredCategories = res.extra;
-        this.categories = res.extra;
-        this.categoryLoader = false
-      });
-    },
-
-    async pageStats() {
-      this.statsLoader = true
-      userService.pageStats().then((res) => {
-        this.statsLoader = false
-        this.stats = res.extra;
-        this.triggerCounter();
-      });
-    },
-    triggerCounter(){
-      setTimeout(() => {
-        $('.odometer').counterUp({
-          delay: 10,
-          time: 2000
-        });
-      }, 1000)
-    },
+    pageStats() { userService.pageStats().then(res => { this.stats = res.extra }) },
     filterCategories() {
-      if (this.searchQuery.trim() === '') {
-        this.filteredCategories = this.categories;
-      } else {
-        const query = this.searchQuery.toLowerCase();
-        this.filteredCategories = this.categories.filter(category =>
-            category.name.toLowerCase().includes(query)
-        );
-      }
+      const q = this.searchQuery.toLowerCase().trim()
+      this.filteredCategories = q ? this.categories.filter(c => c.name.toLowerCase().includes(q)) : this.categories
+      this.showDropdown = true
     },
-    collapseDropdown() {
-      setTimeout(() => {
-        this.showDropdown = false;
-      }, 200);
+    collapseDropdown() { setTimeout(() => { this.showDropdown = false }, 200) },
+    handleSearchBtn() {
+      if (this.filteredCategories.length === 1) { this.goToPostJob(this.filteredCategories[0]) }
+      else if (this.searchQuery.trim()) { this.$router.push(`/find-tradesperson?q=${this.searchQuery}`) }
+      else { this.$router.push('/find-tradesperson') }
     },
-    handleClickOutside(event) {
-      if (!this.$el.contains(event.target)) {
-        this.showDropdown = false;
-      }
-    },
-
-    goToPostJob(category) {
-      this.$router.push(`/post-a-job?category=${category.name}`)
-    },
-
+    goToPostJob(category) { this.$router.push(`/post-a-job?category=${category.name}`) },
     goToSignUp() {
-      const loggedUser = store.getters.GET_USER_INFO;
-
-      if (!loggedUser) {
-        this.$router.push('/register');
-        return;
+      const loggedUser = store.getters.GET_USER_INFO
+      if (!loggedUser) { this.$router.push('/register'); return }
+      const role = loggedUser?.roles?.[0] || ''
+      if (role === 'tradesperson') this.$router.push('/new-leads')
+      else if (role === 'homeowner') this.$router.push('/post-a-job')
+      else this.$router.push('/register')
+    },
+    handleClickOutside(event) { if (!this.$el.contains(event.target)) this.showDropdown = false },
+    getCategoryIcon(name) {
+      const icons = {
+        'Plumber': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+        'Electrician': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+        'Carpenter': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+        'Painter': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 13.5V20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6.5"/><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>`,
+        'Tiler': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
+        'Landscaper': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22V12M12 12C12 7 7 3 2 3s5 9 10 9M12 12c0-5 5-9 10-9s-5 9-10 9"/></svg>`,
+        'AC technician': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
+        'Cleaner': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 22l3-3m0 0l7-7m-7 7l7-7m0 0l2-2a2.83 2.83 0 0 1 4 4l-2 2m-4-4l4 4"/></svg>`,
       }
-
-      const role = loggedUser?.roles?.[0] || '';
-
-      if (role === 'tradesperson') {
-        alert('You are already logged in as a tradesperson. You can browse available leads instead.');
-        this.$router.push('/new-leads');
-      } else if (role === 'homeowner') {
-        alert('You are already logged in as a homeowner. You can post a job instead.');
-        this.$router.push('/post-a-job');
-      } else {
-        alert(`You are already logged in as ${role}. This action is not available for your role.`);
-      }
-    }
-
+      return icons[name] || `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`
+    },
   },
-  created() {
-    this.getTrades();
-    this.getAllTrades();
-    this.pageStats();
-  },
-  mounted() {
-    this.$nextTick(() => {
-      $('.select1').niceSelect();
-      $('#slick1').slick({
-        rows: 2,
-        dots: false,
-        arrows: true,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        speed: 2000,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [{
-          breakpoint: 1200,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 991,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 768,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 576,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 480,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 350,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }]
-      });
-      new Swiper(".home5-feedback-slider", {
-        slidesPerView: 2,
-        spaceBetween: 20,
-        loop: true,
-        infinite: true,
-        autoplay: false,
-        speed: 1700,
-        // autoplay: {
-        //   delay: 2200,
-        // },
-        navigation: {
-          nextEl: ".next-13",
-          prevEl: ".prev-13",
-        },
-        breakpoints: {
-          280: {
-            slidesPerView: 1,
-          },
-          480: {
-            slidesPerView: 1
-          },
-          768: {
-            slidesPerView: 1
-          },
-          992: {
-            slidesPerView: 1
-          },
-          1200: {
-            slidesPerView: 2
-          },
-          1400: {
-            slidesPerView: 2
-          },
-          1600: {
-            slidesPerView: 2
-          },
-        }
-      });
-
-
-      $('.sidebar-button').on("click", function () {
-        $('.main-menu').addClass('show-menu');
-      });
-
-      $('.menu-close-btn').on("click", function () {
-        $('.main-menu').removeClass('show-menu');
-      });
-
-    });
-    document.addEventListener('click', this.handleClickOutside);
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.handleClickOutside);
-  }
+  created() { this.getTrades(); this.getAllTrades(); this.pageStats() },
+  mounted() { document.addEventListener('click', this.handleClickOutside) },
+  beforeDestroy() { document.removeEventListener('click', this.handleClickOutside) }
 }
 </script>
 
 <style scoped>
+* { box-sizing: border-box; }
+.tl-home { font-family: 'Inter', system-ui, sans-serif; color: #1A2B2B; }
+.tl-container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.tl-teal { color: #00A7AC; }
+.tl-teal-light { color: #4DD9DE; }
+.tl-center { text-align: center; }
+.tl-label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00A7AC; margin-bottom: 8px; text-align: center; }
+.tl-label--light { color: #80D8DB; }
+.tl-section { padding: 80px 0; }
+.tl-section__header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; flex-wrap: wrap; gap: 12px; }
+.tl-section__title { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800; margin: 0 0 8px; line-height: 1.15; text-align: center; }
+.tl-section__sub { color: #5C7878; font-size: 1rem; text-align: center; margin-bottom: 48px; }
+.tl-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 8px; font-size: 0.95rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; }
+.tl-btn--primary { background: #00A7AC; color: #fff; }
+.tl-btn--primary:hover { background: #008C91; }
+.tl-btn--outline { background: transparent; color: #00A7AC; border: 2px solid #00A7AC; }
+.tl-btn--outline:hover { background: #00A7AC; color: #fff; }
+.tl-btn--white { background: #fff; color: #00A7AC; }
+.tl-btn--white:hover { background: #F0FAFA; }
+.tl-link-more { color: #00A7AC; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
 
+/* HERO */
+.tl-hero { min-height: 560px; background: url('/frontend/assets/images/bg/construction.jpg') center/cover no-repeat; position: relative; display: flex; align-items: center; }
+.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5,41,34,0.92) 0%, rgba(0,60,65,0.82) 100%); }
+.tl-hero__content { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; padding: 80px 24px; }
+.tl-hero__text { max-width: 640px; }
+.tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
+.tl-hero__highlight { color: #00A7AC; }
+.tl-hero__sub { font-size: 1.05rem; color: rgba(255,255,255,0.75); margin-bottom: 32px; line-height: 1.6; }
+.tl-search { position: relative; max-width: 580px; }
+.tl-search__wrap { display: flex; align-items: center; background: #fff; border-radius: 10px; padding: 6px 6px 6px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); gap: 8px; }
+.tl-search__icon { width: 20px; height: 20px; color: #9CA3AF; flex-shrink: 0; }
+.tl-search__input { flex: 1; border: none; outline: none; font-size: 0.95rem; color: #1A2B2B; background: transparent; font-family: inherit; min-width: 0; }
+.tl-search__input::placeholder { color: #9CA3AF; }
+.tl-search__btn { background: #00A7AC; color: #fff; border: none; border-radius: 7px; padding: 10px 22px; font-size: 0.9rem; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: inherit; }
+.tl-search__dropdown { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: #fff; border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); list-style: none; margin: 0; padding: 8px 0; z-index: 200; }
+.tl-search__item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; font-size: 0.9rem; color: #1A2B2B; }
+.tl-search__item svg { width: 16px; height: 16px; color: #00A7AC; flex-shrink: 0; }
+.tl-search__item:hover { background: #F0FAFA; color: #00A7AC; }
+.tl-hero__quick { display: flex; align-items: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+.tl-hero__quick-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+.tl-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 999px; padding: 5px 14px; font-size: 0.8rem; cursor: pointer; font-family: inherit; }
+.tl-pill:hover { background: #00A7AC; border-color: #00A7AC; }
 
-.dropdown {
-  position: absolute;
-  background: white;
-  border: 1px solid #ddd;
-  width: 43%;
-  z-index: 10;
-  max-height: 400px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  left: 0;
+/* TRUST */
+.tl-trust { background: #fff; border-bottom: 1px solid #E8F4F4; padding: 32px 0; }
+.tl-trust__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.tl-trust__item { display: flex; align-items: center; gap: 14px; }
+.tl-trust__icon { width: 44px; height: 44px; background: #E8F8F8; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #00A7AC; }
+.tl-trust__icon :deep(svg) { width: 22px; height: 22px; }
+.tl-trust__title { font-size: 0.875rem; font-weight: 700; }
+.tl-trust__sub { font-size: 0.75rem; color: #5C7878; margin-top: 2px; }
+
+/* HOW IT WORKS */
+.tl-how { background: #F6FAFA; }
+.tl-how__steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px; }
+.tl-how__step { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,167,172,0.08); }
+.tl-how__img { height: 200px; overflow: hidden; position: relative; }
+.tl-how__img img { width: 100%; height: 100%; object-fit: cover; }
+.tl-how__num { position: absolute; top: 12px; left: 12px; background: #00A7AC; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; }
+.tl-how__body { padding: 20px 24px 24px; }
+.tl-how__title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+.tl-how__text { font-size: 0.875rem; color: #5C7878; line-height: 1.65; margin: 0; }
+
+/* CATEGORIES */
+.tl-categories { background: #fff; }
+.tl-categories__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.tl-cat-card { display: flex; align-items: center; gap: 14px; background: #F6FAFA; border: 1.5px solid #E0F0F0; border-radius: 12px; padding: 18px 20px; text-decoration: none; color: #1A2B2B; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
+.tl-cat-card:hover { border-color: #00A7AC; background: #E8F8F8; color: #00A7AC; }
+.tl-cat-card__icon { color: #00A7AC; flex-shrink: 0; }
+.tl-cat-card__icon :deep(svg) { width: 22px; height: 22px; }
+.tl-cat-card__name { flex: 1; }
+.tl-cat-card__arrow { width: 16px; height: 16px; color: #9CA3AF; flex-shrink: 0; transition: transform 0.2s; }
+.tl-cat-card:hover .tl-cat-card__arrow { transform: translateX(4px); color: #00A7AC; }
+
+/* FOR TRADESPEOPLE */
+.tl-tradesperson { background: #052922; padding: 80px 0; }
+.tl-tradesperson__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.tl-tradesperson__heading { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; color: #fff; line-height: 1.15; margin: 0 0 16px; }
+.tl-tradesperson__sub { color: rgba(255,255,255,0.65); font-size: 1rem; line-height: 1.65; margin-bottom: 24px; }
+.tl-perks { list-style: none; padding: 0; margin: 0 0 32px; display: flex; flex-direction: column; gap: 12px; }
+.tl-perks li { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.85); font-size: 0.9rem; }
+.tl-perks li svg { width: 18px; height: 18px; color: #00A7AC; flex-shrink: 0; }
+.tl-tradesperson__badges { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.tl-badge { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.tl-badge:hover { background: rgba(0,167,172,0.15); border-color: #00A7AC; }
+.tl-badge__icon { color: #00A7AC; }
+.tl-badge__icon :deep(svg) { width: 28px; height: 28px; }
+.tl-badge__label { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.75); }
+
+/* STATS */
+.tl-stats { background: #00A7AC; padding: 48px 0; }
+.tl-stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+.tl-stat__num { font-size: 2.2rem; font-weight: 900; color: #fff; }
+.tl-stat__label { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 4px; }
+
+/* CTA */
+.tl-cta { background: #F6FAFA; padding: 80px 0; text-align: center; }
+.tl-cta__heading { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin: 0 0 8px; }
+.tl-cta__sub { color: #5C7878; margin-bottom: 28px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .tl-trust__grid { grid-template-columns: repeat(2, 1fr); }
+  .tl-stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .tl-how__steps { grid-template-columns: 1fr 1fr; }
+  .tl-categories__grid { grid-template-columns: 1fr 1fr; }
+  .tl-tradesperson__inner { grid-template-columns: 1fr; }
+  .tl-tradesperson__badges { grid-template-columns: repeat(2, 1fr); }
 }
-
-.dropdown ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+@media (max-width: 600px) {
+  .tl-section { padding: 56px 0; }
+  .tl-hero { min-height: 480px; }
+  .tl-how__steps { grid-template-columns: 1fr; }
+  .tl-categories__grid { grid-template-columns: 1fr; }
+  .tl-search__btn { padding: 10px 14px; }
+  .tl-hero__quick { display: none; }
 }
-
-.dropdown li {
-  padding: 18px 16px;
-  cursor: pointer;
-  color: #00A7AC;
-}
-
-.dropdown li:hover {
-  background-color: #f8f9fa;
-}
-
-
-::placeholder {
-  color: rgba(154, 153, 153, 0.3);
-  opacity: 1;
-}
-
-.border-start{
-  border-left: 3px solid #00A7AC !important;
-}
-
-  
 </style>
