@@ -61,11 +61,11 @@
                 </div>
               </div>
 
-              <div class="text-center" v-if="project.status !=='complete'">
+              <div class="text-center" v-if="!isJobComplete">
                 <button class="btn btn-primary mt-3" @click="completeJob">Mark job as done</button>
               </div>
 
-              <div v-if="project.status === 'complete' && !ratingSubmitted" class="mt-4">
+              <div v-if="isJobComplete && !ratingSubmitted" class="mt-4">
                 <form @submit.prevent="submitRating">
                   <h5>Rate the professional who completed this job</h5>
 
@@ -164,6 +164,11 @@ export default {
   },
   components: {
     BaseDashboardLayout
+  },
+  computed: {
+    isJobComplete() {
+      return ['complete', 'completed'].includes(this.project.status);
+    },
   },
   methods: {
     getProjectDetails() {

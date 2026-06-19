@@ -11,7 +11,7 @@
             </a>
           </div>
 
-          <div v-if="project.status ==='complete'" class="alert alert-primary mt-4">
+          <div v-if="isJobComplete" class="alert alert-primary mt-4">
             <i class="bi bi-envelope"></i> Job has been completed. You can no longer send messages.
           </div>
 
@@ -26,6 +26,9 @@
                              :to="`/chat?job=${project.invite.service.headline}&id=${project.invite.id}`"><i
                     class="bi bi-chat-dots"></i> Send a message to the homeowner to discuss the job.
                 </router-link>
+                <button class="btn btn-outline-primary ms-2" :disabled="completeLoader" @click="markJobComplete()">
+                  <i class="bi bi-check2-circle"></i> Mark job complete
+                </button>
               </div>
             </div>
 
@@ -154,6 +157,7 @@ import SideBar from '../base-layout/navigation/tradesperson-sidebar';
 import MobileFooter from '../../components/mobile-nav';
 import appConfig from "../../../app.config.json";
 import {userService} from "@/apis/user.service";
+import {confirm} from "@/utils/functions";
 
 export default {
   page: {
@@ -165,6 +169,7 @@ export default {
       isMobile: false,
       isLoading: false,
       inviteLoader: false,
+      completeLoader: false,
       project_id: null,
       project: {},
     };
@@ -178,6 +183,9 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.getters.GET_USER_INFO;
+    },
+    isJobComplete() {
+      return ['complete', 'completed'].includes(this.project.status);
     },
   },
   methods: {
@@ -215,6 +223,25 @@ export default {
         this.getProjectDetails(this.project_id)
       });
 
+    },
+
+    markJobComplete() {
+      confirm("This action cannot be reverted", () => {
+        this.completeLoader = true;
+        const payload = {
+          request_id: this.project.id,
+        };
+        userService.completeJob(payload).then((res) => {
+          this.completeLoader = false;
+          const {status, message} = res;
+          if (!status) {
+            this.$store.dispatch('error', {message: message, showSwal: true});
+            return;
+          }
+          this.$store.dispatch('success', {message: 'Job marked as complete!', showSwal: true});
+          this.getProjectDetails(this.project_id);
+        });
+      });
     }
 
   },
