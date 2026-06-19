@@ -1,74 +1,44 @@
-// import $ from 'jquery';
-// window.jQuery = $;
-// window.$ = $;
-
 import Vue from 'vue'
 import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 import i18n from './i18n'
-// import VueSlideBar from 'vue-slide-bar'
 import './utils/filters'
-
 import '../public/frontend/assets/js/main'
-
-import * as VueGoogleMaps from "vue2-google-maps";
-
-
-
+import * as VueGoogleMaps from "vue2-google-maps"
 import router from './router'
-import store from './store/store';
-
-import "@/assets/scss/app-css.scss";
-
-
+import store from './store/store'
+import "@/assets/scss/app-css.scss"
 import ImageMagnifier from 'vue-image-magnifier'
-// import VueDraggable from "vue-draggable";
+import { initializeApp } from "firebase/app"
 
 Vue.use(ImageMagnifier)
-
-import {initializeApp} from "firebase/app";
-
-
-
-
 Vue.config.productionTip = false
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyDh6omW0tuZo8Kjy6UJtn2W00-1L1DHQqE",
+    key: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
     libraries: "places"
   },
-    installComponents: true
-});
+  installComponents: true
+})
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBCyDzjOoDo9Ps3y2yP5wH1w1UFHsTe9VE",
-    authDomain: "redcabs-326d4.firebaseapp.com",
-    databaseURL: "https://redcabs-326d4-default-rtdb.firebaseio.com",
-    projectId: "redcabs-326d4",
-    storageBucket: "redcabs-326d4.appspot.com",
-    messagingSenderId: "114266712759",
-    appId: "1:114266712759:web:4c212de3390a1e2797bb32",
-    measurementId: "G-BK7HJ77JDX"
-};
+  apiKey:            process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain:        process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL:       process.env.VUE_APP_FIREBASE_DATABASE_URL,
+  projectId:         process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  storageBucket:     process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId:             process.env.VUE_APP_FIREBASE_APP_ID,
+}
 
-
-// Initialize Firebase
-initializeApp(firebaseConfig);
-
-
-// Vue.use(VueDraggable)
-// Vue.use(VueQuillEditor)
-// Vue.use(VueMask)
+initializeApp(firebaseConfig)
 
 Vue.use(BootstrapVue)
 
-
-
-
 new Vue({
-    router,
-    store,
-    i18n,
-    render: h => h(App),
+  router,
+  store,
+  i18n,
+  render: h => h(App),
 }).$mount('#app')
