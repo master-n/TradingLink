@@ -43,7 +43,7 @@
                 <div class="accordion-item mb-20">
                   <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      What is Tradelink?
+                      1. What is Tradelink?
                     </button>
                   </h2>
                   <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -127,7 +127,7 @@
                       1. How do I join?
                     </button>
                   </h2>
-                  <div id="collapseOne2" class="accordion-collapse collapse show" aria-labelledby="headingOne2" data-bs-parent="#accordionExample">
+                  <div id="collapseOne2" class="accordion-collapse collapse show" aria-labelledby="headingOne2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
                       Click "Join as a Tradesperson" and create your profile. Add your trade, contact info, and (if available) certifications.
                     </div>
@@ -139,7 +139,7 @@
                       2. Is there a cost?
                     </button>
                   </h2>
-                  <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2" data-bs-parent="#accordionExample">
+                  <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
                       Yes — Tradelink charges $1,200/month for access to unlimited job leads and customer contact.
                     </div>
@@ -151,7 +151,7 @@
                       3. How do I get jobs?
                     </button>
                   </h2>
-                  <div id="collapseThree2" class="accordion-collapse collapse" aria-labelledby="headingThree2" data-bs-parent="#accordionExample">
+                  <div id="collapseThree2" class="accordion-collapse collapse" aria-labelledby="headingThree2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
                       Once you’re signed up, you can view nearby job posts and apply with a message or quote.
                     </div>
@@ -163,7 +163,7 @@
                       4. Can I show my qualifications?
                     </button>
                   </h2>
-                  <div id="collapseFour2" class="accordion-collapse collapse" aria-labelledby="headingFour2" data-bs-parent="#accordionExample">
+                  <div id="collapseFour2" class="accordion-collapse collapse" aria-labelledby="headingFour2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
 
                       Yes! Upload certificates from HEART/NSTA, BSJ, or other recognised bodies to earn a “Verified” badge.
@@ -176,7 +176,7 @@
                       5. How do I get paid?
                     </button>
                   </h2>
-                  <div id="collapseFive2" class="accordion-collapse collapse" aria-labelledby="headingFive2" data-bs-parent="#accordionExample">
+                  <div id="collapseFive2" class="accordion-collapse collapse" aria-labelledby="headingFive2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
                       You handle payments directly with the customer. Tradelink does not hold or process money.
                     </div>
@@ -188,7 +188,7 @@
                       6. Can I pause or cancel my account?
                     </button>
                   </h2>
-                  <div id="collapseSix2" class="accordion-collapse collapse" aria-labelledby="headingSix2" data-bs-parent="#accordionExample">
+                  <div id="collapseSix2" class="accordion-collapse collapse" aria-labelledby="headingSix2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
                       Yes. You can manage or pause your subscription anytime from your dashboard.
                     </div>

@@ -85,12 +85,12 @@
           </div>
         </div>
       </div>
-      <div class="footer-btm">
-        <div class="footer-logo">
-          <img src="../../../public/frontend/assets/images/header1-logo.svg" style="width: 120px" alt="">
+      <div class="footer-bottom-bar">
+        <div class="d-flex justify-content-center pb-3">
+          <img src="../../../public/frontend/assets/images/header1-logo.svg" style="width: 100px" alt="Trade Link logo">
         </div>
-        <div class="row border-top align-items-center">
-          <div class="col-12 d-flex justify-content-center">
+        <div class="border-top pt-3">
+          <div class="d-flex justify-content-center">
             <div class="copyright-area">
               <p>©Copyright {{ currentYear }} Trade Link</p>
             </div>
@@ -111,3 +111,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.footer-bottom-bar {
+  padding-top: 32px;
+  margin-top: 16px;
+}
+</style>

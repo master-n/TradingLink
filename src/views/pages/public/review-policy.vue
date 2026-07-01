@@ -78,8 +78,7 @@
             <li>
               <i class="bi bi-dot text-secondary"></i>
               Use
-              <a href="/contact-us" class="link-primary">Contact Us</a> or
-              <a href="/report-review" class="link-primary">Report a Review</a> to raise concerns.
+              <a href="/contact-us" class="link-primary">Contact Us</a> to raise concerns.
             </li>
             <li><i class="bi bi-dot text-secondary"></i> We'll review both sides before making a final decision.</li>
           </ul>
