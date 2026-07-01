@@ -16,7 +16,7 @@
                   <router-link to="/faq">How it works (FAQ)<i class='bx bx-up-arrow-alt'></i></router-link>
                 </li>
                 <li>
-                  <router-link to="/find-a-trade">Find trades <i class='bx bx-up-arrow-alt'></i></router-link>
+                  <router-link to="/find-tradesperson">Find trades <i class='bx bx-up-arrow-alt'></i></router-link>
                 </li>
               </ul>
             </div>
@@ -90,21 +90,9 @@
           <img src="../../../public/frontend/assets/images/header1-logo.svg" style="width: 120px" alt="">
         </div>
         <div class="row border-top align-items-center">
-          <div class="col-lg-6 d-flex  justify-content-lg-start justify-content-center">
+          <div class="col-12 d-flex justify-content-center">
             <div class="copyright-area">
-              <p>©Copyright 2025 Trade Link</p>
-            </div>
-          </div>
-          <div class="col-lg-6 d-flex justify-content-lg-end justify-content-center">
-            <div class="social-area">
-              <h6>Follow Trade Link:</h6>
-              <ul>
-                <li><a href="#"><i class="bx bxl-facebook"></i></a></li>
-                <li><a href="#"><i class="bx bxl-twitter"></i></a></li>
-                <li><a href="#"><i class="bx bxl-linkedin"></i></a></li>
-                <li><a href="#"><i class="bx bxl-instagram"></i></a></li>
-
-              </ul>
+              <p>©Copyright {{ currentYear }} Trade Link</p>
             </div>
           </div>
         </div>
@@ -115,7 +103,11 @@
 
 <script>
 export default {
-  name:"home-footer"
-  
+  name: "home-footer",
+  computed: {
+    currentYear() {
+      return new Date().getFullYear();
+    }
+  }
 }
 </script>

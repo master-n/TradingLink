@@ -7,44 +7,66 @@
       <div class="row">
         <div class="col-lg-7 d-flex align-items-center">
           <div class="hero-content">
+            <div class="hero-kicker">JAMAICA'S TRUSTED TRADE NETWORK</div>
             <h1>Find Trusted Tradespeople Across Jamaica - Fast, Reliable, <span>Secure</span></h1>
             <h4 class="text-light mt-5">Post your job and get connected with certified professionals today</h4>
 
             <div class="job-search-area mt-3">
-              <form @submit.prevent>
+              <form class="search-form" @submit.prevent="goToSearch">
                 <div class="form-inner job-title">
-                  <input type="text" id="search" placeholder="For example: cleaner" v-model="searchQuery"
-                    @input="filterCategories" @focus="showDropdown = true" @blur="collapseDropdown">
+                  <label for="search" class="sr-only">Search for a trade or service</label>
+                  <svg class="search-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="text" id="search" placeholder="For example: cleaner, electrician, plumber" v-model="searchQuery"
+                    autocomplete="off" role="combobox" aria-autocomplete="list" :aria-expanded="showDropdown && !!filteredCategories.length"
+                    aria-controls="search-suggestions"
+                    :aria-activedescendant="highlightedIndex >= 0 ? `search-option-${highlightedIndex}` : null"
+                    @input="filterCategories" @focus="showDropdown = true" @blur="collapseDropdown" @keydown="onSearchKeydown">
 
-                  <ul v-if="showDropdown" class="list-group dropdown position-absolute w-100 text-start mt-1">
-                    <li v-for="result in filteredCategories"
-                      :key="result.id"
-                      @click="goToPostJob(result)"
-                      class="list-group-item list-group-item-action">
-                      <div class="fw-bold">{{ result.name }}</div>
-                    </li>
-                  </ul>
+                  <transition name="dropdown-fade">
+                    <ul v-if="showDropdown && filteredCategories.length" id="search-suggestions" role="listbox" class="list-group search-dropdown text-start">
+                      <li v-for="(result, index) in filteredCategories"
+                        :id="`search-option-${index}`"
+                        :key="result.id"
+                        role="option"
+                        :aria-selected="index === highlightedIndex"
+                        :class="['list-group-item', 'list-group-item-action', { active: index === highlightedIndex }]"
+                        @mousedown.prevent="goToPostJob(result)"
+                        @mouseenter="highlightedIndex = index">
+                        <div class="fw-bold">{{ result.name }}</div>
+                      </li>
+                    </ul>
+                  </transition>
                 </div>
+                <button type="submit" class="primry-btn-2 lg-btn search-submit-btn">Search</button>
               </form>
+            </div>
+
+            <div class="trust-row">
+              <div class="trust-item"><i class="bx bx-badge-check"></i> Verified tradespeople</div>
+              <div class="trust-item"><i class="bx bx-shield"></i> Secure payments</div>
+              <div class="trust-item"><i class="bx bx-map"></i> Island-wide coverage</div>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-5 d-flex jsutify-content-end">
+        <div class="col-lg-5 d-flex justify-content-end">
           <div class="banner-image-area">
             <div class="banner-img-left">
               <div class="banner-img1">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-cutting.jpg" alt="">
+                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-cutting.jpg" alt="Carpenter cutting wood on site">
               </div>
 
               <div class="banner-img2">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-2.jpg" alt="">
+                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter-2.jpg" alt="Carpenter at work">
               </div>
             </div>
 
             <div class="banner-img-center">
               <div class="banner-img3">
-                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/construction.jpg" alt=""
+                <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/construction.jpg" alt="Construction tradesperson on a job site"
                   style="width: 210px; height: 330px; object-fit: cover">
               </div>
 
@@ -53,11 +75,11 @@
                   <ul>
                     <li>
                       <div class="total-user">
-                        <h6>21k</h6>
+                        <h6>{{ stats ? stats.tradespeople : '...' }}</h6>
                       </div>
                     </li>
                   </ul>
-                  <p>People Joined!</p>
+                  <p>Verified tradespeople</p>
                 </div>
               </div>
             </div>
@@ -65,14 +87,14 @@
             <div class="banner-img-right">
               <div class="banner-img5">
                 <div class="new-job-list">
-                  <h3>2400+</h3>
-                  <p>New Job Listed!</p>
+                  <h3>{{ stats ? stats.reviews : '...' }}</h3>
+                  <p>Verified reviews</p>
                 </div>
               </div>
 
               <div class="banner-img6">
                 <img class="img-fluid" src="../../../../public/frontend/assets/images/bg/carpenter.jpg"
-                  style="width: 150px; height: 230px; object-fit: cover" alt="">
+                  style="width: 150px; height: 230px; object-fit: cover" alt="Tradesperson on site">
               </div>
             </div>
           </div>
@@ -146,11 +168,11 @@
               <p>Find top-rated professionals and services from trusted users across Jamaica, island-wide.</p>
             </div>
             <div class="explore-btn">
-              <a href="#">Explore More
+              <router-link to="/find-tradesperson">Explore More
                 <span>
                 <img src="../../../../public/frontend/assets/images/icon/explore-elliose.svg" alt="">
               </span>
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -158,15 +180,16 @@
           <div class="col-lg-4 col-md-6 col-sm-10" v-for="(trade, i) in trades" :key="i">
             <div class="top-company-card">
               <div class="company-details">
+                <div class="category-icon"><i class="bx bx-wrench"></i></div>
                 <div class="name-location">
                   <h5>
-                    <router-link :to="'/find-tradesperson?category='+trade.name">{{ trade.name }}</router-link>
+                    <router-link :to="'/find-tradesperson?category='+encodeURIComponent(trade.name)">{{ trade.name }}</router-link>
                   </h5>
                 </div>
               </div>
               <div class="job-details-vacancies">
                 <div class="apply-btn">
-                  <router-link :to="'/find-tradesperson?category='+trade.name"><span/>View
+                  <router-link :to="'/find-tradesperson?category='+encodeURIComponent(trade.name)"><span/>View
                     Details
                   </router-link>
                 </div>
@@ -232,10 +255,10 @@
             <p class="text-light">Join thousands of happy clients. Post your job and get quotes from verified professionals today.</p>
           </div>
         </div>
-        <div class="row">
-          <div class="col-lg-3">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
             <div class="card card-cut bg-primary-1 text-light mb-sm-2 mb-3">
-              <div class="card-body py-5" style="margin-bottom: 1rem">
+              <div class="card-body py-5 text-center">
                 <h3 class="">Verified Reviews from Real Customers</h3>
                 <p class="text-light mt-3" style="font-size: 18px">Authentic feedback from homeowners like you</p>
                 <div class="text-center mt-5">
@@ -244,216 +267,6 @@
               </div>
             </div>
           </div>
-<!--          <div class="col-lg-9">-->
-<!--            <div class="swiper home5-feedback-slider swiper-initialized swiper-horizontal swiper-pointer-events">-->
-<!--              <div class="swiper-wrapper" id="swiper-wrapper-a97345a614234bc4" aria-live="off"-->
-<!--                   style="transform: translate3d(-2624px, 0px, 0px); transition-duration: 1700ms;">-->
-<!--                <div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="0" role="group"-->
-<!--                     aria-label="1 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Rakhab Uddin</h5>-->
-<!--                            <span>UI/UX Engineer</span>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the-->
-<!--                          beguiled and demoralized.</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-prev" data-swiper-slide-index="1"-->
-<!--                     role="group" aria-label="2 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Mrs. Jordan Harry</h5>-->
-<!--                            <span>UI/UX Engineer</span>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>On the other hand, denounce with righteous to indignation and dislike men who are so the-->
-<!--                          beguiled and demoralized.</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate-active" data-swiper-slide-index="0" role="group"-->
-<!--                     aria-label="1 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <h5 class="fw-bold">Replace wooden front door with upvc</h5>-->
-
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Rakhab Uddin</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"Wow! Very efficient and professional. Really good communication on time and did a great job of de-weeding the …"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="1"-->
-<!--                     role="group" aria-label="2 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Mrs. Jordan Harry</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"They provide a professional service with attention to detail and competitive pricing. I recommend their servic…"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate swiper-slide-active" data-swiper-slide-index="0"-->
-<!--                     role="group" aria-label="1 / 2" style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-01.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Rakhab Uddin</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"Quick turnaround, good price, good communication and 10yr warranty"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev"-->
-<!--                     data-swiper-slide-index="1" role="group" aria-label="2 / 2"-->
-<!--                     style="width: 636px; margin-right: 20px;">-->
-<!--                  <div class="client-feedback-wrap hover-btn">-->
-<!--                    <span class="for-border"></span>-->
-<!--                    <div class="client-feedback-inner">-->
-<!--                      <div class="client-feedback-top">-->
-<!--                        <div class="author-area">-->
-<!--                          <div class="author-img">-->
-<!--                            <img src="../../../../public/frontend/assets/images/bg/home5-testimonial-02.png" alt="">-->
-<!--                            <div class="author-quat">-->
-<!--                              <img class="quate1" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat.svg" alt="">-->
-<!--                              <img class="quate2" src="../../../../public/frontend/assets/images/icon/home5-testimonial-quat2.svg" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          <div class="author-content">-->
-<!--                            <h5>Mrs. Jordan Harry</h5>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        <div class="reviews">-->
-<!--                          <ul>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-fill"></i></li>-->
-<!--                            <li><i class="bi bi-star-half"></i></li>-->
-<!--                          </ul>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="client-feedback-content">-->
-<!--                        <p>"Fitted me in next day as I was in a hurry and done an excellent job. Would 100% recommend"</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>-->
-<!--          </div>-->
         </div>
       </div>
     </div>
@@ -484,6 +297,7 @@ import appConfig from "../../../../app.config.json";
 import {userService} from "@/apis/user.service";
 import store from "@/store/store";
 import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
+import Swal from "sweetalert2";
 
 export default {
   name: "Home",
@@ -501,7 +315,8 @@ export default {
       user: this.$store.getters.GET_USER_INFO || {},
       searchQuery: '',
       showDropdown: false,
-      categories: ['Engineering', 'Marketing', 'Healthcare', 'Education', 'Finance', 'IT', 'Construction'],
+      highlightedIndex: -1,
+      categories: [],
       filteredCategories: []
     };
   },
@@ -521,10 +336,10 @@ export default {
   },
   methods: {
     async getTrades() {
-      this.tradeLoader = true
+      this.tradesLoader = true
       userService.getTrades(6).then((res) => {
         this.trades = res.extra;
-        this.tradeLoader = false
+        this.tradesLoader = false
       });
     },
     async getAllTrades() {
@@ -541,18 +356,10 @@ export default {
       userService.pageStats().then((res) => {
         this.statsLoader = false
         this.stats = res.extra;
-        this.triggerCounter();
       });
     },
-    triggerCounter(){
-      setTimeout(() => {
-        $('.odometer').counterUp({
-          delay: 10,
-          time: 2000
-        });
-      }, 1000)
-    },
     filterCategories() {
+      this.highlightedIndex = -1;
       if (this.searchQuery.trim() === '') {
         this.filteredCategories = this.categories;
       } else {
@@ -565,7 +372,26 @@ export default {
     collapseDropdown() {
       setTimeout(() => {
         this.showDropdown = false;
+        this.highlightedIndex = -1;
       }, 200);
+    },
+    onSearchKeydown(event) {
+      if (!this.showDropdown || !this.filteredCategories.length) {
+        return;
+      }
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        this.highlightedIndex = (this.highlightedIndex + 1) % this.filteredCategories.length;
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        this.highlightedIndex = (this.highlightedIndex - 1 + this.filteredCategories.length) % this.filteredCategories.length;
+      } else if (event.key === 'Enter' && this.highlightedIndex >= 0) {
+        event.preventDefault();
+        this.goToPostJob(this.filteredCategories[this.highlightedIndex]);
+      } else if (event.key === 'Escape') {
+        this.showDropdown = false;
+        this.highlightedIndex = -1;
+      }
     },
     handleClickOutside(event) {
       if (!this.$el.contains(event.target)) {
@@ -574,7 +400,18 @@ export default {
     },
 
     goToPostJob(category) {
-      this.$router.push(`/post-a-job?category=${category.name}`)
+      this.showDropdown = false;
+      this.$router.push(`/post-a-job?category=${encodeURIComponent(category.name)}`)
+    },
+
+    goToSearch() {
+      if (this.filteredCategories.length) {
+        this.goToPostJob(this.filteredCategories[0]);
+        return;
+      }
+      if (this.searchQuery.trim()) {
+        this.$router.push(`/post-a-job?category=${encodeURIComponent(this.searchQuery.trim())}`);
+      }
     },
 
     goToSignUp() {
@@ -588,13 +425,13 @@ export default {
       const role = loggedUser?.roles?.[0] || '';
 
       if (role === 'tradesperson') {
-        alert('You are already logged in as a tradesperson. You can browse available leads instead.');
-        this.$router.push('/new-leads');
+        Swal.fire('Already logged in', 'You are already logged in as a tradesperson. You can browse available leads instead.', 'info')
+            .then(() => this.$router.push('/new-leads'));
       } else if (role === 'homeowner') {
-        alert('You are already logged in as a homeowner. You can post a job instead.');
-        this.$router.push('/post-a-job');
+        Swal.fire('Already logged in', 'You are already logged in as a homeowner. You can post a job instead.', 'info')
+            .then(() => this.$router.push('/post-a-job'));
       } else {
-        alert(`You are already logged in as ${role}. This action is not available for your role.`);
+        Swal.fire('Already logged in', `You are already logged in as ${role}. This action is not available for your role.`, 'info');
       }
     }
 
@@ -607,102 +444,6 @@ export default {
   mounted() {
     this.$nextTick(() => {
       $('.select1').niceSelect();
-      $('#slick1').slick({
-        rows: 2,
-        dots: false,
-        arrows: true,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        speed: 2000,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [{
-          breakpoint: 1200,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 991,
-          settings: {
-            arrows: false,
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 768,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 576,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 480,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }, {
-          breakpoint: 350,
-          settings: {
-            arrows: false,
-            slidesToShow: 1
-          }
-        }]
-      });
-      new Swiper(".home5-feedback-slider", {
-        slidesPerView: 2,
-        spaceBetween: 20,
-        loop: true,
-        infinite: true,
-        autoplay: false,
-        speed: 1700,
-        // autoplay: {
-        //   delay: 2200,
-        // },
-        navigation: {
-          nextEl: ".next-13",
-          prevEl: ".prev-13",
-        },
-        breakpoints: {
-          280: {
-            slidesPerView: 1,
-          },
-          480: {
-            slidesPerView: 1
-          },
-          768: {
-            slidesPerView: 1
-          },
-          992: {
-            slidesPerView: 1
-          },
-          1200: {
-            slidesPerView: 2
-          },
-          1400: {
-            slidesPerView: 2
-          },
-          1600: {
-            slidesPerView: 2
-          },
-        }
-      });
-
-
-      $('.sidebar-button').on("click", function () {
-        $('.main-menu').addClass('show-menu');
-      });
-
-      $('.menu-close-btn').on("click", function () {
-        $('.main-menu').removeClass('show-menu');
-      });
-
     });
     document.addEventListener('click', this.handleClickOutside);
   },
@@ -714,38 +455,153 @@ export default {
 
 <style scoped>
 
+.hero-kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #5DCAA5;
+  margin-bottom: 14px;
+}
 
-.dropdown {
+.trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 22px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.trust-item i {
+  font-size: 1.1rem;
+  color: #5DCAA5;
+}
+
+.category-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(0, 167, 172, 0.1);
+  color: #00A7AC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.top-company-card .company-details {
+  justify-content: flex-start;
+}
+
+/* Hero search bar: the .hero2 template variant shipped with no styling for the
+   search input/button, leaving it unpositioned and the suggestions dropdown
+   floating relative to the wrong ancestor. Defined here explicitly. */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+}
+
+@media (max-width: 767px) {
+  .search-form {
+    flex-wrap: wrap;
+  }
+}
+
+.form-inner.job-title {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  background: #EFF3F2;
+  border-radius: 8px;
+  padding: 0 20px 0 48px;
+  width: 100%;
+}
+
+.search-icon {
   position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #6b7a78;
+  pointer-events: none;
+}
+
+.form-inner.job-title input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: var(--title-color1, #14181b);
+}
+
+.form-inner.job-title input:focus {
+  outline: none;
+}
+
+.search-submit-btn {
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
   background: white;
-  border: 1px solid #ddd;
-  width: 43%;
-  z-index: 10;
-  max-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  width: 100%;
+  z-index: 20;
+  max-height: 320px;
   overflow-x: hidden;
   overflow-y: auto;
-  left: 0;
+  padding: 6px 0;
 }
 
-.dropdown ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dropdown li {
-  padding: 18px 16px;
+.search-dropdown li {
+  padding: 14px 20px;
   cursor: pointer;
   color: #00A7AC;
+  border: none;
+  transition: background-color 0.15s ease;
 }
 
-.dropdown li:hover {
-  background-color: #f8f9fa;
+.search-dropdown li:hover,
+.search-dropdown li:focus,
+.search-dropdown li.active {
+  background-color: #f3faf9;
 }
 
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dropdown-fade-enter-from,
+.dropdown-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
 
 ::placeholder {
-  color: rgba(154, 153, 153, 0.3);
+  color: rgba(154, 153, 153, 0.6);
   opacity: 1;
 }
 
@@ -753,5 +609,43 @@ export default {
   border-left: 3px solid #00A7AC !important;
 }
 
-  
+/* Premium polish: elevation + lift on interactive cards instead of the flat
+   stock-template look, with accessible focus states for keyboard users. */
+.fancy-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+.fancy-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+}
+
+.top-company-card {
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.top-company-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #00A7AC;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fancy-card,
+  .top-company-card,
+  .dropdown-fade-enter-active,
+  .dropdown-fade-leave-active {
+    transition: none !important;
+  }
+}
 </style>
