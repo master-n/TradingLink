@@ -23,9 +23,29 @@
 
               <span class="review-count">({{total_rating}} reviews)</span>
             </div>
-<!--            <button class="request-review-btn">Request a review</button>-->
+            <button class="request-review-btn mt-3" @click="showRequestModal = true">Request a review</button>
           </div>
         </div>
+
+        <!-- Request a Review modal -->
+        <b-modal v-model="showRequestModal" title="Request a Review" hide-footer centered>
+          <p class="text-muted mb-3">Share your profile link with past clients and ask them to leave a review.</p>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" :value="profileLink" readonly ref="profileLinkInput">
+            <button class="btn btn-outline-secondary" @click="copyLink">
+              <i class="bi" :class="copied ? 'bi-check-lg text-success' : 'bi-clipboard'"></i>
+              {{ copied ? 'Copied!' : 'Copy' }}
+            </button>
+          </div>
+          <hr>
+          <p class="small fw-semibold mb-1">Suggested message</p>
+          <div class="bg-light rounded p-3 small text-muted mb-3" style="white-space: pre-line;">{{ suggestedMessage }}</div>
+          <button class="btn btn-outline-secondary btn-sm" @click="copySuggestedMessage">
+            <i class="bi" :class="copiedMessage ? 'bi-check-lg text-success' : 'bi-clipboard'"></i>
+            {{ copiedMessage ? 'Copied!' : 'Copy message' }}
+          </button>
+        </b-modal>
+
         <h6 class="fw-bold mt-4">Reviews ({{ total_rating }})</h6>
 
         <div
@@ -100,7 +120,18 @@ export default {
       total_rating: '',
       isLoading: false,
       user: this.$store.getters.GET_USER_INFO || {},
+      showRequestModal: false,
+      copied: false,
+      copiedMessage: false,
     };
+  },
+  computed: {
+    profileLink() {
+      return `${window.location.origin}/user-profile/${this.user.id}`;
+    },
+    suggestedMessage() {
+      return `Hi, I hope you were happy with the work I did for you on Tradelink. If you have a moment, I'd really appreciate it if you could leave a review on my profile — it helps other customers find reliable tradespeople.\n\n${this.profileLink}\n\nThank you!`;
+    },
   },
   components: {
     BaseDashboardLayout
@@ -110,6 +141,18 @@ export default {
       if (this.rating >= index) return 'bi bi-star-fill';
       if (this.rating >= index - 0.5) return 'bi bi-star-half';
       return 'bi bi-star';
+    },
+    copyLink() {
+      navigator.clipboard.writeText(this.profileLink).then(() => {
+        this.copied = true;
+        setTimeout(() => { this.copied = false; }, 2000);
+      });
+    },
+    copySuggestedMessage() {
+      navigator.clipboard.writeText(this.suggestedMessage).then(() => {
+        this.copiedMessage = true;
+        setTimeout(() => { this.copiedMessage = false; }, 2000);
+      });
     },
     getRatings() {
       this.isLoading = true;
@@ -164,6 +207,22 @@ export default {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
+}
+
+.request-review-btn {
+  background: #00A7AC;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.request-review-btn:hover {
+  background: #008f94;
 }
 
 .review-card {
