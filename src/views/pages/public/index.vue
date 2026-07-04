@@ -15,7 +15,7 @@
           <p class="tl-hero__sub">Post your job and get connected with certified professionals today</p>
           <div class="tl-search">
             <div class="tl-search__wrap">
-              <svg class="tl-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg class="tl-search__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
               </svg>
               <input
@@ -37,7 +37,7 @@
                 @mousedown.prevent="goToPostJob(result)"
                 class="tl-search__item"
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
                 </svg>
                 {{ result.name }}
@@ -110,7 +110,7 @@
           >
             <div class="tl-cat-card__icon" v-html="getCategoryIcon(trade.name)"></div>
             <div class="tl-cat-card__name">{{ trade.name }}</div>
-            <svg class="tl-cat-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="tl-cat-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="m9 18 6-6-6-6"/>
             </svg>
           </router-link>
@@ -131,7 +131,7 @@
             <p class="tl-tradesperson__sub">Grow your business with Tradelink — thousands of jobs posted every month across all 14 parishes.</p>
             <ul class="tl-perks">
               <li v-for="(perk, i) in tradePerks" :key="i">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
                 {{ perk }}
               </li>
             </ul>
