@@ -245,6 +245,7 @@ export default {
       this.identityFile = this.$refs.identityFile.getAcceptedFiles();
 
       if (this.identityFile.length === 0) {
+        this.isLoading = false
         this.$store.dispatch('error', {
           message: `Please upload the ${this.identity_type}'s image`,
           showSwal: true
@@ -259,7 +260,6 @@ export default {
       formData.append("identity_type", this.identity_type);
 
       userService.idVerification(formData).then((res) => {
-        this.isLoading = false
         const {status, message, extra} = res;
         if (!status) {
           this.$store.dispatch('error', {message: message, showSwal: true})
@@ -267,6 +267,13 @@ export default {
         }
         this.$store.dispatch('updateUserInfo', extra)
         this.$router.push('/verify-skills')
+      }).catch((error) => {
+        this.$store.dispatch('error', {
+          message: typeof error === 'string' ? error : 'Upload failed. Please try again.',
+          showSwal: true
+        })
+      }).finally(() => {
+        this.isLoading = false
       });
     },
     getIdStatus() {
