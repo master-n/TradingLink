@@ -23,9 +23,13 @@
 
               <span class="review-count">({{total_rating}} reviews)</span>
             </div>
-<!--            <button class="request-review-btn">Request a review</button>-->
+            <button class="request-review-btn mt-3" @click="requestReview">
+              <i class="bi" :class="copied ? 'bi-check-lg' : 'bi-send'"></i>
+              {{ copied ? 'Message copied!' : 'Request a review' }}
+            </button>
           </div>
         </div>
+
         <h6 class="fw-bold mt-4">Reviews ({{ total_rating }})</h6>
 
         <div
@@ -100,7 +104,16 @@ export default {
       total_rating: '',
       isLoading: false,
       user: this.$store.getters.GET_USER_INFO || {},
+      copied: false,
     };
+  },
+  computed: {
+    profileLink() {
+      return `${window.location.origin}/user-profile/${this.user.id}`;
+    },
+    reviewRequestMessage() {
+      return `Hi, I hope you were happy with the work I did for you on Tradelink. If you have a moment, I'd really appreciate it if you could leave a review on my profile — it helps other customers find reliable tradespeople.\n\n${this.profileLink}\n\nThank you!`;
+    },
   },
   components: {
     BaseDashboardLayout
@@ -110,6 +123,12 @@ export default {
       if (this.rating >= index) return 'bi bi-star-fill';
       if (this.rating >= index - 0.5) return 'bi bi-star-half';
       return 'bi bi-star';
+    },
+    requestReview() {
+      navigator.clipboard.writeText(this.reviewRequestMessage).then(() => {
+        this.copied = true;
+        setTimeout(() => { this.copied = false; }, 3000);
+      });
     },
     getRatings() {
       this.isLoading = true;
@@ -164,6 +183,22 @@ export default {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
+}
+
+.request-review-btn {
+  background: #00A7AC;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.request-review-btn:hover {
+  background: #008f94;
 }
 
 .review-card {

@@ -143,7 +143,7 @@
                   </div>
                 </div>
                 <p class="card-text line-clamp small text-muted">{{tradesperson.description ? tradesperson.description : 'No description available' }}</p>
-                <button class="btn btn-outline-primary-1 w-100 ">Get in touch</button>
+                <button class="btn btn-outline-primary-1 w-100" @click="$router.push(`/post-a-job`)">Get in touch</button>
               </div>
               <!-- Card Footer with fixed height -->
               <div class="card-footer text-muted d-flex flex-column" style="min-height: 70px; overflow:hidden">
@@ -178,7 +178,7 @@
                 <p>150,000 jobs posted every month</p>
               </div>
               <div class="find-btn">
-                <a class="primry-btn-2 lg-btn" href="job-listing1.html">Sign up for free</a>
+                <router-link class="primry-btn-2 lg-btn" to="/register">Sign up for free</router-link>
               </div>
             </div>
           </div>
@@ -290,5 +290,38 @@ export default {
 </script>
 
 <style scoped>
+.fancy-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
 
+.fancy-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+}
+
+.card {
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #00A7AC;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fancy-card,
+  .card {
+    transition: none !important;
+  }
+}
 </style>

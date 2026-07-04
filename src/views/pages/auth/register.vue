@@ -202,8 +202,7 @@
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-center">
             <div class="explore-btn">
-              <a href="job-listing2.html">More <span><img src="assets/images/icon/explore-elliose.svg"
-                                                          alt=""></span></a>
+              <router-link to="/trades">Browse all trades</router-link>
             </div>
           </div>
         </div>
@@ -224,7 +223,7 @@
               <p>150,000 jobs posted every month</p>
             </div>
             <div class="find-btn">
-              <a class="primry-btn-2 lg-btn" href="job-listing1.html">Sign up for free</a>
+              <router-link class="primry-btn-2 lg-btn" to="/register">Sign up for free</router-link>
             </div>
           </div>
         </div>
