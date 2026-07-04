@@ -14,6 +14,10 @@ import { initializeApp } from "firebase/app"
 Vue.use(ImageMagnifier)
 Vue.config.productionTip = false
 
+if (!process.env.VUE_APP_GOOGLE_MAPS_API_KEY) {
+  console.error('VUE_APP_GOOGLE_MAPS_API_KEY is not set at build time — Google Maps will not load. Check the Netlify Production environment variables.')
+}
+
 Vue.use(VueGoogleMaps, {
   load: {
     key: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
