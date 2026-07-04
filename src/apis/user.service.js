@@ -90,7 +90,11 @@ export const userService = {
     forgotPassword,
     resetPassword,
     updatePersonalInfo,
-    changePassword
+    changePassword,
+    getAdminDashboardStats,
+    getAdminJobVolumeStats,
+    getAdminTradespersonStats,
+    getAdminPricingStats,
 };
 
 function login(email, password) {
@@ -952,5 +956,38 @@ function changePassword(payload) {
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getAdminDashboardStats() {
+    return new Promise((resolve) => {
+        axios.get('/admin/api/dashboard/job-volume-stats', useBearerTokenHeaders())
+            .then(response => resolve(response.data))
+            .catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getAdminJobVolumeStats() {
+    return new Promise((resolve) => {
+        axios.get('/admin/api/dashboard/job-volume-stats', useBearerTokenHeaders())
+            .then(response => resolve(response.data))
+            .catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getAdminTradespersonStats() {
+    return new Promise((resolve) => {
+        axios.get('/admin/api/dashboard/tradesperson-stats', useBearerTokenHeaders())
+            .then(response => resolve(response.data))
+            .catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function getAdminPricingStats(status) {
+    const params = status ? `?status=${status}` : '';
+    return new Promise((resolve) => {
+        axios.get(`/admin/api/dashboard/pricing-stats${params}`, useBearerTokenHeaders())
+            .then(response => resolve(response.data))
+            .catch(err => resolve({status: false, message: err}));
     })
 }

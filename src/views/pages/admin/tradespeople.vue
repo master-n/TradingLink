@@ -225,7 +225,11 @@
           <b-col md="6" class="mb-3">
             <b-form-group label="Status">
               <b-form-select v-model="editForm.status" class="form-control"
-                             :options="['active', 'inactive', 'pending']"/>
+                             :options="['active', 'unsubscribed', 'pending', 'suspended', 'inactive']"/>
+              <small class="form-text text-muted">
+                <strong>suspended/inactive</strong> = hard block (contact support).
+                <strong>unsubscribed/pending</strong> = limited access only.
+              </small>
             </b-form-group>
           </b-col>
 
