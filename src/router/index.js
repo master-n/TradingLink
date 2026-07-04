@@ -62,6 +62,29 @@ router.beforeEach((routeTo, routeFrom, next) => {
             }
         }
 
+        // Subscription status enforcement for tradespeople
+        if (userRole === 'tradesperson') {
+            const status = loggedUser.status || 'active'
+            const hardBlockedStatuses = ['suspended', 'inactive']
+            const limitedStatuses = ['unsubscribed', 'pending']
+            // Routes that require an active subscription
+            const subscriptionRequiredPaths = ['/new-leads', '/job-lead-details', '/my-proposals', '/contacts', '/inbox']
+            // Routes always accessible regardless of status
+            const alwaysAllowedPaths = ['/suspended', '/subscription', '/profile', '/profile-menu', '/logout', '/login',
+                '/profession', '/travel-to-work', '/business-type', '/business-details',
+                '/verify-identity', '/proof-of-skills', '/portfolio', '/qualifications', '/work-area']
+
+            if (hardBlockedStatuses.includes(status)) {
+                if (!alwaysAllowedPaths.some(p => routeTo.path === p || routeTo.path.startsWith('/profile'))) {
+                    return next('/suspended')
+                }
+            } else if (limitedStatuses.includes(status)) {
+                if (subscriptionRequiredPaths.some(p => routeTo.path.startsWith(p))) {
+                    return next('/subscription')
+                }
+            }
+        }
+
         // Handle redirect after login if a redirect path is saved
         const redirectPath = store.getters.GET_REDIRECT_PATH;
         if (redirectPath) {
