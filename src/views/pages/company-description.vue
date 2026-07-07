@@ -218,7 +218,6 @@ export default {
       });
 
       userService.uploadQualifications(formData).then((res) => {
-        this.isUploading = false;
         const {status, message} = res;
         if (!status) {
           this.$store.dispatch('error', {message, showSwal: true});
@@ -229,6 +228,13 @@ export default {
         this.getQualifications();
         this.newQualifications = [];
         this.$refs.fileInput.value = '';
+      }).catch((error) => {
+        this.$store.dispatch('error', {
+          message: typeof error === 'string' ? error : 'Upload failed. Please try again.',
+          showSwal: true
+        });
+      }).finally(() => {
+        this.isUploading = false;
       });
 
     },
