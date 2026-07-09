@@ -245,6 +245,7 @@ import topHeader from '../base-layout/header-2';
 import ChatReminderNotice from '@/components/chatReminderNotice.vue';
 
 import {getDatabase, ref, push, off,update, onChildAdded} from "firebase/database";
+import {ensureFirebaseAuth} from "@/utils/functions";
 import store from "@/store/store";
 
 export default {
@@ -282,7 +283,8 @@ export default {
       this.listenToMessages(jobId);
     },
 
-    listenToMessages(jobId) {
+    async listenToMessages(jobId) {
+      await ensureFirebaseAuth();
       const db = getDatabase();
       const messagesRef = ref(db, `chat_channels/${jobId}/${this.user.id}/messages`);
 
@@ -351,7 +353,7 @@ export default {
       });
     },
 
-    sendMessage() {
+    async sendMessage() {
       const userRole = this.user.roles?.[0] || '';
       if (
           userRole === "homeowner" &&
@@ -361,6 +363,7 @@ export default {
         return;
       }
       if (this.newMessage.trim() === '') return;
+      await ensureFirebaseAuth();
       const db = getDatabase();
       const jobId = this.serviceSelected.id;
       const fromId = this.user.id;

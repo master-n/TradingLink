@@ -1,7 +1,23 @@
 import state from '/src/store/store';
 import Swal from "sweetalert2";
 import {serverTimestamp} from "firebase/database";
+import {getAuth, signInAnonymously} from "firebase/auth";
 import store from "../store/store";
+
+let firebaseAuthPromise = null;
+
+// Firebase Realtime Database rules require an authenticated request.
+// The app doesn't have its own Firebase user accounts, so sign in
+// anonymously once and reuse that session for all chat reads/writes.
+export const ensureFirebaseAuth = () => {
+    if (!firebaseAuthPromise) {
+        firebaseAuthPromise = signInAnonymously(getAuth()).catch((err) => {
+            firebaseAuthPromise = null;
+            throw err;
+        });
+    }
+    return firebaseAuthPromise;
+}
 
 export const useBearerTokenHeaders = (hasFile= false) => {
 
