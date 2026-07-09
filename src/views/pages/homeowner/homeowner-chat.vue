@@ -234,6 +234,7 @@ import {userService} from "@/apis/user.service";
 import topHeader from '../../base-layout/navigation/homeowner-menu';
 
 import {getDatabase, ref, push, off, onChildAdded, update} from "firebase/database";
+import {ensureFirebaseAuth} from "@/utils/functions";
 import ChatReminderNotice from "@/components/chatReminderNotice";
 
 export default {
@@ -273,7 +274,8 @@ export default {
       this.listenToMessages(jobId, this.selectedTradesperson);
     },
 
-    listenToMessages(jobId, tradespersonId) {
+    async listenToMessages(jobId, tradespersonId) {
+      await ensureFirebaseAuth();
       const db = getDatabase();
       const messagesRef = ref(db, `chat_channels/${jobId}/${tradespersonId}/messages`);
 
@@ -349,7 +351,7 @@ export default {
       });
     },
 
-    sendMessage() {
+    async sendMessage() {
       const userRole = this.user.roles?.[0] || '';
       if (
           userRole === "homeowner" &&
@@ -360,6 +362,7 @@ export default {
       }
 
       if (this.newMessage.trim() === '') return;
+      await ensureFirebaseAuth();
       const db = getDatabase();
       const jobId = this.jobDetails.id;
       const fromId = this.user.id;
