@@ -10,8 +10,11 @@ import store from './store/store'
 import "@/assets/scss/app-css.scss"
 import ImageMagnifier from 'vue-image-magnifier'
 import { initializeApp } from "firebase/app"
+import VueApexCharts from 'vue-apexcharts'
 
 Vue.use(ImageMagnifier)
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false
 
 if (!process.env.VUE_APP_GOOGLE_MAPS_API_KEY) {

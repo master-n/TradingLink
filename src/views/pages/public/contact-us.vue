@@ -45,7 +45,7 @@
               <label for="message" class="form-label">Message</label>
               <textarea v-model="form.message" id="message" class="form-control" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" :disabled="isLoading">
+            <button type="submit" class="btn primry-btn-2" :disabled="isLoading">
               <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
                     aria-hidden="true"></span>
               <span v-if="!isLoading">Send Message</span>

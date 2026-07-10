@@ -40,7 +40,7 @@
                     <div class="form-inner">
                       <button class="btn bg-primary-1 text-light" type="submit" :disabled="isLoading">
                         <b-spinner small v-if="isLoading"></b-spinner>
-                        {{ isLoading ? 'Submitting..' : 'LogIn' }}
+                        {{ isLoading ? 'Submitting...' : 'Log In' }}
                       </button>
                     </div>
                   </div>

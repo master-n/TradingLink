@@ -93,9 +93,35 @@ export default [
         meta: {
             authRequired: true,
             roles: ['admin'],
-
         },
-        component: () => import('../views/pages/admin/trades'),
+        component: () => import('../views/pages/admin/dashboard'),
+    },
+    {
+        path: '/admin/dashboard',
+        name: 'adminDashboard',
+        meta: {
+            authRequired: true,
+            roles: ['admin'],
+        },
+        component: () => import('../views/pages/admin/dashboard'),
+    },
+    {
+        path: '/admin/pricing-insights',
+        name: 'pricingInsights',
+        meta: {
+            authRequired: true,
+            roles: ['admin'],
+        },
+        component: () => import('../views/pages/admin/pricing-insights'),
+    },
+    {
+        path: '/admin/dashboard',
+        name: 'adminDashboard',
+        meta: {
+            authRequired: true,
+            roles: ['admin'],
+        },
+        component: () => import('../views/pages/admin/dashboard'),
     },
     {
         path: '/admin/job-posts',
@@ -831,5 +857,7 @@ export default [
     {
         path: "*",
         redirect: "/error/404"
-    }
+    },
+    { path: '/suspended', component: () => import('@/views/pages/suspended') }
+
 ]

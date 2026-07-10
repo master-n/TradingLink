@@ -147,6 +147,7 @@ import appConfig from "../../../app.config.json";
 import { userService } from "@/apis/user.service";
 import draggable from 'vuedraggable';
 import { confirm } from "@/utils/functions";
+import Swal from 'sweetalert2';
 
 export default {
   page: {
@@ -284,15 +285,19 @@ export default {
     handleFileChange(event) {
       const file = event.target.files[0];
       if (!file || !file.type.startsWith('image/')) {
-        alert("Please select a valid image.");
+        Swal.fire('Invalid file', 'Please select a valid image.', 'warning');
         return;
       }
-      this.newPortfolio.file = file;
+      if (this.showEditModal) {
+        this.portfolioInfo.file = file;
+      } else {
+        this.newPortfolio.file = file;
+      }
       this.previewImage = URL.createObjectURL(file);
     },
     submitPortfolio() {
-      if (!this.newPortfolio.title || (!this.newPortfolio.file && this.editIndex === null)) {
-        alert("Please fill in all required fields.");
+      if (!this.newPortfolio.title || !this.newPortfolio.file) {
+        Swal.fire('Missing fields', 'Please fill in all required fields.', 'warning');
         return;
       }
       this.isSubmitting = true;

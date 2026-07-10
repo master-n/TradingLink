@@ -85,7 +85,7 @@ import {userService} from "@/apis/user.service";
 export default {
   name: "OurTrades",
   page: {
-    title: "Services",
+    title: "Trades | Trade Link",
     meta: [{name: "description", content: appConfig.pageDescriptions.about}],
   },
   computed: {

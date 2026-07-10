@@ -15,8 +15,8 @@
       <div class="row align-items-center">
         <div class="col-md-6 mb-4 mb-md-0">
           <img
-              src="../../../../public/frontend/assets/images/header1-logo.svg"
-              alt="About Tradelink"
+              src="../../../../public/frontend/assets/images/bg/construction.jpg"
+              alt="Tradespeople at work"
               id="about"
               class="img-fluid rounded shadow"
           />
@@ -64,7 +64,7 @@ import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
 export default {
   name: "AboutTradelink",
   page: {
-    title: "Services",
+    title: "About Us | Trade Link",
     meta: [{ name: "description", content: appConfig.pageDescriptions.about }]
   },
   computed: {
@@ -96,7 +96,10 @@ export default {
 
 <style scoped>
 #about {
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
+  height: 380px;
+  object-fit: cover;
 }
 
 h2 {

@@ -8,6 +8,12 @@
             <div class="dashboard-menu">
               <ul>
                 <li>
+                  <router-link id="dashboard" to="/admin/dashboard">
+                    <i class="bi bi-speedometer2 me-2"/>
+                     Dashboard
+                  </router-link>
+                </li>
+                <li>
                   <router-link id="trades" to="/admin/trades">
                     <i class="bi bi-app-indicator me-2"/>
                      Trades
