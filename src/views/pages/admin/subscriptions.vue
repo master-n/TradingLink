@@ -119,6 +119,13 @@ export default {
           this.users = paginator.data || (Array.isArray(paginator) ? paginator : []);
           this.currentPage = paginator.current_page || 1;
           this.lastPage = paginator.last_page || 1;
+          // If a mutation (e.g. mark-as-paid under a filter) shrank the result
+          // set below the page we requested, we'd be stranded on an empty
+          // out-of-range page. Step back to the real last page and refetch.
+          if (this.currentPage > this.lastPage) {
+            this.currentPage = this.lastPage;
+            this.fetchUsers();
+          }
         } else {
           this.$store.dispatch('error', { message: res.message, showSwal: true });
         }
