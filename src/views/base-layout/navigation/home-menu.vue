@@ -57,18 +57,18 @@
         </nav>
 
         <!-- Mobile hamburger -->
-        <button class="tl-nav__hamburger sidebar-button mobile-menu-btn" aria-label="Menu">
+        <button class="tl-nav__hamburger" aria-label="Open menu" @click="mobileOpen = true">
           <i class="bi bi-list"></i>
         </button>
       </div>
 
       <!-- Mobile drawer -->
-      <div class="tl-nav__mobile main-menu">
+      <div class="tl-nav__mobile" :class="{ 'show-menu': mobileOpen }">
         <div class="tl-nav__mobile-header">
           <router-link to="/">
             <img src="../../../../public/frontend/assets/images/header1-logo.svg" alt="TradeLinkJA" style="height:60px">
           </router-link>
-          <button class="tl-nav__mobile-close menu-close-btn">
+          <button class="tl-nav__mobile-close" aria-label="Close menu" @click="mobileOpen = false">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -99,6 +99,7 @@ export default {
     return {
       user: this.$store.getters.GET_USER_INFO || {},
       inboxCount: this.$store.getters.GET_INBOX_COUNT || 0,
+      mobileOpen: false,
     };
   },
   watch: {
@@ -106,7 +107,9 @@ export default {
       handler(count) { this.inboxCount = count || 0 },
       immediate: true,
       deep: true
-    }
+    },
+    // Close the mobile drawer whenever the route changes.
+    '$route'() { this.mobileOpen = false }
   },
   computed: {
     registrationSteps() { return 8 - this.user.registration_step },

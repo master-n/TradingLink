@@ -103,16 +103,15 @@
         </div>
         <div class="tl-categories__grid">
           <router-link
-            v-for="(trade, i) in trades"
+            v-for="(trade, i) in popularTrades"
             :key="i"
             :to="'/find-tradesperson?category=' + trade.name"
             class="tl-cat-card"
           >
-            <div class="tl-cat-card__icon" v-html="getCategoryIcon(trade.name)"></div>
+            <div class="tl-cat-card__icon">
+              <img :src="trade.img" :alt="trade.name" loading="lazy" />
+            </div>
             <div class="tl-cat-card__name">{{ trade.name }}</div>
-            <svg class="tl-cat-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="m9 18 6-6-6-6"/>
-            </svg>
           </router-link>
         </div>
         <div class="tl-center" style="margin-top:32px">
@@ -135,14 +134,37 @@
                 {{ perk }}
               </li>
             </ul>
-            <button class="tl-btn tl-btn--white" @click="goToSignUp">Sign Up for Free ✦</button>
+            <button class="tl-btn tl-btn--gold" @click="goToSignUp">Sign Up for Free →</button>
           </div>
-          <div class="tl-tradesperson__badges">
-            <div class="tl-badge" v-for="(b, i) in tradeBadges" :key="i">
-              <div class="tl-badge__icon" v-html="b.icon"></div>
-              <div class="tl-badge__label">{{ b.label }}</div>
+          <div class="tl-tradesperson__media">
+            <img :src="leadsImg" alt="Tradesperson at work" class="tl-tradesperson__img" loading="lazy" />
+            <div class="tl-tradesperson__chips">
+              <span class="tl-chip" v-for="(b, i) in tradeBadges" :key="i">
+                <span class="tl-chip__icon" v-html="b.icon"></span>{{ b.label }}
+              </span>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="tl-section tl-testimonials">
+      <div class="tl-container">
+        <span class="tl-label">What people say</span>
+        <h2 class="tl-section__title">Trusted by <span class="tl-teal">Jamaicans</span></h2>
+        <p class="tl-section__sub">Homeowners across the island getting jobs done with tradespeople they can rely on.</p>
+        <div class="tl-testimonials__grid">
+          <figure class="tl-quote" v-for="(t, i) in testimonials" :key="i">
+            <div class="tl-quote__stars" aria-label="5 out of 5 stars">
+              <svg v-for="n in 5" :key="n" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <blockquote class="tl-quote__text">"{{ t.quote }}"</blockquote>
+            <figcaption class="tl-quote__by">
+              <span class="tl-quote__name">{{ t.name }}</span>
+              <span class="tl-quote__meta">{{ t.trade }} · {{ t.place }}</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -162,9 +184,11 @@
     <!-- CTA -->
     <section class="tl-cta">
       <div class="tl-container">
-        <h2 class="tl-cta__heading">Ready to get started?</h2>
-        <p class="tl-cta__sub">Join thousands of Jamaicans who trust Tradelink to connect them with quality professionals.</p>
-        <router-link to="/post-a-job" class="tl-btn tl-btn--primary">Post Your Job Now →</router-link>
+        <div class="tl-cta__banner">
+          <h2 class="tl-cta__heading">Ready to get started?</h2>
+          <p class="tl-cta__sub">Join thousands of Jamaicans who trust Tradelink to connect them with quality professionals.</p>
+          <router-link to="/post-a-job" class="tl-btn tl-btn--gold">Post Your Job Now →</router-link>
+        </div>
       </div>
     </section>
 
@@ -188,7 +212,6 @@ export default {
   components: { HomeFooter, RoleBasedHeader },
   data() {
     return {
-      trades: [],
       stats: null,
       searchQuery: '',
       showDropdown: false,
@@ -230,6 +253,22 @@ export default {
         { label: 'Portfolio', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>` },
         { label: 'Job Alerts', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>` },
       ],
+      popularTrades: [
+        { name: 'Plumber', img: require('@/assets/images/icon-plumber.png') },
+        { name: 'Electrician', img: require('@/assets/images/icon-electrician.png') },
+        { name: 'Carpenter', img: require('@/assets/images/icon-carpenter.png') },
+        { name: 'Painter', img: require('@/assets/images/icon-painter.png') },
+        { name: 'Tiler', img: require('@/assets/images/icon-tiler.png') },
+        { name: 'AC Technician', img: require('@/assets/images/icon-ac.png') },
+        { name: 'Handyman', img: require('@/assets/images/icon-handyman.png') },
+        { name: 'Contractor', img: require('@/assets/images/icon-contractor.png') },
+      ],
+      leadsImg: require('@/assets/images/leads-worker.png'),
+      testimonials: [
+        { name: 'Marcia B.', place: 'Kingston', trade: 'Bathroom renovation', quote: 'Posted my job in the evening and had three quotes by morning. The plumber I chose was verified and did clean work.' },
+        { name: 'Devon G.', place: 'Montego Bay', trade: 'Electrical rewiring', quote: 'I could see reviews and past work before choosing. No more guessing whether a tradesman is reliable.' },
+        { name: 'Shanice P.', place: 'Mandeville', trade: 'Tiling', quote: 'Everything stayed in the app — messages, quotes, the lot. Felt safe from start to finish.' },
+      ],
     }
   },
   computed: {
@@ -238,16 +277,16 @@ export default {
       return loggedUser?.roles?.[0] || ''
     },
     statItems() {
+      const s = this.stats || {}
       return [
-        { num: this.stats ? `${this.stats.tradespeople_count}+` : '1,200+', label: 'Verified Tradespeople' },
-        { num: this.stats ? `${this.stats.jobs_count}+` : '2,400+', label: 'Jobs Posted' },
+        { num: this.statValue(s.tradespeople, '500'), label: 'Verified Tradespeople' },
+        { num: this.statValue(s.trade_categories, '40'), label: 'Trade Categories' },
         { num: '14', label: 'Parishes Covered' },
         { num: '4.8★', label: 'Average Rating' },
       ]
     }
   },
   methods: {
-    getTrades() { userService.getTrades(6).then(res => { this.trades = res.extra }) },
     getAllTrades() {
       userService.postJobTrades().then(res => {
         this.filteredCategories = res.extra
@@ -276,21 +315,13 @@ export default {
       else this.$router.push('/register')
     },
     handleClickOutside(event) { if (!this.$el.contains(event.target)) this.showDropdown = false },
-    getCategoryIcon(name) {
-      const icons = {
-        'Plumber': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
-        'Electrician': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-        'Carpenter': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-        'Painter': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 13.5V20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6.5"/><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>`,
-        'Tiler': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
-        'Landscaper': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22V12M12 12C12 7 7 3 2 3s5 9 10 9M12 12c0-5 5-9 10-9s-5 9-10 9"/></svg>`,
-        'AC technician': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
-        'Cleaner': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 22l3-3m0 0l7-7m-7 7l7-7m0 0l2-2a2.83 2.83 0 0 1 4 4l-2 2m-4-4l4 4"/></svg>`,
-      }
-      return icons[name] || `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`
+    statValue(value, fallback) {
+      const n = value != null && value !== '' ? Number(value) : null
+      const shown = n != null && !Number.isNaN(n) ? n.toLocaleString() : fallback
+      return `${shown}+`
     },
   },
-  created() { this.getTrades(); this.getAllTrades(); this.pageStats() },
+  created() { this.getAllTrades(); this.pageStats() },
   mounted() { document.addEventListener('click', this.handleClickOutside) },
   beforeDestroy() { document.removeEventListener('click', this.handleClickOutside) }
 }
@@ -298,10 +329,12 @@ export default {
 
 <style scoped>
 * { box-sizing: border-box; }
-.tl-home { font-family: 'Inter', system-ui, sans-serif; color: #1A2B2B; }
+.tl-home { font-family: 'Inter', system-ui, sans-serif; color: #1A1A1A; }
+.tl-home h1, .tl-home h2, .tl-home h3 { font-family: 'Montserrat', 'Inter', system-ui, sans-serif; }
 .tl-container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 .tl-teal { color: #00A7AC; }
 .tl-teal-light { color: #4DD9DE; }
+.tl-gold { color: #F5A623; }
 .tl-center { text-align: center; }
 .tl-label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00A7AC; margin-bottom: 8px; text-align: center; }
 .tl-label--light { color: #80D8DB; }
@@ -316,11 +349,13 @@ export default {
 .tl-btn--outline:hover { background: #00A7AC; color: #fff; }
 .tl-btn--white { background: #fff; color: #00A7AC; }
 .tl-btn--white:hover { background: #F0FAFA; }
+.tl-btn--gold { background: #F5A623; color: #1A1A1A; }
+.tl-btn--gold:hover { background: #e0951a; }
 .tl-link-more { color: #00A7AC; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
 
 /* HERO */
-.tl-hero { min-height: 560px; background: url('/frontend/assets/images/bg/construction.jpg') center/cover no-repeat; position: relative; display: flex; align-items: center; }
-.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5,41,34,0.92) 0%, rgba(0,60,65,0.82) 100%); }
+.tl-hero { min-height: 560px; background: url('~@/assets/images/hero-tradesperson.png') center/cover no-repeat; position: relative; display: flex; align-items: center; }
+.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26,60,52,0.94) 0%, rgba(0,60,65,0.78) 100%); }
 .tl-hero__content { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; padding: 80px 24px; }
 .tl-hero__text { max-width: 640px; }
 .tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
@@ -363,29 +398,37 @@ export default {
 
 /* CATEGORIES */
 .tl-categories { background: #fff; }
-.tl-categories__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.tl-cat-card { display: flex; align-items: center; gap: 14px; background: #F6FAFA; border: 1.5px solid #E0F0F0; border-radius: 12px; padding: 18px 20px; text-decoration: none; color: #1A2B2B; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
-.tl-cat-card:hover { border-color: #00A7AC; background: #E8F8F8; color: #00A7AC; }
-.tl-cat-card__icon { color: #00A7AC; flex-shrink: 0; }
-.tl-cat-card__icon :deep(svg) { width: 22px; height: 22px; }
-.tl-cat-card__name { flex: 1; }
-.tl-cat-card__arrow { width: 16px; height: 16px; color: #9CA3AF; flex-shrink: 0; transition: transform 0.2s; }
-.tl-cat-card:hover .tl-cat-card__arrow { transform: translateX(4px); color: #00A7AC; }
+.tl-categories__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.tl-cat-card { display: flex; flex-direction: column; align-items: center; gap: 12px; background: #F6FAFA; border: 1.5px solid #E0F0F0; border-radius: 16px; padding: 26px 18px; text-decoration: none; color: #1A1A1A; font-weight: 700; font-size: 0.98rem; text-align: center; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
+.tl-cat-card:hover { border-color: #00A7AC; box-shadow: 0 10px 28px rgba(26,60,52,0.12); transform: translateY(-4px); }
+.tl-cat-card__icon { width: 88px; height: 88px; display: flex; align-items: center; justify-content: center; }
+.tl-cat-card__icon img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.tl-cat-card__name { line-height: 1.2; }
 
 /* FOR TRADESPEOPLE */
-.tl-tradesperson { background: #052922; padding: 80px 0; }
-.tl-tradesperson__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.tl-tradesperson { background: #1A3C34; padding: 80px 0; }
+.tl-tradesperson__inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 60px; align-items: center; }
 .tl-tradesperson__heading { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; color: #fff; line-height: 1.15; margin: 0 0 16px; }
 .tl-tradesperson__sub { color: rgba(255,255,255,0.65); font-size: 1rem; line-height: 1.65; margin-bottom: 24px; }
 .tl-perks { list-style: none; padding: 0; margin: 0 0 32px; display: flex; flex-direction: column; gap: 12px; }
 .tl-perks li { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.85); font-size: 0.9rem; }
-.tl-perks li svg { width: 18px; height: 18px; color: #00A7AC; flex-shrink: 0; }
-.tl-tradesperson__badges { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.tl-badge { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
-.tl-badge:hover { background: rgba(0,167,172,0.15); border-color: #00A7AC; }
-.tl-badge__icon { color: #00A7AC; }
-.tl-badge__icon :deep(svg) { width: 28px; height: 28px; }
-.tl-badge__label { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.75); }
+.tl-perks li svg { width: 18px; height: 18px; color: #F5A623; flex-shrink: 0; }
+.tl-tradesperson__media { position: relative; }
+.tl-tradesperson__img { width: 100%; border-radius: 20px; display: block; box-shadow: 0 24px 60px rgba(0,0,0,0.35); }
+.tl-tradesperson__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.tl-chip { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.88); font-size: 0.78rem; font-weight: 600; border-radius: 999px; padding: 7px 14px; }
+.tl-chip__icon { display: inline-flex; color: #F5A623; }
+.tl-chip__icon :deep(svg) { width: 15px; height: 15px; }
+
+/* TESTIMONIALS */
+.tl-testimonials { background: #F6FAFA; }
+.tl-testimonials__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.tl-quote { margin: 0; background: #fff; border: 1px solid #E4EFEF; border-radius: 18px; padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 2px 14px rgba(26,60,52,0.05); }
+.tl-quote__stars { display: flex; gap: 3px; color: #F5A623; }
+.tl-quote__text { margin: 0; font-size: 1rem; line-height: 1.6; color: #24352F; }
+.tl-quote__by { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
+.tl-quote__name { font-weight: 700; font-size: 0.95rem; color: #1A1A1A; }
+.tl-quote__meta { font-size: 0.8rem; color: #5C7878; }
 
 /* STATS */
 .tl-stats { background: #00A7AC; padding: 48px 0; }
@@ -394,24 +437,29 @@ export default {
 .tl-stat__label { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 4px; }
 
 /* CTA */
-.tl-cta { background: #F6FAFA; padding: 80px 0; text-align: center; }
-.tl-cta__heading { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin: 0 0 8px; }
-.tl-cta__sub { color: #5C7878; margin-bottom: 28px; }
+.tl-cta { background: #fff; padding: 80px 0; }
+.tl-cta__banner { background: #1A3C34; border-radius: 24px; padding: 60px 32px; text-align: center; position: relative; overflow: hidden; }
+.tl-cta__banner::before { content: ""; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(245,166,35,0.25) 0%, transparent 70%); }
+.tl-cta__heading { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin: 0 0 10px; color: #fff; position: relative; }
+.tl-cta__sub { color: rgba(255,255,255,0.75); margin: 0 auto 28px; max-width: 560px; position: relative; }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .tl-trust__grid { grid-template-columns: repeat(2, 1fr); }
   .tl-stats__grid { grid-template-columns: repeat(2, 1fr); }
   .tl-how__steps { grid-template-columns: 1fr 1fr; }
-  .tl-categories__grid { grid-template-columns: 1fr 1fr; }
+  .tl-categories__grid { grid-template-columns: repeat(3, 1fr); }
+  .tl-testimonials__grid { grid-template-columns: 1fr; }
   .tl-tradesperson__inner { grid-template-columns: 1fr; }
-  .tl-tradesperson__badges { grid-template-columns: repeat(2, 1fr); }
+  .tl-tradesperson__media { max-width: 460px; }
 }
 @media (max-width: 600px) {
   .tl-section { padding: 56px 0; }
   .tl-hero { min-height: 480px; }
   .tl-how__steps { grid-template-columns: 1fr; }
-  .tl-categories__grid { grid-template-columns: 1fr; }
+  .tl-categories__grid { grid-template-columns: repeat(2, 1fr); }
+  .tl-cat-card__icon { width: 72px; height: 72px; }
+  .tl-cta__banner { padding: 44px 22px; }
   .tl-search__btn { padding: 10px 14px; }
   .tl-hero__quick { display: none; }
 }
