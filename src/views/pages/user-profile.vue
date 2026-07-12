@@ -100,27 +100,21 @@
               <div class="col-md-12">
                 <h6 class="fw-bold">Qualifications</h6>
 
-                <div v-if="userInfo.qualifications && userInfo.qualifications.length">
-                  <ul class="list-group">
-                    <li
-                        v-for="(q, index) in userInfo.qualifications"
-                        :key="q.id"
-                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap"
-                    >
-                      <div>
-                        <strong>Document {{ index + 1 }}</strong>
-                        <a class="btn btn-link text-primary-1 btn-sm ms-2" :href="q.full_path" target="_blank">
-                          <i class="bi bi-eye"></i> View
-                        </a>
-                      </div>
-                      <div>
-                      </div>
-                    </li>
-                  </ul>
+                <!-- Certificates are never shown publicly. Only the admin-approved
+                     verification status is surfaced. -->
+                <div
+                    v-if="userInfo.qualification_status === 'approved'"
+                    style="display:inline-flex; align-items:center; gap:8px; background:#13452E; color:#fff; padding:8px 16px; border-radius:999px; font-weight:600; font-size:0.9rem;"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2l7 3v6c0 5-3.4 8.4-7 9-3.6-.6-7-4-7-9V5l7-3z" fill="#F5A623"/>
+                    <path d="M8.7 12l2.1 2.1 4.2-4.4" fill="none" stroke="#13452E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Qualifications Verified
                 </div>
 
                 <div v-else>
-                  <p><em>No qualifications uploaded.</em></p>
+                  <p class="text-muted mb-0"><em>Pending verification</em></p>
                 </div>
               </div>
             </div>

@@ -30,17 +30,17 @@
             <!-- Registration incomplete badge -->
             <a v-if="!isRegistrationComplete" @click="completeRegistration" class="tl-nav__link tl-nav__link--alert" style="cursor:pointer">
               Complete registration
-              <span class="tl-nav__badge">{{ registrationSteps }} left</span>
+              <span v-if="registrationSteps" class="tl-nav__badge">{{ registrationSteps }} left</span>
             </a>
 
             <!-- Account dropdown -->
-            <div class="tl-nav__dropdown-wrap">
-              <button class="tl-nav__btn tl-nav__btn--account">
+            <div class="tl-nav__dropdown-wrap" ref="accountWrap">
+              <button class="tl-nav__btn tl-nav__btn--account" @click.stop="accountOpen = !accountOpen">
                 My Account
                 <i class="bi bi-list"></i>
                 <span v-if="inboxCount" class="tl-nav__inbox">{{ inboxCount }}</span>
               </button>
-              <div class="tl-nav__dropdown">
+              <div class="tl-nav__dropdown" :class="{ 'is-open': accountOpen }" @click="accountOpen = false">
                 <router-link to="/profile" class="tl-nav__dropdown-item">
                   <i class="bi bi-person-circle"></i> Profile
                   <span v-if="inboxCount" class="tl-nav__badge">{{ inboxCount }}</span>
@@ -80,7 +80,7 @@
           </template>
           <template v-else>
             <a v-if="!isRegistrationComplete" @click="completeRegistration" class="tl-nav__mobile-link" style="cursor:pointer">
-              Complete registration <span class="tl-nav__badge">{{ registrationSteps }} left</span>
+              Complete registration <span v-if="registrationSteps" class="tl-nav__badge">{{ registrationSteps }} left</span>
             </a>
             <router-link to="/profile" class="tl-nav__mobile-link">Profile</router-link>
             <router-link to="/ask-a-trade" class="tl-nav__mobile-link">Ask a tradesperson</router-link>
@@ -100,6 +100,7 @@ export default {
       user: this.$store.getters.GET_USER_INFO || {},
       inboxCount: this.$store.getters.GET_INBOX_COUNT || 0,
       mobileOpen: false,
+      accountOpen: false,
     };
   },
   watch: {
@@ -108,11 +109,16 @@ export default {
       immediate: true,
       deep: true
     },
-    // Close the mobile drawer whenever the route changes.
-    '$route'() { this.mobileOpen = false }
+    // Close the mobile drawer and account dropdown whenever the route changes.
+    '$route'() { this.mobileOpen = false; this.accountOpen = false }
   },
   computed: {
-    registrationSteps() { return 8 - this.user.registration_step },
+    // Steps remaining in the 7-step registration; guard against a missing/
+    // non-numeric registration_step so it never renders "NaN left".
+    registrationSteps() {
+      const step = Number(this.user.registration_step);
+      return Number.isFinite(step) ? Math.max(0, 8 - step) : null;
+    },
     isRegistrationComplete() { return this.user.registration_status === 'complete' },
     loggedIn() { return this.$store.getters.GET_USER_INFO }
   },
@@ -120,8 +126,15 @@ export default {
     completeRegistration() {
       const routes = { 1: '/create-account', 2: '/professions', 3: '/travel-to-work', 4: '/business-type', 5: '/business-details', 6: '/verify-identity', 7: '/verify-skills' }
       if (routes[this.user.registration_step]) this.$router.push(routes[this.user.registration_step])
+    },
+    closeAccountOnOutsideClick(e) {
+      if (this.accountOpen && this.$refs.accountWrap && !this.$refs.accountWrap.contains(e.target)) {
+        this.accountOpen = false;
+      }
     }
-  }
+  },
+  mounted() { document.addEventListener('click', this.closeAccountOnOutsideClick); },
+  beforeDestroy() { document.removeEventListener('click', this.closeAccountOnOutsideClick); }
 }
 </script>
 
@@ -204,7 +217,7 @@ export default {
 
 /* Dropdown */
 .tl-nav__dropdown-wrap { position: relative; }
-.tl-nav__dropdown-wrap:hover .tl-nav__dropdown { display: flex; }
+.tl-nav__dropdown.is-open { display: flex; }
 .tl-nav__dropdown {
   display: none;
   flex-direction: column;
