@@ -137,6 +137,11 @@
                   <div>
                     <h5 class="card-title">{{ tradesperson.name }}</h5>
                     <div class="d-flex align-items-center">
+                      <span
+                          v-if="tradesperson.is_founding_member"
+                          class="badge bg-warning text-dark me-2"
+                          title="One of TradeLinkJA's first 30 verified tradespeople"
+                      >★ Founding Member</span>
                       <span class="badge bg-primary-1 text-light me-2">★ {{ tradesperson.latest_rating?tradesperson.average_rating:5 }}/5</span>
                       <span v-if="tradesperson.latest_rating">({{ tradesperson.total_ratings }} reviews)</span>
                     </div>
