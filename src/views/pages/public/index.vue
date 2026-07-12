@@ -228,24 +228,24 @@ export default {
         {
           title: 'Post your job',
           body: 'Tell us what you need done. Whether it\'s plumbing, painting, or electrical — give as much detail as you can so tradespeople understand the job clearly.',
-          img: '/frontend/assets/images/bg/carpenter-cutting.jpg'
+          img: require('@/assets/images/how-step-1.png')
         },
         {
           title: 'Trades respond',
           body: 'Skilled tradespeople will reply with quotes and links to their profiles. Compare their experience, reviews, and portfolios before deciding.',
-          img: '/frontend/assets/images/bg/carpenter-2.jpg'
+          img: require('@/assets/images/how-step-2.png')
         },
         {
           title: 'Choose & connect',
           body: 'When you\'re ready, select the tradesperson who best fits your job. Once confirmed, you\'ll be connected directly to make arrangements.',
-          img: '/frontend/assets/images/bg/tradesperson.jpg'
+          img: require('@/assets/images/how-step-3.png')
         },
       ],
       tradePerks: [
         'Free to register and set up your profile',
         'Get matched to jobs in your trade and area',
         'Build your reputation with verified reviews',
-        'No monthly subscription fees',
+        'Flexible subscription plans to suit your business',
       ],
       tradeBadges: [
         { label: 'Verified Badge', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>` },
@@ -354,8 +354,8 @@ export default {
 .tl-link-more { color: #00A7AC; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
 
 /* HERO */
-.tl-hero { min-height: 560px; background: url('~@/assets/images/hero-tradesperson.png') center/cover no-repeat; position: relative; display: flex; align-items: center; }
-.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26,60,52,0.94) 0%, rgba(0,60,65,0.78) 100%); }
+.tl-hero { min-height: 600px; background: #13452E url('~@/assets/images/hero-tradesperson.png') right center / auto 100% no-repeat; position: relative; display: flex; align-items: center; overflow: hidden; }
+.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(90deg, #13452E 0%, rgba(19,69,46,0.88) 34%, rgba(19,69,46,0.15) 58%, rgba(19,69,46,0) 72%); }
 .tl-hero__content { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; padding: 80px 24px; }
 .tl-hero__text { max-width: 640px; }
 .tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
@@ -377,13 +377,13 @@ export default {
 .tl-pill:hover { background: #00A7AC; border-color: #00A7AC; }
 
 /* TRUST */
-.tl-trust { background: #fff; border-bottom: 1px solid #E8F4F4; padding: 32px 0; }
-.tl-trust__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.tl-trust { background: #fff; padding: 40px 0; }
+.tl-trust__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; background: #13452E; border-radius: 18px; padding: 28px 34px; }
 .tl-trust__item { display: flex; align-items: center; gap: 14px; }
-.tl-trust__icon { width: 44px; height: 44px; background: #E8F8F8; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #00A7AC; }
+.tl-trust__icon { width: 44px; height: 44px; background: rgba(245,166,35,0.14); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #F5A623; }
 .tl-trust__icon :deep(svg) { width: 22px; height: 22px; }
-.tl-trust__title { font-size: 0.875rem; font-weight: 700; }
-.tl-trust__sub { font-size: 0.75rem; color: #5C7878; margin-top: 2px; }
+.tl-trust__title { font-size: 0.875rem; font-weight: 700; color: #fff; }
+.tl-trust__sub { font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
 
 /* HOW IT WORKS */
 .tl-how { background: #F6FAFA; }
@@ -455,7 +455,9 @@ export default {
 }
 @media (max-width: 600px) {
   .tl-section { padding: 56px 0; }
-  .tl-hero { min-height: 480px; }
+  .tl-hero { min-height: 460px; background-size: cover; background-position: right center; }
+  .tl-hero__overlay { background: linear-gradient(180deg, rgba(19,69,46,0.72) 0%, rgba(19,69,46,0.86) 100%); }
+  .tl-trust__grid { padding: 22px 20px; }
   .tl-how__steps { grid-template-columns: 1fr; }
   .tl-categories__grid { grid-template-columns: repeat(2, 1fr); }
   .tl-cat-card__icon { width: 72px; height: 72px; }
