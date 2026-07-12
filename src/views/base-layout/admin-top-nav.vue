@@ -33,8 +33,8 @@
             </li>
             <hr/>
             <li>
-              <router-link to="/">Visit website <i class="bi bi-globe2 ms-2"></i>
-              </router-link>
+              <a href="https://tradelinkja.com" target="_blank" rel="noopener noreferrer">Visit website <i class="bi bi-globe2 ms-2"></i>
+              </a>
             </li>
             <hr />
             <li>
@@ -57,7 +57,7 @@
 
           <li class="d-md-flex d-none">
             <div class="sign-in-btn">
-              <router-link to="/" class="primry-btn-1 lg-btn">Visit website <i class="bi bi-globe2 ms-2"/></router-link>
+              <a href="https://tradelinkja.com" target="_blank" rel="noopener noreferrer" class="primry-btn-1 lg-btn">Visit website <i class="bi bi-globe2 ms-2"/></a>
             </div>
           </li>
           <li class="d-md-flex d-none">
