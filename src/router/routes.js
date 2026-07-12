@@ -115,13 +115,16 @@ export default [
         component: () => import('../views/pages/admin/pricing-insights'),
     },
     {
-        path: '/admin/dashboard',
-        name: 'adminDashboard',
-        meta: {
-            authRequired: true,
-            roles: ['admin'],
-        },
-        component: () => import('../views/pages/admin/dashboard'),
+        path: '/admin/subscriptions',
+        name: 'AdminSubscriptions',
+        meta: { authRequired: true, roles: ['admin'] },
+        component: () => import('../views/pages/admin/subscriptions'),
+    },
+    {
+        path: '/admin/broadcast',
+        name: 'AdminBroadcast',
+        meta: { authRequired: true, roles: ['admin'] },
+        component: () => import('../views/pages/admin/broadcast'),
     },
     {
         path: '/admin/job-posts',

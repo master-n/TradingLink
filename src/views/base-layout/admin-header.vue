@@ -54,6 +54,18 @@
                 </li>
 
                 <li>
+                  <router-link to="/admin/subscriptions" id="subscriptions">
+                    <i class="bi bi-credit-card me-2"/>
+                     Subscriptions
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/admin/broadcast" id="broadcast">
+                    <i class="bi bi-envelope me-2"/>
+                     Broadcast
+                  </router-link>
+                </li>
+                <li>
                   <router-link to="/admin/clients" id="homeowners">
                     <svg width="18" height="16" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
                       <path

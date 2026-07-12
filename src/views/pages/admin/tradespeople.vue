@@ -79,9 +79,20 @@
                       <span class="text-capitalize">{{ data.item.status }}</span>
                     </template>
 
+                    <template #cell(is_founding_member)="data">
+                      <span class="text-capitalize badge text-white rounded-pill"
+                            :class="[data.item.is_founding_member ? 'bg-success' : 'bg-secondary']">{{
+                          data.item.is_founding_member ? 'Founding' : 'Standard'
+                        }}</span>
+                    </template>
+
                     <template #cell(action)="data">
                       <button class="btn btn-sm me-2 btn-warning" @click="openEditModal(data.item)">Edit</button>
                       <b-button size="sm" variant="primary" class="me-2" @click="goToDetails(data.item.id)">Details
+                      </b-button>
+                      <b-button size="sm" :variant="data.item.is_founding_member ? 'outline-secondary' : 'outline-success'"
+                                class="me-2" @click="toggleFoundingMember(data.item)">
+                        {{ data.item.is_founding_member ? 'Revoke Founding' : 'Make Founding' }}
                       </b-button>
                       <b-button size="sm" variant="danger" @click="confirmDelete(data.item)">Delete</b-button>
                     </template>
@@ -299,6 +310,7 @@ export default {
         {key: 'location', label: 'Location', sortable: false},
         {key: 'status', sortable: true},
         {label: 'Identity Verified', key: 'identity_verified', sortable: true},
+        {label: 'Founding Member', key: 'is_founding_member', sortable: true},
         {key: 'action', label: 'Action'}
       ],
       filter: '',
@@ -456,6 +468,24 @@ export default {
 
     goToDetails(id) {
       this.$router.push({name: 'TradePersonDetails', params: {id}});
+    },
+
+    toggleFoundingMember(item) {
+      const newValue = !item.is_founding_member;
+      const action = newValue ? 'grant' : 'revoke';
+      confirm(`Are you sure you want to ${action} founding member status for "${item.name}"?`, () => {
+        this.isLoading = true;
+        userService.toggleFoundingMember(item.id, newValue).then((res) => {
+          this.isLoading = false;
+          const {status, message} = res;
+          if (!status) {
+            this.$store.dispatch('error', {message, showSwal: true});
+            return;
+          }
+          this.$store.dispatch('success', {message, showSwal: true});
+          this.getTradePeople();
+        });
+      });
     }
   },
   created() {

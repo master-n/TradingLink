@@ -29,7 +29,11 @@
               <h5 class="mb-2 me-2" v-if="userInfo.business_name">{{ userInfo.business_name }}</h5>
               <h6 class="mb-2 me-2">({{ userInfo.name }})</h6>
               <h5><i v-if="userInfo.qualification_status ==='approved'"
-                     class="bi bi-patch-check-fill text-primary-1"></i></h5>
+                     class="bi bi-patch-check-fill text-primary-1"></i><span
+                  v-if="userInfo.is_founding_member"
+                  class="badge bg-warning text-dark ms-2"
+                  title="One of TradeLinkJA's first 30 verified tradespeople"
+              >★ Founding Member</span></h5>
             </div>
 
             <div class="text-muted mb-1 small ">

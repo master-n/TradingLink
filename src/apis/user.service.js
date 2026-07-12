@@ -98,6 +98,10 @@ export const userService = {
     getAdminJobVolumeStats,
     getAdminTradespersonStats,
     getAdminPricingStats,
+    markSubscribed,
+    listSubscriptions,
+    sendBroadcast,
+    toggleFoundingMember,
 };
 
 function login(email, password) {
@@ -1020,4 +1024,36 @@ function getAdminPricingStats(status) {
             .then(response => resolve(response.data))
             .catch(err => resolve({status: false, message: err}));
     })
+}
+
+function markSubscribed(id) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/mark-subscribed`, {id}, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function listSubscriptions(filter = 'all', page = 1) {
+    return new Promise((resolve) => {
+        axios.get(`/admin/api/subscriptions?filter=${filter}&page=${page}`, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function sendBroadcast(payload) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/broadcast`, payload, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function toggleFoundingMember(id, isFoundingMember) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/toggle-founding-member`, {id, is_founding_member: isFoundingMember}, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
 }
