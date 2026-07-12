@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     registrationSteps() {
-      return 8 - this.user.registration_step;
+      return 8 - (Number(this.user.registration_step) || 0);
     },
     isRegistrationComplete() {
       return this.user.registration_status === 'complete';

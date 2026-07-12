@@ -27,15 +27,15 @@
 
             <div class="form-wrapper mt-5">
               <h3 class="font-weight-bold mb-4">How far can you travel for work?</h3>
-              <p class="font-weight-lighter">Set the maximum distance you are willing to travel from {{ user.city_name }}.</p>
+              <p class="font-weight-lighter">Set the maximum distance you are willing to travel from {{ locationName }}.</p>
 
               <div class="slider-container mb-4">
-                <label for="radiusSlider">Distance area: {{ radius }} miles</label>
+                <label for="radiusSlider">Distance area: {{ radius }} km</label>
                 <input type="range" class="custom-slider w-100" id="radiusSlider" v-model="radius" min="1" max="100"/>
               </div>
 
               <gmap-map :center="center" :zoom="10" style="width: 100%; height: 400px">
-                <gmap-circle :center="center" :radius="radius * 1609.34" :options="circleOptions"></gmap-circle>
+                <gmap-circle :center="center" :radius="radius * 1000" :options="circleOptions"></gmap-circle>
                 <gmap-marker :position="center" :draggable="true" @dragend="updateCenter"></gmap-marker>
               </gmap-map>
 
@@ -134,6 +134,13 @@ export default {
   },
   computed: {
     google: gmapApi,
+    locationName() {
+      return this.user.city_name
+        || this.user.parish_name
+        || (this.user.city && this.user.city.name)
+        || (this.user.parish && this.user.parish.name)
+        || 'your location';
+    },
   },
   watch: {
     workThroughoutJamaica(newValue) {
@@ -211,11 +218,12 @@ export default {
           return;
         }
         this.user = extra;
-        if (this.user.city && this.user.city.latitude && this.user.city.longitude) {
-          this.center = {
-            lat: parseFloat(this.user.city.latitude),
-            lng: parseFloat(this.user.city.longitude),
-          };
+        // Signup stores the selected location's coords directly on the user
+        // (user.latitude/longitude); older data may nest them under city.
+        const lat = this.user.latitude || (this.user.city && this.user.city.latitude);
+        const lng = this.user.longitude || (this.user.city && this.user.city.longitude);
+        if (lat && lng) {
+          this.center = { lat: parseFloat(lat), lng: parseFloat(lng) };
         }
       });
     }

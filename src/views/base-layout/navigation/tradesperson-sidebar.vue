@@ -196,7 +196,7 @@ export default {
   computed: {
     registrationSteps() {
       // Calculate the number of steps left in the registration process
-      return 8 - this.user.registration_step;
+      return 8 - (Number(this.user.registration_step) || 0);
     },
     isRegistrationComplete() {
       // Check if the registration is complete
