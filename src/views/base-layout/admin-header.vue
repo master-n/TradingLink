@@ -2,9 +2,10 @@
   <div>
     <topNav/>
     <div class="dashboard-area company-dashboard pt-50">
-      <div class="row">
-        <div class="col-lg-12 mb-20">
-          <div class="dashboard-sidebar">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 mb-20">
+            <div class="dashboard-sidebar">
             <div class="dashboard-menu">
               <ul>
                 <li>
@@ -104,6 +105,7 @@
               </ul>
             </div>
           </div>
+          </div>
         </div>
       </div>
     </div>
@@ -136,4 +138,18 @@ export default {
 </script>
 
 <style scoped>
+/* The admin menu is a single centered flex row where each item is
+   white-space:nowrap. Once it grew past ~6 items it overflowed its row on
+   normal desktop widths, pushing the whole page wider than the viewport
+   (horizontal scroll). Let the row wrap and let items size to their content
+   instead of each forcing full width, so any number of items fits. */
+.dashboard-area.company-dashboard .dashboard-sidebar .dashboard-menu ul {
+  flex-wrap: wrap;
+}
+.dashboard-area.company-dashboard .dashboard-sidebar .dashboard-menu ul li {
+  width: auto;
+}
+.dashboard-area.company-dashboard .dashboard-sidebar .dashboard-menu ul li a {
+  padding: 13px 22px;
+}
 </style>
