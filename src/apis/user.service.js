@@ -1034,9 +1034,9 @@ function markSubscribed(id) {
     });
 }
 
-function listSubscriptions(filter = 'all') {
+function listSubscriptions(filter = 'all', page = 1) {
     return new Promise((resolve) => {
-        axios.get(`/admin/api/subscriptions?filter=${filter}`, useBearerTokenHeaders())
+        axios.get(`/admin/api/subscriptions?filter=${filter}&page=${page}`, useBearerTokenHeaders())
             .then((response) => resolve(response.data))
             .catch((err) => resolve({status: false, message: err}));
     });

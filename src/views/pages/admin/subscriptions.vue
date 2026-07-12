@@ -52,6 +52,24 @@
           </tr>
         </tbody>
       </table>
+
+      <div v-if="!loading && lastPage > 1" class="d-flex align-items-center justify-content-between">
+        <button
+          class="btn btn-outline-secondary btn-sm"
+          :disabled="currentPage <= 1"
+          @click="goToPage(currentPage - 1)"
+        >
+          Previous
+        </button>
+        <span class="text-muted small">Page {{ currentPage }} of {{ lastPage }}</span>
+        <button
+          class="btn btn-outline-secondary btn-sm"
+          :disabled="currentPage >= lastPage"
+          @click="goToPage(currentPage + 1)"
+        >
+          Next
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -69,6 +87,8 @@ export default {
       users: [],
       loading: true,
       marking: null,
+      currentPage: 1,
+      lastPage: 1,
       filterOptions: [
         { value: 'all', label: 'All' },
         { value: 'trial', label: 'On trial' },
@@ -83,14 +103,22 @@ export default {
   methods: {
     setFilter(value) {
       this.filter = value;
+      this.currentPage = 1;
+      this.fetchUsers();
+    },
+    goToPage(page) {
+      this.currentPage = page;
       this.fetchUsers();
     },
     fetchUsers() {
       this.loading = true;
-      userService.listSubscriptions(this.filter).then((res) => {
+      userService.listSubscriptions(this.filter, this.currentPage).then((res) => {
         this.loading = false;
         if (res.status) {
-          this.users = res.extra.data || res.extra;
+          const paginator = res.extra || {};
+          this.users = paginator.data || (Array.isArray(paginator) ? paginator : []);
+          this.currentPage = paginator.current_page || 1;
+          this.lastPage = paginator.last_page || 1;
         } else {
           this.$store.dispatch('error', { message: res.message, showSwal: true });
         }
