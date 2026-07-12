@@ -98,6 +98,9 @@ export const userService = {
     getAdminJobVolumeStats,
     getAdminTradespersonStats,
     getAdminPricingStats,
+    markSubscribed,
+    listSubscriptions,
+    sendBroadcast,
 };
 
 function login(email, password) {
@@ -1020,4 +1023,28 @@ function getAdminPricingStats(status) {
             .then(response => resolve(response.data))
             .catch(err => resolve({status: false, message: err}));
     })
+}
+
+function markSubscribed(id) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/mark-subscribed`, {id}, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function listSubscriptions(filter = 'all') {
+    return new Promise((resolve) => {
+        axios.get(`/admin/api/subscriptions?filter=${filter}`, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function sendBroadcast(payload) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/broadcast`, payload, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
 }
