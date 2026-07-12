@@ -121,6 +121,12 @@ export default [
         component: () => import('../views/pages/admin/subscriptions'),
     },
     {
+        path: '/admin/broadcast',
+        name: 'AdminBroadcast',
+        meta: { authRequired: true, roles: ['admin'] },
+        component: () => import('../views/pages/admin/broadcast'),
+    },
+    {
         path: '/admin/job-posts',
         name: 'jobPosts',
         meta: {
