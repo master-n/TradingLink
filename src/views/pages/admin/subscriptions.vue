@@ -23,6 +23,7 @@
           <tr>
             <th>Name</th>
             <th>Email</th>
+            <th>Plan</th>
             <th>Status</th>
             <th>Trial ends</th>
             <th>Subscribed since</th>
@@ -33,6 +34,16 @@
           <tr v-for="user in users" :key="user.id">
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
+            <td>
+              <span
+                v-if="user.subscription_state"
+                class="badge rounded-pill plan-pill"
+                :style="planPillStyle(user.subscription_state)"
+              >
+                {{ planPillLabel(user.subscription_state) }}
+              </span>
+              <span v-else>—</span>
+            </td>
             <td>{{ user.status }}</td>
             <td>{{ user.trial_ends_at ? formatDate(user.trial_ends_at) : '—' }}</td>
             <td>{{ user.subscribed_at ? formatDate(user.subscribed_at) : '—' }}</td>
@@ -48,7 +59,7 @@
             </td>
           </tr>
           <tr v-if="users.length === 0">
-            <td colspan="6" class="text-center text-muted">No subscriptions match this filter.</td>
+            <td colspan="7" class="text-center text-muted">No subscriptions match this filter.</td>
           </tr>
         </tbody>
       </table>
@@ -145,6 +156,42 @@ export default {
     formatDate(value) {
       return new Date(value).toLocaleDateString();
     },
+    planPillLabel(state) {
+      if (!state) return '—';
+      if (state.plan === 'trial') {
+        const days = Number(state.days_remaining);
+        return `${state.label || 'Trial'} (${Number.isFinite(days) ? days : 0}d left)`;
+      }
+      if (state.plan === 'monthly' || state.plan === 'annual') {
+        return 'Active';
+      }
+      return state.label || '—';
+    },
+    planPillStyle(state) {
+      if (!state) return {};
+      switch (state.plan) {
+        case 'founding':
+          return {backgroundColor: '#F5A623', color: '#1a1a1a'};
+        case 'trial':
+          return {backgroundColor: '#00A7AC', color: '#ffffff'};
+        case 'monthly':
+        case 'annual':
+          return {backgroundColor: 'transparent', color: '#13452E', border: '1px solid #13452E'};
+        case 'expired':
+          return {backgroundColor: '#adb5bd', color: '#ffffff'};
+        default:
+          return {backgroundColor: '#e9ecef', color: '#495057'};
+      }
+    },
   },
 };
 </script>
+
+<style scoped>
+.plan-pill {
+  padding: 0.35em 0.75em;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-block;
+}
+</style>
