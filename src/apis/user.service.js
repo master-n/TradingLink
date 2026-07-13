@@ -102,6 +102,11 @@ export const userService = {
     listSubscriptions,
     sendBroadcast,
     toggleFoundingMember,
+    markPlanPaid,
+    extendTrial,
+    getSubscriptionHistory,
+    createTradesperson,
+    getMySubscription,
 };
 
 function login(email, password) {
@@ -1053,6 +1058,46 @@ function sendBroadcast(payload) {
 function toggleFoundingMember(id, isFoundingMember) {
     return new Promise((resolve) => {
         axios.post(`/admin/api/toggle-founding-member`, {id, is_founding_member: isFoundingMember}, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function markPlanPaid(id, plan) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/mark-plan-paid`, {id, plan}, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function extendTrial(id, weeks) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/extend-trial`, {id, weeks}, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function getSubscriptionHistory(id) {
+    return new Promise((resolve) => {
+        axios.get(`/admin/api/tradesperson/${id}/subscription-history`, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function createTradesperson(payload) {
+    return new Promise((resolve) => {
+        axios.post(`/admin/api/create-tradesperson`, payload, useBearerTokenHeaders())
+            .then((response) => resolve(response.data))
+            .catch((err) => resolve({status: false, message: err}));
+    });
+}
+
+function getMySubscription() {
+    return new Promise((resolve) => {
+        axios.get(`/api/my-subscription`, useBearerTokenHeaders())
             .then((response) => resolve(response.data))
             .catch((err) => resolve({status: false, message: err}));
     });
