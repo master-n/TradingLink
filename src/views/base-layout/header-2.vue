@@ -1,5 +1,6 @@
 <template>
   <div>
+    <TrialWarningBanner v-if="loggedIn"/>
     <header class="header-area style-3">
       <!-- Header content -->
       <div class="menu-area">
@@ -123,8 +124,13 @@
 </template>
 
 <script>
+import TrialWarningBanner from '@/components/TrialWarningBanner';
+
 export default {
   name: "Header2",
+  components: {
+    TrialWarningBanner
+  },
   data() {
     return {
       isMobile: false,
