@@ -5,10 +5,13 @@
       <div class="row">
         <div class="col-lg-12 mt-4">
           <div class="table-wrapper2">
-            <div class="title-and-btn mb-3">
+            <div class="title-and-btn mb-3 d-flex justify-content-between align-items-center">
               <div class="title">
                 <h4>Tradespeople</h4>
               </div>
+              <b-button variant="primary" @click="openAddModal">
+                <i class="bi bi-plus-lg"></i> Add Tradesperson
+              </b-button>
             </div>
           </div>
         </div>
@@ -86,15 +89,39 @@
                         }}</span>
                     </template>
 
+                    <template #cell(plan)="data">
+                      <span
+                          v-if="data.item.subscription_state"
+                          class="badge rounded-pill plan-pill"
+                          :style="planPillStyle(data.item.subscription_state)"
+                      >
+                        {{ planPillLabel(data.item.subscription_state) }}
+                      </span>
+                      <span v-else>—</span>
+                    </template>
+
                     <template #cell(action)="data">
-                      <button class="btn btn-sm me-2 btn-warning" @click="openEditModal(data.item)">Edit</button>
-                      <b-button size="sm" variant="primary" class="me-2" @click="goToDetails(data.item.id)">Details
-                      </b-button>
-                      <b-button size="sm" :variant="data.item.is_founding_member ? 'outline-secondary' : 'outline-success'"
-                                class="me-2" @click="toggleFoundingMember(data.item)">
-                        {{ data.item.is_founding_member ? 'Revoke Founding' : 'Make Founding' }}
-                      </b-button>
-                      <b-button size="sm" variant="danger" @click="confirmDelete(data.item)">Delete</b-button>
+                      <div class="d-flex flex-wrap gap-1">
+                        <button class="btn btn-sm me-2 btn-warning" @click="openEditModal(data.item)">Edit</button>
+                        <b-button size="sm" variant="primary" class="me-2" @click="goToDetails(data.item.id)">Details
+                        </b-button>
+                        <b-button size="sm" variant="info" class="me-2 text-white" @click="openHistoryModal(data.item)">
+                          History
+                        </b-button>
+                        <b-dropdown size="sm" text="Mark Paid" variant="success" class="me-2">
+                          <b-dropdown-item @click="markPaid(data.item, 'monthly')">Monthly (J$5,000)</b-dropdown-item>
+                          <b-dropdown-item @click="markPaid(data.item, 'annual')">Annual (J$50,000)</b-dropdown-item>
+                        </b-dropdown>
+                        <b-button size="sm" :variant="data.item.status === 'suspended' ? 'outline-success' : 'outline-danger'"
+                                  class="me-2" @click="toggleSuspend(data.item)">
+                          {{ data.item.status === 'suspended' ? 'Activate' : 'Suspend' }}
+                        </b-button>
+                        <b-button size="sm" :variant="data.item.is_founding_member ? 'outline-secondary' : 'outline-success'"
+                                  class="me-2" @click="toggleFoundingMember(data.item)">
+                          {{ data.item.is_founding_member ? 'Revoke Founding' : 'Make Founding' }}
+                        </b-button>
+                        <b-button size="sm" variant="danger" @click="confirmDelete(data.item)">Delete</b-button>
+                      </div>
                     </template>
                   </b-table>
               <div v-if="isLoading" class="text-center my-4">
@@ -273,9 +300,171 @@
         <b-form-group label="Description">
           <b-form-textarea v-model="editForm.description" rows="3"/>
         </b-form-group>
+
+        <hr/>
+        <h5 class="mb-3">Subscription</h5>
+
+        <b-row>
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Identity Verified">
+              <b-form-select v-model="editForm.identity_verified" class="form-control"
+                             :options="['pending', 'verified', 'rejected']"/>
+            </b-form-group>
+          </b-col>
+
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Founding Member">
+              <b-form-checkbox v-model="editForm.is_founding_member">
+                {{ editForm.is_founding_member ? 'Founding' : 'Standard' }}
+              </b-form-checkbox>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Current plan">
+              <div>
+                <span
+                    v-if="editForm.subscription_state"
+                    class="badge rounded-pill plan-pill"
+                    :style="planPillStyle(editForm.subscription_state)"
+                >
+                  {{ planPillLabel(editForm.subscription_state) }}
+                </span>
+                <span v-else>—</span>
+              </div>
+            </b-form-group>
+          </b-col>
+
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Trial ends">
+              <div>{{ editForm.trial_ends_at ? formatDate(editForm.trial_ends_at) : '—' }}</div>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Mark as paid">
+              <div class="d-flex gap-2">
+                <b-button size="sm" variant="success" @click="markPaid(selectedTradesperson, 'monthly')">
+                  Monthly (J$5,000)
+                </b-button>
+                <b-button size="sm" variant="success" @click="markPaid(selectedTradesperson, 'annual')">
+                  Annual (J$50,000)
+                </b-button>
+              </div>
+            </b-form-group>
+          </b-col>
+
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Extend trial (weeks)">
+              <div class="d-flex gap-2">
+                <b-form-input v-model.number="extendWeeks" type="number" min="1" style="max-width: 100px;"/>
+                <b-button size="sm" variant="outline-primary" @click="extendTrial(selectedTradesperson)">
+                  Extend
+                </b-button>
+              </div>
+            </b-form-group>
+          </b-col>
+        </b-row>
       </b-form>
     </b-modal>
 
+    <!-- Add Tradesperson Modal -->
+    <b-modal v-model="addModalVisible" title="Add Tradesperson" size="lg" @ok="submitAdd" ok-title="Create">
+      <b-form @submit.stop.prevent="submitAdd">
+        <b-row>
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Name">
+              <b-form-input v-model="addForm.name" required/>
+            </b-form-group>
+          </b-col>
+
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Email">
+              <b-form-input v-model="addForm.email" type="email" required/>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Phone">
+              <b-form-input v-model="addForm.phone" required/>
+            </b-form-group>
+          </b-col>
+
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Business Name">
+              <b-form-input v-model="addForm.business_name"/>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Main Trade">
+              <b-form-select
+                  v-model="addForm.main_trade"
+                  :options="tradeOptions"
+                  value-field="id"
+                  text-field="name"
+                  class="form-control"
+              >
+                <template #first>
+                  <b-form-select-option :value="null" disabled>-- Select trade --</b-form-select-option>
+                </template>
+              </b-form-select>
+            </b-form-group>
+          </b-col>
+
+          <b-col md="6" class="mb-3">
+            <b-form-group label="Parish">
+              <b-form-select
+                  v-model="addForm.parish_id"
+                  :options="parishes"
+                  value-field="id"
+                  text-field="name"
+                  class="form-control"
+              >
+                <template #first>
+                  <b-form-select-option :value="null" disabled>-- Select parish --</b-form-select-option>
+                </template>
+              </b-form-select>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <p class="text-muted small">
+          <i class="bi bi-info-circle"></i> A password will be auto-generated and emailed to the tradesperson
+          along with their login details.
+        </p>
+      </b-form>
+    </b-modal>
+
+    <!-- Subscription History Modal -->
+    <b-modal v-model="historyModalVisible" title="Subscription History" size="lg" hide-footer>
+      <div v-if="historyLoading" class="text-center py-4">
+        <div class="spinner-border" role="status"></div>
+      </div>
+      <div v-else>
+        <ul class="list-group" v-if="history.length">
+          <li class="list-group-item" v-for="(event, i) in history" :key="i">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <strong class="text-capitalize">{{ (event.event_type || '').replace(/_/g, ' ') }}</strong>
+                <span v-if="event.plan" class="text-muted"> — {{ event.plan }}</span>
+                <div v-if="event.note" class="text-muted small">{{ event.note }}</div>
+              </div>
+              <small class="text-muted">{{ event.created_at ? formatDate(event.created_at) : '' }}</small>
+            </div>
+          </li>
+        </ul>
+        <p v-else class="text-muted text-center mb-0">No subscription history yet.</p>
+      </div>
+    </b-modal>
 
   </div>
 </template>
@@ -311,6 +500,7 @@ export default {
         {key: 'status', sortable: true},
         {label: 'Identity Verified', key: 'identity_verified', sortable: true},
         {label: 'Founding Member', key: 'is_founding_member', sortable: true},
+        {label: 'Plan', key: 'plan', sortable: false},
         {key: 'action', label: 'Action'}
       ],
       filter: '',
@@ -326,6 +516,21 @@ export default {
       locationError: '',
       cityName: '',
       parishName: '',
+      selectedTradesperson: null,
+      addModalVisible: false,
+      addForm: {
+        name: '',
+        email: '',
+        phone: '',
+        business_name: '',
+        main_trade: null,
+        parish_id: null,
+      },
+      parishes: [],
+      extendWeeks: 4,
+      historyModalVisible: false,
+      historyLoading: false,
+      history: [],
     };
   },
   components: {
@@ -369,7 +574,96 @@ export default {
         description: this.editForm.description,
       };
 
+      const followUps = [];
+      const original = this.selectedTradesperson;
+
+      if (original && !!original.is_founding_member !== !!this.editForm.is_founding_member) {
+        followUps.push(userService.toggleFoundingMember(id, !!this.editForm.is_founding_member));
+      }
+
+      if (original && original.identity_verified !== this.editForm.identity_verified) {
+        followUps.push(userService.verifyIdentity({user_id: id, identity_verified: this.editForm.identity_verified}));
+      }
+
       userService.updateTradesperson(id, payload).then((res) => {
+        const {status, message} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message, showSwal: true});
+          return;
+        }
+
+        Promise.all(followUps).finally(() => {
+          this.$store.dispatch('success', {message, showSwal: true});
+          this.editModalVisible = false;
+          this.getTradePeople();
+        });
+      });
+    },
+
+    openEditModal(item) {
+      this.selectedTradesperson = item;
+      this.editForm = {...item};
+      this.cityName = item.city_name || '';
+      this.extendWeeks = 4;
+      this.editModalVisible = true;
+    },
+
+    openAddModal() {
+      this.addForm = {
+        name: '',
+        email: '',
+        phone: '',
+        business_name: '',
+        main_trade: null,
+        parish_id: null,
+      };
+      this.addModalVisible = true;
+    },
+
+    submitAdd() {
+      userService.createTradesperson(this.addForm).then((res) => {
+        const {status, message} = res;
+        if (!status) {
+          this.$store.dispatch('error', {message, showSwal: true});
+          return;
+        }
+        this.$store.dispatch('success', {message: message || 'Tradesperson created; login details emailed.', showSwal: true});
+        this.addModalVisible = false;
+        this.getTradePeople();
+      });
+    },
+
+    getParishCities() {
+      userService.getParishCities().then((res) => {
+        const {extra, status} = res;
+        if (status) {
+          this.parishes = extra;
+        }
+      });
+    },
+
+    markPaid(item, plan) {
+      if (!item) return;
+      confirm(`Mark "${item.name}" as paid (${plan})?`, () => {
+        this.isLoading = true;
+        userService.markPlanPaid(item.id, plan).then((res) => {
+          this.isLoading = false;
+          const {status, message} = res;
+          if (!status) {
+            this.$store.dispatch('error', {message, showSwal: true});
+            return;
+          }
+          this.$store.dispatch('success', {message, showSwal: true});
+          this.editModalVisible = false;
+          this.getTradePeople();
+        });
+      });
+    },
+
+    extendTrial(item) {
+      if (!item) return;
+      const weeks = Number(this.extendWeeks) || 4;
+      userService.extendTrial(item.id, weeks).then((res) => {
         const {status, message} = res;
         if (!status) {
           this.$store.dispatch('error', {message, showSwal: true});
@@ -381,11 +675,68 @@ export default {
       });
     },
 
-    openEditModal(item) {
-      this.selectedTradesperson = item;
-      this.editForm = {...item};
-      this.cityName = item.city_name || '';
-      this.editModalVisible = true;
+    toggleSuspend(item) {
+      const newStatus = item.status === 'suspended' ? 'active' : 'suspended';
+      const action = newStatus === 'suspended' ? 'suspend' : 'activate';
+      confirm(`Are you sure you want to ${action} "${item.name}"?`, () => {
+        this.isLoading = true;
+        userService.updateTradesperson(item.id, {status: newStatus}).then((res) => {
+          this.isLoading = false;
+          const {status, message} = res;
+          if (!status) {
+            this.$store.dispatch('error', {message, showSwal: true});
+            return;
+          }
+          this.$store.dispatch('success', {message, showSwal: true});
+          this.getTradePeople();
+        });
+      });
+    },
+
+    openHistoryModal(item) {
+      this.historyModalVisible = true;
+      this.historyLoading = true;
+      this.history = [];
+      userService.getSubscriptionHistory(item.id).then((res) => {
+        this.historyLoading = false;
+        const {extra, status} = res;
+        if (status) {
+          this.history = extra || [];
+        }
+      });
+    },
+
+    planPillLabel(state) {
+      if (!state) return '—';
+      if (state.plan === 'trial') {
+        const days = Number(state.days_remaining);
+        return `${state.label || 'Trial'} (${Number.isFinite(days) ? days : 0}d left)`;
+      }
+      if (state.plan === 'monthly' || state.plan === 'annual') {
+        return 'Active';
+      }
+      return state.label || '—';
+    },
+
+    planPillStyle(state) {
+      if (!state) return {};
+      switch (state.plan) {
+        case 'founding':
+          return {backgroundColor: '#F5A623', color: '#1a1a1a'};
+        case 'trial':
+          return {backgroundColor: '#00A7AC', color: '#ffffff'};
+        case 'monthly':
+        case 'annual':
+          return {backgroundColor: 'transparent', color: '#13452E', border: '1px solid #13452E'};
+        case 'expired':
+          return {backgroundColor: '#adb5bd', color: '#ffffff'};
+        default:
+          return {backgroundColor: '#e9ecef', color: '#495057'};
+      }
+    },
+
+    formatDate(value) {
+      return value ? new Date(value).toLocaleDateString() : '—';
     },
 
     setPlace() {
@@ -491,6 +842,7 @@ export default {
   created() {
     this.getTradePeople();
     this.getTrades();
+    this.getParishCities();
 
   },
   mounted() {
@@ -500,5 +852,10 @@ export default {
 </script>
 
 <style scoped>
-
+.plan-pill {
+  padding: 0.35em 0.75em;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-block;
+}
 </style>
