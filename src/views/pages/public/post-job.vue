@@ -316,6 +316,7 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import appConfig from "../../../../app.config.json";
 import store from "@/store/store";
 import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
+import {getRecaptchaToken} from "@/utils/recaptcha";
 
 export default {
   name: "PostAJob",
@@ -666,7 +667,7 @@ export default {
       this.showAuthView = true;
       this.showLoginView = false;
     },
-    submitForm() {
+    async submitForm() {
       this.submitLoading = true;
       const formData = new FormData();
 
@@ -689,6 +690,9 @@ export default {
           formData.append(`photo[${index}]`, file);
         });
       }
+
+      const recaptcha_token = await getRecaptchaToken('post_job');
+      formData.append('recaptcha_token', recaptcha_token || '');
 
       userService.postJob(formData).then((res) => {
         this.submitLoading = false;

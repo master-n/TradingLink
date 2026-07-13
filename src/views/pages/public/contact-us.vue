@@ -67,6 +67,7 @@ import store from '@/store/store'
 import {userService} from "@/apis/user.service";
 import appConfig from "../../../../app.config.json";
 import RoleBasedHeader from "@/views/base-layout/roleBasedHeader";
+import {getRecaptchaToken} from "@/utils/recaptcha";
 
 export default {
   name: "ContactFormOnly",
@@ -98,9 +99,10 @@ export default {
     },
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       this.isLoading = true;
-      userService.contactFormSubmit(this.form).then((res) => {
+      const recaptcha_token = await getRecaptchaToken('contact');
+      userService.contactFormSubmit({...this.form, recaptcha_token}).then((res) => {
         this.isLoading = false;
         const {extra, status, message} = res;
         if (!status) {

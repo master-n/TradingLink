@@ -243,6 +243,7 @@ import HomeFooter from '../../base-layout/footer'
 import topHeader from '../../base-layout/header-2'
 import {userService} from "@/apis/user.service";
 import appConfig from "../../../../app.config.json";
+import {getRecaptchaToken} from "@/utils/recaptcha";
 
 export default {
   page: {
@@ -294,11 +295,13 @@ export default {
       this.emailError = false;
       this.generalError = '';
       this.isLoading = true;
+      const recaptcha_token = await getRecaptchaToken('signup');
       this.$store.dispatch("signUp", {
         email: this.email,
         parish_id: this.selectedParishId,
         city_id: this.selectedCityId,
-        main_trade: this.selectedTradeId
+        main_trade: this.selectedTradeId,
+        recaptcha_token
       }).then((response) => {
         const {status, message} = response;
         this.isLoading = false;
