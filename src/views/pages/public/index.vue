@@ -354,8 +354,8 @@ export default {
 .tl-link-more { color: #00A7AC; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
 
 /* HERO */
-.tl-hero { min-height: 600px; background: #13452E url('~@/assets/images/hero-tradesperson.png') right center / auto 100% no-repeat; position: relative; display: flex; align-items: center; overflow: hidden; }
-.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(90deg, #13452E 0%, rgba(19,69,46,0.88) 34%, rgba(19,69,46,0.15) 58%, rgba(19,69,46,0) 72%); }
+.tl-hero { min-height: 620px; background: #13452E url('~@/assets/images/hero-tradesperson.png') right center / cover no-repeat; position: relative; display: flex; align-items: center; overflow: hidden; }
+.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(90deg, #13452E 0%, rgba(19,69,46,0.92) 30%, rgba(19,69,46,0.5) 52%, rgba(19,69,46,0) 80%); }
 .tl-hero__content { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; padding: 80px 24px; }
 .tl-hero__text { max-width: 640px; }
 .tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
@@ -389,8 +389,8 @@ export default {
 .tl-how { background: #F6FAFA; }
 .tl-how__steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px; }
 .tl-how__step { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,167,172,0.08); }
-.tl-how__img { height: 200px; overflow: hidden; position: relative; }
-.tl-how__img img { width: 100%; height: 100%; object-fit: cover; }
+.tl-how__img { position: relative; }
+.tl-how__img img { width: 100%; height: auto; display: block; }
 .tl-how__num { position: absolute; top: 12px; left: 12px; background: #00A7AC; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; }
 .tl-how__body { padding: 20px 24px 24px; }
 .tl-how__title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
