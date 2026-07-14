@@ -32,9 +32,9 @@
                       <th scope="col">
                         <input type="checkbox" v-model="selectAll" @change="selectAllTrades" />
                       </th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Created Date</th>
-                      <th scope="col">Updated Date</th>
+                      <th scope="col" class="sortable-th" @click="sortBy('name')">Name <span class="sort-arrow">{{ sortIndicator('name') }}</span></th>
+                      <th scope="col" class="sortable-th" @click="sortBy('created_at')">Created Date <span class="sort-arrow">{{ sortIndicator('created_at') }}</span></th>
+                      <th scope="col" class="sortable-th" @click="sortBy('updated_at')">Updated Date <span class="sort-arrow">{{ sortIndicator('updated_at') }}</span></th>
                       <th scope="col">Actions</th>
                     </tr>
                     </thead>
@@ -48,7 +48,7 @@
                     </tr>
                     </tbody>
                     <tbody v-else>
-                    <tr v-for="(service, i) in filteredServices" :key="i">
+                    <tr v-for="(service, i) in sortedFilteredServices" :key="i">
                       <td>
                         <input type="checkbox" :value="service.id" v-model="selectedTrades" />
                       </td>
@@ -99,12 +99,14 @@ import appConfig from "../../../../app.config.json";
 import { userService } from "@/apis/user.service";
 import { BModal, BFormGroup, BFormInput } from 'bootstrap-vue';
 import { confirm } from "@/utils/functions";
+import tableSort from '@/mixins/tableSort';
 
 export default {
   page: {
     title: "Admin My Projects",
     meta: [{ name: "description", content: appConfig.description }]
   },
+  mixins: [tableSort],
   components: {
     HomeFooter,
     topHeader,
@@ -142,6 +144,9 @@ export default {
     filteredServices() {
       const q = this.searchQuery.toLowerCase();
       return this.services.filter(service => service.name.toLowerCase().includes(q));
+    },
+    sortedFilteredServices() {
+      return this.sortRows(this.filteredServices);
     }
   },
   methods: {
@@ -265,3 +270,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.sort-arrow {
+  font-size: 0.75em;
+  color: #6c757d;
+}
+</style>
