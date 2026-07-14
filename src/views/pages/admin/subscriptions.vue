@@ -27,7 +27,7 @@
             <th>Status</th>
             <th>Trial ends</th>
             <th>Subscribed since</th>
-            <th></th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -48,14 +48,45 @@
             <td>{{ user.trial_ends_at ? formatDate(user.trial_ends_at) : '—' }}</td>
             <td>{{ user.subscribed_at ? formatDate(user.subscribed_at) : '—' }}</td>
             <td>
-              <button
-                v-if="!user.subscribed_at"
-                class="btn btn-sm btn-success"
-                :disabled="marking === user.id"
-                @click="markPaid(user)"
-              >
-                Mark as paid
-              </button>
+              <div class="tl-actions">
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  :disabled="busy(user.id)"
+                  @click="setPlan(user, 'monthly')"
+                >
+                  Enable Monthly
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  :disabled="busy(user.id)"
+                  @click="setPlan(user, 'annual')"
+                >
+                  Enable Annual
+                </button>
+                <button
+                  class="btn btn-sm"
+                  :class="user.is_founding_member ? 'btn-warning' : 'btn-outline-warning'"
+                  :disabled="busy(user.id)"
+                  @click="toggleFounding(user)"
+                >
+                  {{ user.is_founding_member ? 'Founding ✓' : 'Founding' }}
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-secondary"
+                  :disabled="busy(user.id)"
+                  @click="extendTrialFor(user)"
+                >
+                  Extend Trial
+                </button>
+                <button
+                  v-if="!user.subscribed_at"
+                  class="btn btn-sm btn-success"
+                  :disabled="busy(user.id)"
+                  @click="markPaid(user)"
+                >
+                  Mark as paid
+                </button>
+              </div>
             </td>
           </tr>
           <tr v-if="users.length === 0">
@@ -88,6 +119,7 @@
 <script>
 import topHeader from '../../base-layout/admin-header';
 import { userService } from '@/apis/user.service';
+import { confirm } from '@/utils/functions';
 
 export default {
   name: 'AdminSubscriptions',
@@ -97,7 +129,7 @@ export default {
       filter: 'all',
       users: [],
       loading: true,
-      marking: null,
+      actioning: null,
       currentPage: 1,
       lastPage: 1,
       filterOptions: [
@@ -142,16 +174,46 @@ export default {
         }
       });
     },
-    markPaid(user) {
-      this.marking = user.id;
-      userService.markSubscribed(user.id).then((res) => {
-        this.marking = null;
+    busy(id) {
+      return this.actioning === id;
+    },
+    // Shared handler: run an action, refetch on success, toast on failure.
+    runAction(user, request) {
+      this.actioning = user.id;
+      request.then((res) => {
+        this.actioning = null;
         if (res.status) {
           this.fetchUsers();
         } else {
           this.$store.dispatch('error', { message: res.message, showSwal: true });
         }
       });
+    },
+    markPaid(user) {
+      this.runAction(user, userService.markSubscribed(user.id));
+    },
+    setPlan(user, plan) {
+      const label = plan === 'annual' ? 'Annual (J$50,000/yr)' : 'Monthly (J$5,000/mo)';
+      confirm(`Mark ${user.name || 'this tradesperson'} as paid on the ${label} plan?`, () => {
+        this.runAction(user, userService.markPlanPaid(user.id, plan));
+      });
+    },
+    toggleFounding(user) {
+      const turningOn = !user.is_founding_member;
+      const verb = turningOn ? 'Grant founding-member status to' : 'Remove founding-member status from';
+      confirm(`${verb} ${user.name || 'this tradesperson'}?`, () => {
+        this.runAction(user, userService.toggleFoundingMember(user.id, turningOn));
+      });
+    },
+    extendTrialFor(user) {
+      const input = window.prompt('Extend trial by how many weeks?', '4');
+      if (input === null) return;
+      const weeks = parseInt(input, 10);
+      if (!Number.isInteger(weeks) || weeks < 1) {
+        this.$store.dispatch('error', { message: 'Enter a whole number of weeks (1 or more).', showSwal: true });
+        return;
+      }
+      this.runAction(user, userService.extendTrial(user.id, weeks));
     },
     formatDate(value) {
       return new Date(value).toLocaleDateString();
@@ -193,5 +255,13 @@ export default {
   font-weight: 600;
   font-size: 0.8rem;
   display: inline-block;
+}
+.tl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tl-actions .btn {
+  white-space: nowrap;
 }
 </style>
