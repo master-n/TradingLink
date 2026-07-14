@@ -127,7 +127,7 @@
           <div class="tl-tradesperson__copy">
             <span class="tl-label tl-label--light">For Tradespeople</span>
             <h2 class="tl-tradesperson__heading">Looking for job <span class="tl-teal-light">leads?</span></h2>
-            <p class="tl-tradesperson__sub">Grow your business with Tradelink — thousands of jobs posted every month across all 14 parishes.</p>
+            <p class="tl-tradesperson__sub">Grow your business with Tradelink — get matched to jobs across all 14 parishes.</p>
             <ul class="tl-perks">
               <li v-for="(perk, i) in tradePerks" :key="i">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
@@ -169,8 +169,8 @@
       </div>
     </section>
 
-    <!-- STATS -->
-    <section class="tl-stats">
+    <!-- STATS — hidden pre-launch (no real numbers yet); flip showStats to true to re-enable -->
+    <section class="tl-stats" v-if="showStats">
       <div class="tl-container">
         <div class="tl-stats__grid">
           <div class="tl-stat" v-for="(s, i) in statItems" :key="i">
@@ -186,7 +186,7 @@
       <div class="tl-container">
         <div class="tl-cta__banner">
           <h2 class="tl-cta__heading">Ready to get started?</h2>
-          <p class="tl-cta__sub">Join thousands of Jamaicans who trust Tradelink to connect them with quality professionals.</p>
+          <p class="tl-cta__sub">Join Jamaicans who trust Tradelink to connect them with quality professionals.</p>
           <router-link to="/post-a-job" class="tl-btn tl-btn--gold">Post Your Job Now →</router-link>
         </div>
       </div>
@@ -212,6 +212,10 @@ export default {
   components: { HomeFooter, RoleBasedHeader },
   data() {
     return {
+      // Pre-launch: the homepage stats bar is hidden because we don't have real
+      // figures yet. Flip to true (once real numbers exist) to show it again —
+      // the section markup and statItems computed are kept intact.
+      showStats: false,
       stats: null,
       searchQuery: '',
       showDropdown: false,
@@ -394,7 +398,7 @@ export default {
 .tl-how__num { position: absolute; top: 12px; left: 12px; background: #00A7AC; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; }
 .tl-how__body { padding: 20px 24px 24px; }
 .tl-how__title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-.tl-how__text { font-size: 0.875rem; color: #5C7878; line-height: 1.65; margin: 0; }
+.tl-how__text { font-size: 0.875rem; color: #13452E; line-height: 1.65; margin: 0; }
 
 /* CATEGORIES */
 .tl-categories { background: #fff; }

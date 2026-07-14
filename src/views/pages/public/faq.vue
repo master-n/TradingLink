@@ -262,3 +262,23 @@ export default {
 
 }
 </script>
+
+<style>
+/* Replace the theme's refresh-arrow accordion icon with a clear chevron that
+   rotates 180° when a panel opens. Scoped to the FAQ page via .faq-page so it
+   doesn't affect other accordions. */
+.faq-page .accordion-button::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2313452E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") !important;
+  background-size: 1rem 1rem !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  opacity: 1 !important;
+  transform: rotate(0deg);
+  transition: transform 0.25s ease;
+}
+.faq-page .accordion-button:not(.collapsed)::after {
+  transform: rotate(180deg) !important;
+}
+</style>
