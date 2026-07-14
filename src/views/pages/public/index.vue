@@ -68,7 +68,7 @@
     </section>
 
     <!-- HOW IT WORKS -->
-    <section class="tl-section tl-how">
+    <section id="how-it-works" class="tl-section tl-how">
       <div class="tl-container">
         <span class="tl-label">Simple Process</span>
         <h2 class="tl-section__title">How <span class="tl-teal">Tradelink</span> works</h2>

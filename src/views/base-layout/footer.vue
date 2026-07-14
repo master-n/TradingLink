@@ -21,7 +21,7 @@
           <div>
             <h5>Homeowners</h5>
             <router-link to="/post-a-job">Post a job</router-link>
-            <router-link to="/faq">How it works</router-link>
+            <router-link to="/#how-it-works">How it works</router-link>
             <router-link to="/find-tradesperson">Find trades</router-link>
           </div>
 
