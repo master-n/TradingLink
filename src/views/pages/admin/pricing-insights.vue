@@ -46,15 +46,15 @@
             <table class="table table-striped table-hover">
               <thead class="bg-primary-1 text-white">
                 <tr>
-                  <th>Trade</th>
-                  <th class="text-end">Quotes</th>
-                  <th class="text-end">Avg Total (JMD)</th>
-                  <th class="text-end">Avg Materials (JMD)</th>
-                  <th class="text-end">Avg Labour (JMD)</th>
+                  <th class="sortable-th" @click="sortBy('trade_name')">Trade <span class="sort-arrow">{{ sortIndicator('trade_name') }}</span></th>
+                  <th class="text-end sortable-th" @click="sortBy('quote_count')">Quotes <span class="sort-arrow">{{ sortIndicator('quote_count') }}</span></th>
+                  <th class="text-end sortable-th" @click="sortBy('avg_total_price')">Avg Total (JMD) <span class="sort-arrow">{{ sortIndicator('avg_total_price') }}</span></th>
+                  <th class="text-end sortable-th" @click="sortBy('avg_materials_cost')">Avg Materials (JMD) <span class="sort-arrow">{{ sortIndicator('avg_materials_cost') }}</span></th>
+                  <th class="text-end sortable-th" @click="sortBy('avg_labour_cost')">Avg Labour (JMD) <span class="sort-arrow">{{ sortIndicator('avg_labour_cost') }}</span></th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="row in breakdown" :key="row.trade_id">
+                <tr v-for="row in sortedBreakdown" :key="row.trade_id">
                   <td class="fw-bold">{{ row.trade_name }}</td>
                   <td class="text-end">{{ row.quote_count }}</td>
                   <td class="text-end text-primary-1 fw-bold">{{ formatJMD(row.avg_total_price) }}</td>
@@ -79,6 +79,7 @@ import topHeader from '../../base-layout/admin-header';
 import appConfig from '../../../../app.config.json';
 import { userService } from '@/apis/user.service';
 import VueApexCharts from 'vue-apexcharts';
+import tableSort from '@/mixins/tableSort';
 
 export default {
   name: 'AdminPricingInsights',
@@ -87,6 +88,7 @@ export default {
     meta: [{ name: 'description', content: appConfig.description }],
   },
   components: { topHeader, apexchart: VueApexCharts },
+  mixins: [tableSort],
   data() {
     return {
       isLoading: true,
@@ -112,6 +114,11 @@ export default {
       },
       chartSeries: [],
     };
+  },
+  computed: {
+    sortedBreakdown() {
+      return this.sortRows(this.breakdown);
+    },
   },
   methods: {
     formatJMD(val) {
@@ -143,6 +150,14 @@ export default {
 </script>
 
 <style scoped>
+.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.sort-arrow {
+  font-size: 0.75em;
+}
 .card {
   border: none;
   border-radius: 12px;

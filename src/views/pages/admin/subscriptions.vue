@@ -21,17 +21,17 @@
       <table v-else class="table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Plan</th>
-            <th>Status</th>
-            <th>Trial ends</th>
-            <th>Subscribed since</th>
+            <th class="sortable-th" @click="sortBy('name')">Name <span class="sort-arrow">{{ sortIndicator('name') }}</span></th>
+            <th class="sortable-th" @click="sortBy('email')">Email <span class="sort-arrow">{{ sortIndicator('email') }}</span></th>
+            <th class="sortable-th" @click="sortBy('plan')">Plan <span class="sort-arrow">{{ sortIndicator('plan') }}</span></th>
+            <th class="sortable-th" @click="sortBy('status')">Status <span class="sort-arrow">{{ sortIndicator('status') }}</span></th>
+            <th class="sortable-th" @click="sortBy('trial_ends_at')">Trial ends <span class="sort-arrow">{{ sortIndicator('trial_ends_at') }}</span></th>
+            <th class="sortable-th" @click="sortBy('subscribed_at')">Subscribed since <span class="sort-arrow">{{ sortIndicator('subscribed_at') }}</span></th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in sortedUsers" :key="user.id">
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>
@@ -120,10 +120,12 @@
 import topHeader from '../../base-layout/admin-header';
 import { userService } from '@/apis/user.service';
 import { confirm } from '@/utils/functions';
+import tableSort from '@/mixins/tableSort';
 
 export default {
   name: 'AdminSubscriptions',
   components: { topHeader },
+  mixins: [tableSort],
   data() {
     return {
       filter: 'all',
@@ -139,6 +141,16 @@ export default {
         { value: 'expired', label: 'Expired' },
       ],
     };
+  },
+  computed: {
+    sortedUsers() {
+      return this.sortRows(this.users, (user, key) => {
+        if (key === 'plan') {
+          return user.subscription_state ? (user.subscription_state.plan || '') : '';
+        }
+        return user[key];
+      });
+    },
   },
   mounted() {
     this.fetchUsers();
@@ -250,6 +262,15 @@ export default {
 </script>
 
 <style scoped>
+.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.sort-arrow {
+  font-size: 0.75em;
+  color: #6c757d;
+}
 .plan-pill {
   padding: 0.35em 0.75em;
   font-weight: 600;
