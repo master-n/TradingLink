@@ -111,7 +111,7 @@ export default {
       fields: [
         {key: 'name', sortable: true},
         {key: 'email', sortable: true},
-        {key: 'phone', sortable: false},
+        {key: 'phone', sortable: true},
         {key: 'status', sortable: true},
         {key: 'action', label: 'Action'}
       ],
