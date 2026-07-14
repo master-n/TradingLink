@@ -116,6 +116,10 @@
                 <div v-else>
                   <p class="text-muted mb-0"><em>Pending verification</em></p>
                 </div>
+
+                <p v-if="userInfo.qualification_text" class="mt-2 mb-0">
+                  <strong>Stated qualifications:</strong> {{ userInfo.qualification_text }}
+                </p>
               </div>
             </div>
 

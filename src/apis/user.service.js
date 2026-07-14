@@ -1063,9 +1063,9 @@ function toggleFoundingMember(id, isFoundingMember) {
     });
 }
 
-function markPlanPaid(id, plan) {
+function markPlanPaid(id, plan, paidDate) {
     return new Promise((resolve) => {
-        axios.post(`/admin/api/mark-plan-paid`, {id, plan}, useBearerTokenHeaders())
+        axios.post(`/admin/api/mark-plan-paid`, {id, plan, paid_date: paidDate}, useBearerTokenHeaders())
             .then((response) => resolve(response.data))
             .catch((err) => resolve({status: false, message: err}));
     });

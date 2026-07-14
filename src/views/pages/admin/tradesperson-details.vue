@@ -151,6 +151,15 @@
   </span>
               </div>
 
+              <div class="mt-3">
+                <label class="form-label"><strong>Stated qualifications</strong> <small class="text-muted">(typed by admin — shown on the public profile; the certificate itself stays private)</small></label>
+                <textarea class="form-control" rows="2" v-model="qualificationText"
+                          placeholder="e.g. Plumber NVQ, HEART Trust, Level 3"></textarea>
+                <button class="btn btn-outline-primary btn-sm mt-2" :disabled="loading" @click="saveQualificationText">
+                  Save qualification details
+                </button>
+              </div>
+
 
               <div class="mt-2" v-if="trade.qualification_status !== 'approved'">
                 <button class="btn btn-danger btn-sm me-2"
@@ -194,6 +203,7 @@ export default {
   data() {
     return {
       trade: {},
+      qualificationText: '',
       loading: false,
     };
   },
@@ -203,7 +213,8 @@ export default {
         this.loading = true;
         const payload = {
           user_id: this.trade.id,
-          qualification_status: status
+          qualification_status: status,
+          qualification_text: this.qualificationText
         };
         userService.updateQualificationStatus(payload).then((res) => {
           this.loading = false;
@@ -217,6 +228,23 @@ export default {
 
       });
     },
+    // Save the admin-typed public qualification text without changing the
+    // approve/reject status (reuses the same endpoint with the current status).
+    saveQualificationText() {
+      this.loading = true;
+      userService.updateQualificationStatus({
+        user_id: this.trade.id,
+        qualification_status: this.trade.qualification_status || 'pending',
+        qualification_text: this.qualificationText,
+      }).then((res) => {
+        this.loading = false;
+        if (!res.status) {
+          this.$store.dispatch('error', { message: res.message, showSwal: true });
+          return;
+        }
+        this.trade.qualification_text = this.qualificationText;
+      });
+    },
 
     async fetchTradePerson() {
       this.loading = true;
@@ -228,6 +256,7 @@ export default {
           this.$router.back();
         }
         this.trade = extra;
+        this.qualificationText = (extra && extra.qualification_text) || '';
 
       });
 
