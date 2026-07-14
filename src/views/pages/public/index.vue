@@ -359,12 +359,12 @@ export default {
 
 /* HERO */
 .tl-hero { min-height: 620px; background: #13452E url('~@/assets/images/hero-tradesperson.png') right center / cover no-repeat; position: relative; display: flex; align-items: center; overflow: hidden; }
-.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(90deg, #13452E 0%, rgba(19,69,46,0.92) 30%, rgba(19,69,46,0.5) 52%, rgba(19,69,46,0) 80%); }
+.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,69,46,0.28) 0%, rgba(19,69,46,0.42) 45%, rgba(19,69,46,0.82) 100%); }
 .tl-hero__content { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; padding: 80px 24px; }
 .tl-hero__text { max-width: 640px; }
-.tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
+.tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; text-shadow: 0 2px 16px rgba(0,0,0,0.45); }
 .tl-hero__highlight { color: #00A7AC; }
-.tl-hero__sub { font-size: 1.05rem; color: rgba(255,255,255,0.75); margin-bottom: 32px; line-height: 1.6; }
+.tl-hero__sub { font-size: 1.05rem; color: #fff; margin-bottom: 32px; line-height: 1.6; text-shadow: 0 1px 8px rgba(0,0,0,0.55); }
 .tl-search { position: relative; max-width: 580px; }
 .tl-search__wrap { display: flex; align-items: center; background: #fff; border-radius: 10px; padding: 6px 6px 6px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); gap: 8px; }
 .tl-search__icon { width: 20px; height: 20px; color: #9CA3AF; flex-shrink: 0; }
