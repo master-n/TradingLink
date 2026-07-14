@@ -141,7 +141,7 @@
                   </h2>
                   <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
-                      Yes — Tradelink charges $1,200/month for access to unlimited job leads and customer contact.
+                      Yes — Tradelink charges JMD 5,000/month + GCT, or JMD 50,000/year + GCT, for access to unlimited job leads and customer contact.
                     </div>
                   </div>
                 </div>
@@ -185,12 +185,12 @@
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingSix2">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix2" aria-expanded="false" aria-controls="collapseSix2">
-                      6. Can I pause or cancel my account?
+                      6. Can I cancel my subscription?
                     </button>
                   </h2>
                   <div id="collapseSix2" class="accordion-collapse collapse" aria-labelledby="headingSix2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
-                      Yes. You can manage or pause your subscription anytime from your dashboard.
+                      There's no long-term contract. Your subscription covers the month or year you've paid for — to cancel, just contact us and we won't renew it.
                     </div>
                   </div>
                 </div>

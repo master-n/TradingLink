@@ -109,8 +109,8 @@
                           History
                         </b-button>
                         <b-dropdown size="sm" text="Mark Paid" variant="success" class="me-2">
-                          <b-dropdown-item @click="markPaid(data.item, 'monthly')">Monthly (J$5,000)</b-dropdown-item>
-                          <b-dropdown-item @click="markPaid(data.item, 'annual')">Annual (J$50,000)</b-dropdown-item>
+                          <b-dropdown-item @click="markPaid(data.item, 'monthly')">Monthly (JMD 5,000/month + GCT)</b-dropdown-item>
+                          <b-dropdown-item @click="markPaid(data.item, 'annual')">Annual (JMD 50,000/year + GCT)</b-dropdown-item>
                         </b-dropdown>
                         <b-button size="sm" :variant="data.item.status === 'suspended' ? 'outline-success' : 'outline-danger'"
                                   class="me-2" @click="toggleSuspend(data.item)">
@@ -349,10 +349,10 @@
             <b-form-group label="Mark as paid">
               <div class="d-flex gap-2">
                 <b-button size="sm" variant="success" @click="markPaid(selectedTradesperson, 'monthly')">
-                  Monthly (J$5,000)
+                  Monthly (JMD 5,000/month + GCT)
                 </b-button>
                 <b-button size="sm" variant="success" @click="markPaid(selectedTradesperson, 'annual')">
-                  Annual (J$50,000)
+                  Annual (JMD 50,000/year + GCT)
                 </b-button>
               </div>
             </b-form-group>
