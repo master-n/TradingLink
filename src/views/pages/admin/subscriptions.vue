@@ -206,8 +206,19 @@ export default {
     },
     setPlan(user, plan) {
       const label = plan === 'annual' ? 'Annual (JMD 50,000/year + GCT)' : 'Monthly (JMD 5,000/month + GCT)';
-      confirm(`Mark ${user.name || 'this tradesperson'} as paid on the ${label} plan?`, () => {
-        this.runAction(user, userService.markPlanPaid(user.id, plan));
+      const today = new Date().toISOString().slice(0, 10);
+      const input = window.prompt(
+        `Paid / start date for ${user.name || 'this tradesperson'} (${label}) — YYYY-MM-DD:`,
+        today
+      );
+      if (input === null) return;
+      const paidDate = input.trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(paidDate) || Number.isNaN(Date.parse(paidDate))) {
+        this.$store.dispatch('error', { message: 'Enter a valid date as YYYY-MM-DD.', showSwal: true });
+        return;
+      }
+      confirm(`Mark ${user.name || 'this tradesperson'} as paid on the ${label} plan, starting ${paidDate}?`, () => {
+        this.runAction(user, userService.markPlanPaid(user.id, plan, paidDate));
       });
     },
     toggleFounding(user) {
