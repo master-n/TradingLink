@@ -14,19 +14,21 @@
     <section class="container my-5 py-4">
       <div class="row align-items-center">
         <div class="col-md-6 mb-4 mb-md-0">
-          <img
-              src="../../../../public/frontend/assets/images/bg/construction.jpg"
-              alt="Tradespeople at work"
-              id="about"
-              class="img-fluid rounded shadow"
-          />
+          <div class="about-media">
+            <img
+                src="../../../../public/frontend/assets/images/bg/construction.jpg"
+                alt="Tradespeople at work"
+                id="about"
+                class="img-fluid"
+            />
+          </div>
         </div>
         <div class="col-md-6">
           <h2 class="mb-4 d-flex align-items-center">
             <i class="bi bi-house-check text-primary me-2"></i>
             About Tradelink
           </h2>
-          <p class="lead text-muted">
+          <p class="lead" style="color:#13452E;">
             Tradelink was founded with a clear purpose: to raise the standard of workmanship across Jamaica and bring
             greater trust to the trades industry.
           </p>
@@ -95,11 +97,27 @@ export default {
 </script>
 
 <style scoped>
+/* Clip the slowly-zooming image so it stays within its rounded frame. */
+.about-media {
+  max-width: 500px;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
 #about {
   width: 100%;
   max-width: 500px;
   height: 380px;
   object-fit: cover;
+  transform-origin: center;
+  animation: aboutKenBurns 20s ease-in-out infinite alternate;
+}
+@keyframes aboutKenBurns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #about { animation: none; }
 }
 
 h2 {

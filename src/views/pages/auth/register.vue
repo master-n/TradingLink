@@ -220,7 +220,7 @@
           <div class="talent-wrap">
             <div class="talent-content">
               <h4>There's lots of demand for good <span>tradespeople</span></h4>
-              <p>150,000 jobs posted every month</p>
+              <!-- Hidden pre-launch (fabricated stat): <p>150,000 jobs posted every month</p> -->
             </div>
             <div class="find-btn">
               <router-link class="primry-btn-2 lg-btn" to="/register">Sign up for free</router-link>

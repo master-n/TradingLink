@@ -205,7 +205,7 @@ export default {
       this.runAction(user, userService.markSubscribed(user.id));
     },
     setPlan(user, plan) {
-      const label = plan === 'annual' ? 'Annual (J$50,000/yr)' : 'Monthly (J$5,000/mo)';
+      const label = plan === 'annual' ? 'Annual (JMD 50,000/year + GCT)' : 'Monthly (JMD 5,000/month + GCT)';
       confirm(`Mark ${user.name || 'this tradesperson'} as paid on the ${label} plan?`, () => {
         this.runAction(user, userService.markPlanPaid(user.id, plan));
       });

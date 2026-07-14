@@ -14,8 +14,10 @@
             post your job to receive free quotes from TradeLink's trusted
             {{ selectedTrade ? selectedTrade : 'professionals' }} in your area.</p>
 
+          <label for="findTradeSelect" class="form-label fw-semibold">Choose a trade</label>
           <div class="input-group mb-3">
-            <select class="form-select" v-model="selectedTrade" :disabled="tradeLoader">
+            <select id="findTradeSelect" class="form-select" v-model="selectedTrade" :disabled="tradeLoader">
+              <option value="" disabled>{{ tradeLoader ? 'Loading trades…' : 'Select a trade' }}</option>
               <option v-for="(trade,i) in trades" :key="i" :value="trade.name">{{ trade.name }}</option>
             </select>
           </div>
@@ -180,7 +182,7 @@
             <div class="talent-wrap">
               <div class="talent-content">
                 <h4>There's lots of demand for good <span>tradespeople</span></h4>
-                <p>150,000 jobs posted every month</p>
+                <!-- Hidden pre-launch (fabricated stat): <p>150,000 jobs posted every month</p> -->
               </div>
               <div class="find-btn">
                 <router-link class="primry-btn-2 lg-btn" to="/register">Sign up for free</router-link>

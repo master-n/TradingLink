@@ -68,7 +68,7 @@
     </section>
 
     <!-- HOW IT WORKS -->
-    <section class="tl-section tl-how">
+    <section id="how-it-works" class="tl-section tl-how">
       <div class="tl-container">
         <span class="tl-label">Simple Process</span>
         <h2 class="tl-section__title">How <span class="tl-teal">Tradelink</span> works</h2>
@@ -127,7 +127,7 @@
           <div class="tl-tradesperson__copy">
             <span class="tl-label tl-label--light">For Tradespeople</span>
             <h2 class="tl-tradesperson__heading">Looking for job <span class="tl-teal-light">leads?</span></h2>
-            <p class="tl-tradesperson__sub">Grow your business with Tradelink — thousands of jobs posted every month across all 14 parishes.</p>
+            <p class="tl-tradesperson__sub">Grow your business with Tradelink — get matched to jobs across all 14 parishes.</p>
             <ul class="tl-perks">
               <li v-for="(perk, i) in tradePerks" :key="i">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
@@ -169,8 +169,8 @@
       </div>
     </section>
 
-    <!-- STATS -->
-    <section class="tl-stats">
+    <!-- STATS — hidden pre-launch (no real numbers yet); flip showStats to true to re-enable -->
+    <section class="tl-stats" v-if="showStats">
       <div class="tl-container">
         <div class="tl-stats__grid">
           <div class="tl-stat" v-for="(s, i) in statItems" :key="i">
@@ -186,7 +186,7 @@
       <div class="tl-container">
         <div class="tl-cta__banner">
           <h2 class="tl-cta__heading">Ready to get started?</h2>
-          <p class="tl-cta__sub">Join thousands of Jamaicans who trust Tradelink to connect them with quality professionals.</p>
+          <p class="tl-cta__sub">Join Jamaicans who trust Tradelink to connect them with quality professionals.</p>
           <router-link to="/post-a-job" class="tl-btn tl-btn--gold">Post Your Job Now →</router-link>
         </div>
       </div>
@@ -212,6 +212,10 @@ export default {
   components: { HomeFooter, RoleBasedHeader },
   data() {
     return {
+      // Pre-launch: the homepage stats bar is hidden because we don't have real
+      // figures yet. Flip to true (once real numbers exist) to show it again —
+      // the section markup and statItems computed are kept intact.
+      showStats: false,
       stats: null,
       searchQuery: '',
       showDropdown: false,
@@ -355,12 +359,12 @@ export default {
 
 /* HERO */
 .tl-hero { min-height: 620px; background: #13452E url('~@/assets/images/hero-tradesperson.png') right center / cover no-repeat; position: relative; display: flex; align-items: center; overflow: hidden; }
-.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(90deg, #13452E 0%, rgba(19,69,46,0.92) 30%, rgba(19,69,46,0.5) 52%, rgba(19,69,46,0) 80%); }
+.tl-hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,69,46,0.28) 0%, rgba(19,69,46,0.42) 45%, rgba(19,69,46,0.82) 100%); }
 .tl-hero__content { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; padding: 80px 24px; }
 .tl-hero__text { max-width: 640px; }
-.tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
+.tl-hero__heading { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; color: #fff; line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; text-shadow: 0 2px 16px rgba(0,0,0,0.45); }
 .tl-hero__highlight { color: #00A7AC; }
-.tl-hero__sub { font-size: 1.05rem; color: rgba(255,255,255,0.75); margin-bottom: 32px; line-height: 1.6; }
+.tl-hero__sub { font-size: 1.05rem; color: #fff; margin-bottom: 32px; line-height: 1.6; text-shadow: 0 1px 8px rgba(0,0,0,0.55); }
 .tl-search { position: relative; max-width: 580px; }
 .tl-search__wrap { display: flex; align-items: center; background: #fff; border-radius: 10px; padding: 6px 6px 6px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); gap: 8px; }
 .tl-search__icon { width: 20px; height: 20px; color: #9CA3AF; flex-shrink: 0; }
@@ -394,7 +398,7 @@ export default {
 .tl-how__num { position: absolute; top: 12px; left: 12px; background: #00A7AC; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; }
 .tl-how__body { padding: 20px 24px 24px; }
 .tl-how__title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-.tl-how__text { font-size: 0.875rem; color: #5C7878; line-height: 1.65; margin: 0; }
+.tl-how__text { font-size: 0.875rem; color: #13452E; line-height: 1.65; margin: 0; }
 
 /* CATEGORIES */
 .tl-categories { background: #fff; }

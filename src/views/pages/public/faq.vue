@@ -141,7 +141,7 @@
                   </h2>
                   <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
-                      Yes — Tradelink charges $1,200/month for access to unlimited job leads and customer contact.
+                      Yes — Tradelink charges JMD 5,000/month + GCT, or JMD 50,000/year + GCT, for access to unlimited job leads and customer contact.
                     </div>
                   </div>
                 </div>
@@ -185,12 +185,12 @@
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingSix2">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix2" aria-expanded="false" aria-controls="collapseSix2">
-                      6. Can I pause or cancel my account?
+                      6. Can I cancel my subscription?
                     </button>
                   </h2>
                   <div id="collapseSix2" class="accordion-collapse collapse" aria-labelledby="headingSix2" data-bs-parent="#accordionExample2">
                     <div class="accordion-body">
-                      Yes. You can manage or pause your subscription anytime from your dashboard.
+                      There's no long-term contract. Your subscription covers the month or year you've paid for — to cancel, just contact us and we won't renew it.
                     </div>
                   </div>
                 </div>
@@ -262,3 +262,23 @@ export default {
 
 }
 </script>
+
+<style>
+/* Replace the theme's refresh-arrow accordion icon with a clear chevron that
+   rotates 180° when a panel opens. Scoped to the FAQ page via .faq-page so it
+   doesn't affect other accordions. */
+.faq-page .accordion-button::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2313452E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") !important;
+  background-size: 1rem 1rem !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  opacity: 1 !important;
+  transform: rotate(0deg);
+  transition: transform 0.25s ease;
+}
+.faq-page .accordion-button:not(.collapsed)::after {
+  transform: rotate(180deg) !important;
+}
+</style>

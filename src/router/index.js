@@ -13,6 +13,10 @@ const router = new VueRouter({
     routes,
     mode: 'history',
     scrollBehavior(to, from, savedPosition) {
+        // Scroll to an in-page anchor (e.g. "/#how-it-works") when one is given.
+        if (to.hash) {
+            return { selector: to.hash, behavior: 'smooth' };
+        }
         return savedPosition || { x: 0, y: 0 }
     },
 })

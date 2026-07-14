@@ -21,7 +21,7 @@
           <div>
             <h5>Homeowners</h5>
             <router-link to="/post-a-job">Post a job</router-link>
-            <router-link to="/faq">How it works</router-link>
+            <router-link to="/#how-it-works">How it works</router-link>
             <router-link to="/find-tradesperson">Find trades</router-link>
           </div>
 
@@ -51,8 +51,8 @@
         <p>© 2026 Tradelink Jamaica. All rights reserved.</p>
 
         <div class="tl-socials">
-          <a href="#"><i class="bx bxl-facebook"></i></a>
-          <a href="#"><i class="bx bxl-instagram"></i></a>
+          <a href="https://www.facebook.com/tradelinkja" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bx bxl-facebook"></i></a>
+          <a href="https://www.instagram.com/tradelink_ja" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bx bxl-instagram"></i></a>
           <a href="#"><i class="bx bxl-whatsapp"></i></a>
         </div>
       </div>

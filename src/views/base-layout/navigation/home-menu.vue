@@ -74,17 +74,17 @@
         </div>
         <div class="tl-nav__mobile-links">
           <template v-if="!loggedIn">
-            <router-link to="/post-a-job" class="tl-nav__mobile-link">Post a job</router-link>
-            <router-link to="/login" class="tl-nav__mobile-link">Log in</router-link>
-            <router-link to="/register" class="tl-nav__mobile-link tl-nav__mobile-link--btn">Sign up as a tradesperson</router-link>
+            <router-link to="/post-a-job" class="tl-nav__mobile-link"><i class="bi bi-briefcase tl-nav__mobile-icon"></i>Post a job</router-link>
+            <router-link to="/login" class="tl-nav__mobile-link"><i class="bi bi-box-arrow-in-right tl-nav__mobile-icon"></i>Log in</router-link>
+            <router-link to="/register" class="tl-nav__mobile-link tl-nav__mobile-link--btn"><i class="bi bi-person-plus"></i> Sign up as a tradesperson</router-link>
           </template>
           <template v-else>
             <a v-if="!isRegistrationComplete" @click="completeRegistration" class="tl-nav__mobile-link" style="cursor:pointer">
-              Complete registration <span v-if="registrationSteps" class="tl-nav__badge">{{ registrationSteps }} left</span>
+              <i class="bi bi-exclamation-circle tl-nav__mobile-icon"></i>Complete registration <span v-if="registrationSteps" class="tl-nav__badge">{{ registrationSteps }} left</span>
             </a>
-            <router-link to="/profile" class="tl-nav__mobile-link">Profile</router-link>
-            <router-link to="/ask-a-trade" class="tl-nav__mobile-link">Ask a tradesperson</router-link>
-            <router-link to="/logout" class="tl-nav__mobile-link">Log Out</router-link>
+            <router-link to="/profile" class="tl-nav__mobile-link"><i class="bi bi-person-circle tl-nav__mobile-icon"></i>Profile</router-link>
+            <router-link to="/ask-a-trade" class="tl-nav__mobile-link"><i class="bi bi-people tl-nav__mobile-icon"></i>Ask a tradesperson</router-link>
+            <router-link to="/logout" class="tl-nav__mobile-link"><i class="bi bi-box-arrow-right tl-nav__mobile-icon"></i>Log Out</router-link>
           </template>
         </div>
       </div>
@@ -246,24 +246,24 @@ export default {
 .tl-nav__dropdown-item--danger:hover { color: #ef4444; }
 .tl-nav__dropdown-item--danger i { color: #ef4444; }
 
-/* Hamburger */
+/* Hamburger — a touch of brand colour */
 .tl-nav__hamburger {
   display: none;
   background: none;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px solid #13452E;
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 1.2rem;
   cursor: pointer;
-  color: #333;
+  color: #13452E;
 }
 
-/* Mobile drawer */
+/* Mobile drawer — brand dark green with white text + gold icons */
 .tl-nav__mobile {
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: #fff;
+  background: #13452E;
   z-index: 999;
   flex-direction: column;
   padding: 24px;
@@ -273,26 +273,36 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 .tl-nav__mobile-close {
   background: none; border: none;
-  font-size: 1.5rem; cursor: pointer; color: #333;
+  font-size: 1.5rem; cursor: pointer; color: #fff;
 }
-.tl-nav__mobile-links { display: flex; flex-direction: column; gap: 4px; }
+.tl-nav__mobile-links { display: flex; flex-direction: column; gap: 2px; }
 .tl-nav__mobile-link {
-  display: block;
-  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 4px;
   font-size: 1rem;
   font-weight: 500;
-  color: #1A2B2B;
+  color: #fff;
   text-decoration: none;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.tl-nav__mobile-icon {
+  color: #F5A623;
+  font-size: 1.15rem;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
 }
 .tl-nav__mobile-link--btn {
-  margin-top: 16px;
-  background: #00A7AC;
-  color: #fff !important;
+  justify-content: center;
+  margin-top: 18px;
+  background: #F5A623;
+  color: #1A1A1A !important;
   padding: 14px 20px;
   border-radius: 8px;
   text-align: center;
