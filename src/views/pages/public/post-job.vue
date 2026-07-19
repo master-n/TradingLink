@@ -14,6 +14,8 @@
       <div class="row">
         <div class="col-md-8">
           <div class="fm-margin">
+            <job-intake-chat v-if="useChat && !skipChat" @skip="skipChat = true" @confirm="onIntakeConfirm"/>
+            <div v-if="!useChat || skipChat">
             <!-- Step 0: Select trade -->
             <div class="mb-5">
               <h2 class="mb-4">Post a {{ selectedTradeName }} job</h2>
@@ -300,6 +302,7 @@
               </form>
             </div>
             </div>
+            </div>
 
           </div>
         </div>
@@ -310,6 +313,7 @@
 
 <script>
 import QuestionRenderer from '../../../components/QuestionRenderer.vue';
+import JobIntakeChat from '@/components/JobIntakeChat.vue';
 import {userService} from "@/apis/user.service";
 import vue2Dropzone from "vue2-dropzone";
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
@@ -327,6 +331,7 @@ export default {
   components: {
     RoleBasedHeader,
     QuestionRenderer,
+    JobIntakeChat,
     vueDropzone: vue2Dropzone,
   },
 
@@ -334,6 +339,9 @@ export default {
     return {
       place: null,
       user: this.$store.getters.GET_USER_INFO,
+      useChat: process.env.VUE_APP_ENABLE_JOB_INTAKE === 'true',
+      skipChat: false,
+      pendingIntakeJob: null,
       trades: [],
       selectedTradeName: '',
       selectedTrade: '',
@@ -593,6 +601,17 @@ export default {
       this.scrollToView('showAuthView');
     },
     showAuthViewBackBtn() {
+      if (this.pendingIntakeJob) {
+        // Intake mode: the location step was never used, so cancel the pending
+        // post and return to a fresh chat instead of an empty location view.
+        this.pendingIntakeJob = null;
+        this.showAuthView = false;
+        this.showLoginView = false;
+        this.showRegisterView = false;
+        this.lastQuestion = false;
+        this.skipChat = false;
+        return;
+      }
       this.showLocationView = true;
       this.navButtonPosition = 'showLocationView';
       this.showAuthView = false;
@@ -639,7 +658,7 @@ export default {
           this.$store.dispatch('error', {message: message, showSwal: true});
           return;
         }
-        this.submitForm()
+        if (this.pendingIntakeJob) { this.saveIntakeJob() } else { this.submitForm() }
       });
     },
     registerHomeOwner() {
@@ -659,7 +678,7 @@ export default {
           return;
         }
         this.$store.dispatch('updateUserInfo', extra);
-        this.submitForm()
+        if (this.pendingIntakeJob) { this.saveIntakeJob() } else { this.submitForm() }
       });
     },
 
@@ -699,6 +718,36 @@ export default {
         this.trades = res.extra;
         this.$router.push('/tradesperson-recommendation/' + res.extra.project_id);
       })
+    },
+
+    // AI job-intake: the chat widget emits confirm with the finished job.
+    // Logged-in homeowners save immediately; anonymous visitors are routed
+    // through the page's existing email -> login/register step (reused, not duplicated).
+    onIntakeConfirm({job}) {
+      this.pendingIntakeJob = job;
+      if (this.loggedInUser) {
+        this.saveIntakeJob();
+        return;
+      }
+      this.skipChat = true;
+      this.lastQuestion = true;
+      this.showHeadline = false;
+      this.showAddPhoto = false;
+      this.showLocationView = false;
+      this.showSection('showAuthView');
+      this.$nextTick(() => this.scrollToView('showAuthView'));
+    },
+    saveIntakeJob() {
+      this.submitLoading = true;
+      userService.postIntakeJob(this.pendingIntakeJob).then((res) => {
+        this.submitLoading = false;
+        if (res && res.project_id) {
+          this.$router.push('/tradesperson-recommendation/' + res.project_id);
+        } else {
+          this.$store.dispatch('error', {message: 'Could not post the job. Please try the form.', showSwal: true});
+          this.skipChat = true;
+        }
+      });
     },
 
     reverseGeocode(lat, lng) {
