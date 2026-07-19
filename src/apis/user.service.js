@@ -81,6 +81,8 @@ export const userService = {
     getPermissions,
     verifyHomeOwner,
     postJob,
+    jobIntake,
+    postIntakeJob,
     acceptInvite,
     getAcceptedInterest,
     addAdmins,
@@ -620,6 +622,22 @@ function postJob(formData) {
             .then(response => {
                 resolve(response.data)
             }).catch(err => resolve({status: false, message: err}));
+    })
+}
+
+function jobIntake(conversation, recaptchaToken) {
+    return new Promise((resolve) => {
+        axios.post('/api/job-intake', {conversation, recaptcha_token: recaptchaToken}, useBasicAuthHeaders())
+            .then(response => resolve(response.data))
+            .catch(err => resolve({done: false, limited: true, message: 'Please use the form instead.', error: err}));
+    })
+}
+
+function postIntakeJob(job) {
+    return new Promise((resolve) => {
+        axios.post('/job-poster/api/post-intake-job', {job}, useBearerTokenHeaders())
+            .then(response => resolve(response.data))
+            .catch(err => resolve({status: false, message: err}));
     })
 }
 
