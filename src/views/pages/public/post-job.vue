@@ -14,7 +14,7 @@
       <div class="row">
         <div class="col-md-8">
           <div class="fm-margin">
-            <job-intake-chat v-if="useChat && !skipChat" @skip="skipChat = true" @confirm="onIntakeConfirm"/>
+            <job-intake-chat v-if="useChat && !skipChat" :is-logged-in="!!loggedInUser" @skip="skipChat = true" @confirm="onIntakeConfirm"/>
             <div v-if="!useChat || skipChat">
             <!-- Step 0: Select trade -->
             <div class="mb-5">

@@ -38,8 +38,15 @@
           This is a guide only — your tradesperson will confirm the price after seeing the job.
         </p>
 
+        <!-- Benefit-led sign-up nudge for anonymous users.
+             NOTE: notification wording below is pending Nathan's confirmation of how
+             homeowners are actually notified (email vs push). Neutral placeholder for now. -->
+        <p v-if="!isLoggedIn" class="signup-benefit mb-3">
+          Create your free account to post it — then vetted tradespeople can send you quotes to compare and choose from.
+        </p>
+
         <button type="button" class="btn btn-primary me-2" @click="$emit('confirm', { job: finishedJob, price })">
-          Post this job
+          {{ isLoggedIn ? 'Post this job' : 'Create account & post my job' }}
         </button>
         <button type="button" class="btn btn-outline-secondary" @click="$emit('skip')">
           Edit in the form instead
@@ -61,6 +68,10 @@ import {getRecaptchaToken} from "@/utils/recaptcha";
 
 export default {
   name: "JobIntakeChat",
+  props: {
+    // Drives the end-of-chat copy: anonymous users get the sign-up nudge + button.
+    isLoggedIn: {type: Boolean, default: false},
+  },
   data() {
     return {
       messages: [{from: 'ai', text: "Hi! Tell me in a few words what you need done."}],
@@ -68,7 +79,6 @@ export default {
       sending: false,
       finishedJob: null,
       price: null,
-      capped: false,
       currency: process.env.VUE_APP_CURRENCY || '$',
     };
   },
@@ -111,7 +121,6 @@ export default {
         this.finishedJob = res.job;
         this.price = res.price || null;
       } else {
-        if (res.capped) this.capped = true;
         this.messages.push({from: 'ai', text: res.message});
       }
       this.$nextTick(this.scrollDown);
@@ -133,5 +142,9 @@ export default {
   background: #f6f6f6;
   padding: 10px;
   border-radius: 8px;
+}
+
+.signup-benefit {
+  font-weight: 500;
 }
 </style>
